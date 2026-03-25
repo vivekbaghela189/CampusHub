@@ -482,14 +482,8 @@ export default async function EventsPage({
                         background: isFree ? "rgba(200,245,66,0.07)" : "rgba(99,102,241,0.08)",
                         border: `1px solid ${isFree ? "rgba(200,245,66,0.25)" : "rgba(99,102,241,0.28)"}`,
                       }}>
-                        <svg width="11" height="11" viewBox="0 0 24 24" fill="none"
-                          stroke={isFree ? "#c8f542" : "#9b7ff0"}
-                          strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                          <circle cx="12" cy="12" r="10"/>
-                          <path d="M12 6v2m0 8v2M9.5 9.5A2.5 2.5 0 0 1 12 8c1.38 0 2.5.9 2.5 2s-1.12 2-2.5 2-2.5.9-2.5 2 1.12 2 2.5 2a2.5 2.5 0 0 0 2.5-1.5"/>
-                        </svg>
                         <span style={{
-                          fontSize:"12px", fontWeight:700,
+                          fontSize:"16px", fontWeight:700,
                           fontFamily:"'Syne',sans-serif",
                           color: isFree ? "#c8f542" : "#9b7ff0",
                           letterSpacing:"0.2px",
