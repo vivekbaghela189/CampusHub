@@ -2,8 +2,18 @@
 
 import Link from "next/link"
 import { useEffect, useMemo, useRef, useState } from "react"
+import { createPortal } from "react-dom"
 import { signOut, useSession } from "next-auth/react"
 import { Button } from "@/components/ui/button"
+import {
+  ArrowLeft,
+  ChevronRight,
+  FileText,
+  LogOut,
+  MessageSquareMore,
+  NotebookTabs,
+  ScrollText,
+} from "lucide-react"
 
 function getInitial(name?: string | null, email?: string | null) {
   const source = (name || email || "U").trim()
@@ -13,18 +23,53 @@ function getInitial(name?: string | null, email?: string | null) {
 export default function Navbar() {
   const { data: session, status } = useSession()
   const [open, setOpen] = useState(false)
-  const menuRef = useRef<HTMLDivElement>(null)
+  const [portalRoot, setPortalRoot] = useState<HTMLElement | null>(null)
+  const panelRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
+    const root = document.createElement("div")
+    root.setAttribute("data-profile-sheet-root", "true")
+    document.body.appendChild(root)
+    setPortalRoot(root)
+
+    return () => {
+      root.remove()
+    }
+  }, [])
+
+  useEffect(() => {
+    document.body.dataset.profileOpen = open ? "true" : "false"
+
+    if (!open) {
+      document.body.style.overflow = ""
+      return () => {
+        delete document.body.dataset.profileOpen
+      }
+    }
+
     const handleClickOutside = (event: MouseEvent) => {
-      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+      if (panelRef.current && !panelRef.current.contains(event.target as Node)) {
+        setOpen(false)
+      }
+    }
+
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
         setOpen(false)
       }
     }
 
     document.addEventListener("mousedown", handleClickOutside)
-    return () => document.removeEventListener("mousedown", handleClickOutside)
-  }, [])
+    window.addEventListener("keydown", handleEscape)
+    document.body.style.overflow = "hidden"
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside)
+      window.removeEventListener("keydown", handleEscape)
+      document.body.style.overflow = ""
+      delete document.body.dataset.profileOpen
+    }
+  }, [open])
 
   const userName = session?.user?.name || "User"
   const userEmail = session?.user?.email || "user@campushub.com"
@@ -52,34 +97,58 @@ export default function Navbar() {
           -webkit-backdrop-filter: blur(12px) !important;
           border-bottom: 1px solid rgba(255, 255, 255, 0.055) !important;
         }
-        .profile-card-link:hover {
-          background: rgba(255,255,255,0.04) !important;
-          border-color: rgba(255,255,255,0.08) !important;
+        .profile-sheet-item {
+          transition: background-color .18s ease !important;
+        }
+        .profile-sheet-item:hover {
+          background: #f7f7f8 !important;
+        }
+        .profile-sheet {
+          width: min(40vw, 560px);
+          min-width: 380px;
+        }
+        body > * {
+          transition: filter .24s ease, transform .24s ease, opacity .24s ease;
+        }
+        body[data-profile-open="true"] > *:not([data-profile-sheet-root]) {
+          filter: blur(16px) saturate(.95);
+        }
+        @media (max-width: 900px) {
+          .profile-sheet {
+            width: min(92vw, 420px);
+            min-width: 0;
+          }
+        }
+        @media (max-width: 640px) {
+          .profile-sheet {
+            width: 100vw;
+            min-width: 0;
+          }
         }
       `}</style>
 
       <header className="campus-navbar sticky top-0 z-50">
         <div className="container mx-auto flex h-16 items-center justify-between px-8">
-          <Link href="/" className="flex items-center gap-2.5 hover:opacity-90 transition-opacity">
+          <Link href="/" className="flex items-center gap-2.5 transition-opacity hover:opacity-90">
             <div
-              className="w-[28px] h-[28px] rounded-[8px] flex items-center justify-center text-[14px] shrink-0"
+              className="flex h-[28px] w-[28px] shrink-0 items-center justify-center rounded-[8px] text-[11px] font-bold"
               style={{
                 background: "linear-gradient(135deg,#6366f1,#7c3aed)",
                 boxShadow: "0 4px 14px rgba(99,102,241,.45)",
               }}
             >
-              🎓
+              CH
             </div>
-            <span className="text-white font-semibold text-[15px] tracking-tight">CampusHub</span>
+            <span className="text-[15px] font-semibold tracking-tight text-white">CampusHub</span>
           </Link>
 
           <nav className="flex items-center gap-2">
             {status === "authenticated" ? (
-              <div ref={menuRef} className="relative">
+              <>
                 <button
                   type="button"
-                  onClick={() => setOpen((prev) => !prev)}
-                  aria-label="Open profile menu"
+                  onClick={() => setOpen(true)}
+                  aria-label="Open profile"
                   style={{
                     width: 42,
                     height: 42,
@@ -99,177 +168,244 @@ export default function Navbar() {
                   {avatarInitial}
                 </button>
 
-                {open && (
-                  <div
-                    style={{
-                      position: "absolute",
-                      top: "calc(100% + 12px)",
-                      right: 0,
-                      width: 310,
-                      borderRadius: 22,
-                      background: "#f3f2f5",
-                      color: "#14121c",
-                      boxShadow: "0 24px 60px rgba(0,0,0,0.28)",
-                      overflow: "hidden",
-                      zIndex: 60,
-                    }}
-                  >
-                    <div style={{ padding: "14px 16px", borderBottom: "1px solid rgba(20,18,28,0.08)", fontSize: 12, fontWeight: 600 }}>
-                      ← Profile
-                    </div>
-
-                    <div style={{ padding: 14, display: "grid", gap: 14 }}>
-                      <div style={{ display: "flex", alignItems: "center", gap: 12, background: "#e7e6ea", borderRadius: 16, padding: 12 }}>
-                        <div
+                {open && portalRoot && createPortal(
+                  <>
+                    <div
+                      style={{
+                        position: "fixed",
+                        inset: 0,
+                        zIndex: 90,
+                        background: "rgba(244,241,255,0.18)",
+                        backdropFilter: "blur(4px)",
+                        WebkitBackdropFilter: "blur(4px)",
+                      }}
+                    />
+                    <div
+                      ref={panelRef}
+                      className="profile-sheet"
+                      style={{
+                        position: "fixed",
+                        top: 0,
+                        right: 0,
+                        zIndex: 91,
+                        height: "100vh",
+                        background: "#f3f2f5",
+                        color: "#191621",
+                        boxShadow: "-20px 0 50px rgba(0,0,0,0.18)",
+                        display: "flex",
+                        flexDirection: "column",
+                      }}
+                    >
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: 14,
+                          padding: "18px 26px",
+                          borderBottom: "1px solid rgba(25,22,33,0.08)",
+                        }}
+                      >
+                        <button
+                          type="button"
+                          onClick={() => setOpen(false)}
+                          aria-label="Close profile"
                           style={{
-                            width: 36,
-                            height: 36,
-                            borderRadius: "999px",
-                            background: "linear-gradient(135deg, #c4b5fd, #a78bfa)",
-                            color: "#5b21b6",
+                            border: "none",
+                            background: "transparent",
+                            color: "#191621",
+                            cursor: "pointer",
                             display: "flex",
                             alignItems: "center",
                             justifyContent: "center",
-                            fontWeight: 700,
-                            fontSize: 18,
-                            flexShrink: 0,
+                            padding: 0,
                           }}
                         >
-                          {avatarInitial}
-                        </div>
-                        <div
-                          style={{
-                            background: "#f8b4b4",
-                            border: "1px solid rgba(127,29,29,0.25)",
-                            borderRadius: 8,
-                            padding: "8px 10px",
-                            minWidth: 0,
-                          }}
-                        >
-                          <p style={{ fontSize: 12, fontWeight: 600, lineHeight: 1.2, color: "#241b2f" }}>{userName}</p>
-                          <p style={{ fontSize: 11, color: "#5c5167", lineHeight: 1.25, wordBreak: "break-word" }}>{userEmail}</p>
-                        </div>
+                          <ArrowLeft size={24} />
+                        </button>
+                        <span style={{ fontSize: 20, fontWeight: 700 }}>Profile</span>
                       </div>
 
-                      <div style={{ display: "grid", gap: 10 }}>
-                        <p style={{ fontSize: 11, fontWeight: 600, color: "#6b6477", paddingLeft: 2 }}>Support</p>
+                      <div
+                        style={{
+                          padding: "30px 30px 34px",
+                          display: "grid",
+                          gap: 28,
+                          overflowY: "auto",
+                        }}
+                      >
+                        <div style={{ display: "flex", alignItems: "center", gap: 18 }}>
+                          <div
+                            style={{
+                              width: 88,
+                              height: 88,
+                              borderRadius: "999px",
+                              background: "linear-gradient(135deg, #d8cdfd, #bba9ff)",
+                              color: "#5b39d9",
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                              fontWeight: 700,
+                              fontSize: 42,
+                              flexShrink: 0,
+                              boxShadow: "inset 0 0 0 1px rgba(91,57,217,0.12)",
+                            }}
+                          >
+                            {avatarInitial}
+                          </div>
+
+                          <div style={{ minWidth: 0 }}>
+                            <p style={{ fontSize: 20, fontWeight: 700, marginBottom: 6 }}>{userName}</p>
+                            <p
+                              style={{
+                                fontSize: 15,
+                                color: "#655d71",
+                                lineHeight: 1.45,
+                                wordBreak: "break-word",
+                              }}
+                            >
+                              {userEmail}
+                            </p>
+                          </div>
+                        </div>
+
                         <Link
                           href="/dashboard"
                           onClick={() => setOpen(false)}
-                          className="profile-card-link"
+                          className="profile-sheet-item"
                           style={{
                             display: "flex",
                             alignItems: "center",
                             justifyContent: "space-between",
-                            borderRadius: 12,
-                            padding: "12px 14px",
+                            borderRadius: 22,
+                            padding: "22px 22px",
                             background: "#fff",
-                            border: "1px solid transparent",
                             textDecoration: "none",
-                            color: "#14121c",
-                            fontSize: 12,
+                            color: "#191621",
+                            fontSize: 17,
                           }}
                         >
-                          <span>View all bookings</span>
-                          <span>›</span>
+                          <span style={{ display: "flex", alignItems: "center", gap: 16 }}>
+                            <NotebookTabs size={22} />
+                            <span>View all bookings</span>
+                          </span>
+                          <ChevronRight size={22} />
                         </Link>
-                        <a
-                          href="mailto:support@campushub.com"
-                          className="profile-card-link"
-                          style={{
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "space-between",
-                            borderRadius: 12,
-                            padding: "12px 14px",
-                            background: "#fff",
-                            border: "1px solid transparent",
-                            textDecoration: "none",
-                            color: "#14121c",
-                            fontSize: 12,
-                          }}
-                        >
-                          <span>Chat with us</span>
-                          <span>›</span>
-                        </a>
-                      </div>
 
-                      <div style={{ display: "grid", gap: 10 }}>
-                        <p style={{ fontSize: 11, fontWeight: 600, color: "#6b6477", paddingLeft: 2 }}>More</p>
-                        <a
-                          href="#"
-                          className="profile-card-link"
-                          style={{
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "space-between",
-                            borderRadius: 12,
-                            padding: "12px 14px",
-                            background: "#fff",
-                            border: "1px solid transparent",
-                            textDecoration: "none",
-                            color: "#14121c",
-                            fontSize: 12,
-                          }}
-                        >
-                          <span>Terms & Conditions</span>
-                          <span>›</span>
-                        </a>
-                        <a
-                          href="#"
-                          className="profile-card-link"
-                          style={{
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "space-between",
-                            borderRadius: 12,
-                            padding: "12px 14px",
-                            background: "#fff",
-                            border: "1px solid transparent",
-                            textDecoration: "none",
-                            color: "#14121c",
-                            fontSize: 12,
-                          }}
-                        >
-                          <span>Privacy Policy</span>
-                          <span>›</span>
-                        </a>
-                      </div>
+                        <div style={{ display: "grid", gap: 14 }}>
+                          <p style={{ fontSize: 15, fontWeight: 700 }}>Support</p>
+                          <a
+                            href="mailto:support@campushub.com"
+                            className="profile-sheet-item"
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "space-between",
+                              borderRadius: 22,
+                              padding: "22px 22px",
+                              background: "#fff",
+                              textDecoration: "none",
+                              color: "#191621",
+                              fontSize: 17,
+                            }}
+                          >
+                            <span style={{ display: "flex", alignItems: "center", gap: 16 }}>
+                              <MessageSquareMore size={22} />
+                              <span>Chat with us</span>
+                            </span>
+                            <ChevronRight size={22} />
+                          </a>
+                        </div>
 
-                      <button
-                        type="button"
-                        onClick={() => signOut({ callbackUrl: "/login" })}
-                        style={{
-                          width: "100%",
-                          textAlign: "left",
-                          borderRadius: 12,
-                          padding: "12px 14px",
-                          background: "#fff",
-                          border: "1px solid transparent",
-                          color: "#14121c",
-                          fontSize: 12,
-                          cursor: "pointer",
-                        }}
-                      >
-                        ← Logout
-                      </button>
+                        <div style={{ display: "grid", gap: 14 }}>
+                          <p style={{ fontSize: 15, fontWeight: 700 }}>More</p>
+                          <div
+                            style={{
+                              background: "#fff",
+                              borderRadius: 22,
+                              overflow: "hidden",
+                            }}
+                          >
+                            <a
+                              href="#"
+                              className="profile-sheet-item"
+                              style={{
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "space-between",
+                                padding: "20px 22px",
+                                textDecoration: "none",
+                                color: "#191621",
+                                fontSize: 17,
+                                borderBottom: "1px solid rgba(25,22,33,0.08)",
+                              }}
+                            >
+                              <span style={{ display: "flex", alignItems: "center", gap: 16 }}>
+                                <ScrollText size={22} />
+                                <span>Terms & Conditions</span>
+                              </span>
+                              <ChevronRight size={22} />
+                            </a>
+
+                            <a
+                              href="#"
+                              className="profile-sheet-item"
+                              style={{
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "space-between",
+                                padding: "20px 22px",
+                                textDecoration: "none",
+                                color: "#191621",
+                                fontSize: 17,
+                              }}
+                            >
+                              <span style={{ display: "flex", alignItems: "center", gap: 16 }}>
+                                <FileText size={22} />
+                                <span>Privacy Policy</span>
+                              </span>
+                              <ChevronRight size={22} />
+                            </a>
+                          </div>
+                        </div>
+
+                        <button
+                          type="button"
+                          onClick={() => signOut({ callbackUrl: "/login" })}
+                          className="profile-sheet-item"
+                          style={{
+                            border: "none",
+                            width: "100%",
+                            borderRadius: 22,
+                            padding: "22px 22px",
+                            background: "#fff",
+                            color: "#191621",
+                            fontSize: 17,
+                            cursor: "pointer",
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 16,
+                          }}
+                        >
+                          <LogOut size={22} />
+                          <span>Logout</span>
+                        </button>
+                      </div>
                     </div>
-                  </div>
+                  </>,
+                  portalRoot
                 )}
-              </div>
+              </>
             ) : (
               <>
                 <Link
                   href="/login"
-                  className="text-sm text-white/45 hover:text-white transition-colors duration-150 px-3 py-1.5 rounded-lg hover:bg-white/[0.06]"
+                  className="rounded-lg px-3 py-1.5 text-sm text-white/45 transition-colors duration-150 hover:bg-white/[0.06] hover:text-white"
                 >
                   Login
                 </Link>
 
-                <Button asChild className="btn-indigo-nav ml-2 px-5 rounded-[10px] text-sm font-medium text-white cursor-pointer">
-                  <Link href="/register">
-                    Register
-                  </Link>
+                <Button asChild className="btn-indigo-nav ml-2 cursor-pointer rounded-[10px] px-5 text-sm font-medium text-white">
+                  <Link href="/register">Register</Link>
                 </Button>
               </>
             )}
