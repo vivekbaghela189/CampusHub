@@ -373,7 +373,7 @@ export default function Navbar() {
 
                         <button
                           type="button"
-                          onClick={() => signOut({ callbackUrl: "/login" })}
+                          onClick={() => signOut({ callbackUrl: "/" })}
                           className="profile-sheet-item"
                           style={{
                             border: "none",
