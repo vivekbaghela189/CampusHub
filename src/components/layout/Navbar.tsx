@@ -101,7 +101,7 @@ export default function Navbar() {
           transition: background-color .18s ease !important;
         }
         .profile-sheet-item:hover {
-          background: #f7f7f8 !important;
+          background: rgba(255,255,255,0.06) !important;
         }
         .profile-sheet {
           width: min(40vw, 560px);
@@ -175,9 +175,9 @@ export default function Navbar() {
                         position: "fixed",
                         inset: 0,
                         zIndex: 90,
-                        background: "rgba(244,241,255,0.18)",
-                        backdropFilter: "blur(4px)",
-                        WebkitBackdropFilter: "blur(4px)",
+                        background: "rgba(10,12,20,0.34)",
+                        backdropFilter: "blur(10px) saturate(0.92)",
+                        WebkitBackdropFilter: "blur(10px) saturate(0.92)",
                       }}
                     />
                     <div
@@ -189,9 +189,9 @@ export default function Navbar() {
                         right: 0,
                         zIndex: 91,
                         height: "100vh",
-                        background: "#f3f2f5",
-                        color: "#191621",
-                        boxShadow: "-20px 0 50px rgba(0,0,0,0.18)",
+                        background: "linear-gradient(180deg, #12121f 0%, #161629 100%)",
+                        color: "#f0efe8",
+                        boxShadow: "-20px 0 50px rgba(0,0,0,0.34)",
                         display: "flex",
                         flexDirection: "column",
                       }}
@@ -202,7 +202,7 @@ export default function Navbar() {
                           alignItems: "center",
                           gap: 14,
                           padding: "18px 26px",
-                          borderBottom: "1px solid rgba(25,22,33,0.08)",
+                          borderBottom: "1px solid rgba(255,255,255,0.07)",
                         }}
                       >
                         <button
@@ -212,7 +212,7 @@ export default function Navbar() {
                           style={{
                             border: "none",
                             background: "transparent",
-                            color: "#191621",
+                            color: "#f0efe8",
                             cursor: "pointer",
                             display: "flex",
                             alignItems: "center",
@@ -239,26 +239,26 @@ export default function Navbar() {
                               width: 88,
                               height: 88,
                               borderRadius: "999px",
-                              background: "linear-gradient(135deg, #d8cdfd, #bba9ff)",
-                              color: "#5b39d9",
+                              background: "linear-gradient(135deg, rgba(155,127,240,0.34), rgba(192,132,252,0.24))",
+                              color: "#b794ff",
                               display: "flex",
                               alignItems: "center",
                               justifyContent: "center",
                               fontWeight: 700,
                               fontSize: 42,
                               flexShrink: 0,
-                              boxShadow: "inset 0 0 0 1px rgba(91,57,217,0.12)",
+                              boxShadow: "inset 0 0 0 1px rgba(192,132,252,0.18)",
                             }}
                           >
                             {avatarInitial}
                           </div>
 
                           <div style={{ minWidth: 0 }}>
-                            <p style={{ fontSize: 20, fontWeight: 700, marginBottom: 6 }}>{userName}</p>
+                            <p style={{ fontSize: 20, fontWeight: 700, marginBottom: 6, color: "#f0efe8" }}>{userName}</p>
                             <p
                               style={{
                                 fontSize: 15,
-                                color: "#655d71",
+                                color: "#9998a8",
                                 lineHeight: 1.45,
                                 wordBreak: "break-word",
                               }}
@@ -278,10 +278,11 @@ export default function Navbar() {
                             justifyContent: "space-between",
                             borderRadius: 22,
                             padding: "22px 22px",
-                            background: "#fff",
+                            background: "rgba(255,255,255,0.04)",
                             textDecoration: "none",
-                            color: "#191621",
+                            color: "#f0efe8",
                             fontSize: 17,
+                            border: "1px solid rgba(255,255,255,0.07)",
                           }}
                         >
                           <span style={{ display: "flex", alignItems: "center", gap: 16 }}>
@@ -302,10 +303,11 @@ export default function Navbar() {
                               justifyContent: "space-between",
                               borderRadius: 22,
                               padding: "22px 22px",
-                              background: "#fff",
+                              background: "rgba(255,255,255,0.04)",
                               textDecoration: "none",
-                              color: "#191621",
+                              color: "#f0efe8",
                               fontSize: 17,
+                              border: "1px solid rgba(255,255,255,0.07)",
                             }}
                           >
                             <span style={{ display: "flex", alignItems: "center", gap: 16 }}>
@@ -320,9 +322,10 @@ export default function Navbar() {
                           <p style={{ fontSize: 15, fontWeight: 700 }}>More</p>
                           <div
                             style={{
-                              background: "#fff",
+                              background: "rgba(255,255,255,0.04)",
                               borderRadius: 22,
                               overflow: "hidden",
+                              border: "1px solid rgba(255,255,255,0.07)",
                             }}
                           >
                             <a
@@ -334,9 +337,9 @@ export default function Navbar() {
                                 justifyContent: "space-between",
                                 padding: "20px 22px",
                                 textDecoration: "none",
-                                color: "#191621",
+                                color: "#f0efe8",
                                 fontSize: 17,
-                                borderBottom: "1px solid rgba(25,22,33,0.08)",
+                                borderBottom: "1px solid rgba(255,255,255,0.07)",
                               }}
                             >
                               <span style={{ display: "flex", alignItems: "center", gap: 16 }}>
@@ -355,7 +358,7 @@ export default function Navbar() {
                                 justifyContent: "space-between",
                                 padding: "20px 22px",
                                 textDecoration: "none",
-                                color: "#191621",
+                                color: "#f0efe8",
                                 fontSize: 17,
                               }}
                             >
@@ -377,13 +380,14 @@ export default function Navbar() {
                             width: "100%",
                             borderRadius: 22,
                             padding: "22px 22px",
-                            background: "#fff",
-                            color: "#191621",
+                            background: "rgba(255,255,255,0.04)",
+                            color: "#f0efe8",
                             fontSize: 17,
                             cursor: "pointer",
                             display: "flex",
                             alignItems: "center",
                             gap: 16,
+                            border: "1px solid rgba(255,255,255,0.07)",
                           }}
                         >
                           <LogOut size={22} />
