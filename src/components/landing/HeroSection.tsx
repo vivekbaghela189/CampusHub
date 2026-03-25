@@ -154,7 +154,7 @@ export default function HeroSection() {
             <div className="badge-ring mb-8 inline-flex items-center gap-2 rounded-full border border-indigo-500/30 bg-indigo-500/10 px-4 py-1.5 backdrop-blur-sm">
               <span className="dot-blink inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-indigo-400" />
               <span className="text-xs font-medium tracking-wide text-indigo-300">
-                42 live events this week
+                Register & Enjoy
               </span>
               <span className="text-xs text-indigo-400/40">-&gt;</span>
             </div>

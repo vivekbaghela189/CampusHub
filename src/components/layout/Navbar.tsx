@@ -44,12 +44,7 @@ export default function Navbar() {
  
           {/* Nav Links */}
           <nav className="flex items-center gap-2">
-            <Link
-              href="/events"
-              className="text-sm text-white/45 hover:text-white transition-colors duration-150 px-3 py-1.5 rounded-lg hover:bg-white/[0.06]"
-            >
-              Events
-            </Link>
+           
  
             <Link
               href="/login"

@@ -117,6 +117,9 @@
 }
 
 @layer base {
+  html {
+    scroll-behavior: smooth;
+  }
   * {
     @apply border-border outline-ring/50;
   }
@@ -125,3 +128,62 @@
   }
 }
 
+@keyframes landingGridShift {
+  0% {
+    background-position: 0 0, 0 0;
+  }
+  100% {
+    background-position: 54px 54px, 54px 54px;
+  }
+}
+
+@keyframes landingOrbFloat {
+  0%,
+  100% {
+    transform: translate3d(-50%, -50%, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(-48%, -53%, 0) scale(1.06);
+  }
+}
+
+@keyframes landingGlowPulse {
+  0%,
+  100% {
+    opacity: 0.45;
+  }
+  50% {
+    opacity: 0.75;
+  }
+}
+
+@layer utilities {
+  .landing-grid {
+    animation: landingGridShift 24s linear infinite;
+  }
+
+  .landing-orb {
+    animation: landingOrbFloat 14s ease-in-out infinite;
+    will-change: transform;
+  }
+
+  .landing-orb-delayed {
+    animation-delay: -7s;
+  }
+
+  .landing-glow {
+    animation: landingGlowPulse 8s ease-in-out infinite;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .landing-grid,
+  .landing-orb,
+  .landing-glow {
+    animation: none !important;
+  }
+}
