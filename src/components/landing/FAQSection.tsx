@@ -41,8 +41,6 @@ export default function FAQSection() {
       style={{ background: "#080b12" }}
     >
       {/* top/bottom rules */}
-      <div className="absolute top-0 inset-x-0 h-px" style={{ background: "rgba(255,255,255,0.06)" }} />
-      <div className="absolute bottom-0 inset-x-0 h-px" style={{ background: "rgba(255,255,255,0.06)" }} />
  
       {/* Grid */}
       <div

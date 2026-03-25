@@ -11,14 +11,31 @@ export async function POST(req: Request) {
     }
 
     const body = await req.json()
-    const { title, description, deadline } = body
+    const {
+      title,
+      description,
+      deadline,
+      type,
+      isPaid,
+      price,
+      currency,
+    } = body
+
+    const numericPrice =
+      price === null || price === undefined || price === ""
+        ? 0
+        : Number(price)
+    const hasPaidPrice = Number.isFinite(numericPrice) && numericPrice > 0
 
     const event = await prisma.event.create({
       data: {
         title,
         description,
-        type: "GENERAL",
+        type: type || "GENERAL",
         deadline: new Date(deadline),
+        isPaid: typeof isPaid === "boolean" ? isPaid : hasPaidPrice,
+        price: hasPaidPrice ? numericPrice : 0,
+        currency: currency || "INR",
         createdById: session.user.id
       }
     })

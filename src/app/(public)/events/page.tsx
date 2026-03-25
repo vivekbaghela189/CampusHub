@@ -1,6 +1,10 @@
 import Link from "next/link"
 import { prisma } from "@/lib/prisma"
+import { Prisma } from "@prisma/client"
 import { Badge } from "@/components/ui/badge"
+import { unstable_noStore as noStore } from "next/cache"
+
+export const dynamic = "force-dynamic"
  
 // ─── Type config for colors per event type ────────────────────────────────────
 const TYPE_CONFIG: Record<string, { bar: string; color: string; bg: string; border: string }> = {
@@ -19,6 +23,8 @@ export default async function EventsPage({
     type?: string
   }>
 }) {
+  noStore()
+
   // ── Original Prisma logic completely intact ──────────────────────────────
   const resolvedSearchParams = await searchParams
   const search = resolvedSearchParams.search || ""
@@ -30,19 +36,51 @@ export default async function EventsPage({
     description: string
     type: string
     deadline: Date
+    price: number | string | null
+    isPaid: boolean | null
+    currency: string
   }> = []
   let databaseError = false
  
   try {
-    events = await prisma.event.findMany({
-      where: {
-        AND: [
-          search ? { title: { contains: search, mode: "insensitive" } } : {},
-          type   ? { type }                                             : {},
-        ],
-      },
-      orderBy: { deadline: "asc" },
-    })
+    const whereClauses: Prisma.Sql[] = []
+
+    if (search) {
+      whereClauses.push(Prisma.sql`title ILIKE ${`%${search}%`}`)
+    }
+
+    if (type) {
+      whereClauses.push(Prisma.sql`type = ${type}`)
+    }
+
+    const whereSql =
+      whereClauses.length > 0
+        ? Prisma.sql`WHERE ${Prisma.join(whereClauses, Prisma.sql` AND `)}`
+        : Prisma.empty
+
+    events = await prisma.$queryRaw<Array<{
+      id: string
+      title: string
+      description: string
+      type: string
+      deadline: Date
+      price: number | string | null
+      isPaid: boolean | null
+      currency: string
+    }>>(Prisma.sql`
+      SELECT
+        id,
+        title,
+        description,
+        type,
+        deadline,
+        price,
+        "isPaid",
+        currency
+      FROM "Event"
+      ${whereSql}
+      ORDER BY deadline ASC
+    `)
   } catch {
     databaseError = true
   }
@@ -64,6 +102,7 @@ export default async function EventsPage({
         .submit-btn:hover { opacity: .84 !important; }
         select option { background: #12121f; }
         ::placeholder { color: #3e3d45 !important; }
+        @keyframes shimmer-free { 0%,100%{opacity:1} 50%{opacity:0.6} }
       `}</style>
  
       {/* ── MAIN ── */}
@@ -204,7 +243,7 @@ export default async function EventsPage({
                   borderRadius:"11px", color:"#9998a8",
                   fontFamily:"'DM Sans',sans-serif", fontSize:"13px", cursor:"pointer",
                 }}>
-                  Clear ✕
+                  Clear {"✕"}
                 </button>
               </Link>
             )}
@@ -325,6 +364,12 @@ export default async function EventsPage({
             }}>
               {events.map((event) => {
                 const cfg = TYPE_CONFIG[event.type] ?? DEFAULT_CFG
+                const eventPrice = Number(event.price ?? 0)
+                const isFree = eventPrice <= 0
+                const priceDisplay = isFree
+                  ? "Free"
+                  : `${event.currency === "INR" ? "₹" : "$"}${eventPrice.toLocaleString("en-IN")}`
+ 
                 return (
                   <div
                     key={event.id}
@@ -397,9 +442,11 @@ export default async function EventsPage({
                     {/* Divider */}
                     <div style={{ height:"1px", background:"rgba(255,255,255,0.06)", margin:"0 1.3rem" }}/>
  
-                    {/* Footer — original Link + Button structure kept */}
-                    <div style={{ padding:"0.8rem 1.3rem" }}>
-                      <Link href={`/events/${event.id}`} style={{ textDecoration:"none", display:"block" }}>
+                    {/* Footer — View Details left, Price right, equal width */}
+                    <div style={{ padding:"0.8rem 1.3rem", display:"flex", alignItems:"center", gap:"8px" }}>
+ 
+                      {/* View Details button — left, 50% width */}
+                      <Link href={`/events/${event.id}`} style={{ textDecoration:"none", display:"block", flex:1 }}>
                         <button
                           className="view-btn"
                           style={{
@@ -422,9 +469,33 @@ export default async function EventsPage({
                               display:"flex", alignItems:"center", justifyContent:"center",
                               fontSize:"10px", transition:"transform 0.2s, background 0.2s",
                             }}
-                          >↗</span>
+                          >{"↗"}</span>
                         </button>
                       </Link>
+ 
+                      {/* Price badge — right, 50% width, equal to button */}
+                      <div style={{
+                        flex:1, height:"38px", borderRadius:"10px",
+                        display:"flex", alignItems:"center", justifyContent:"center", gap:"5px",
+                        background: isFree ? "rgba(200,245,66,0.07)" : "rgba(99,102,241,0.08)",
+                        border: `1px solid ${isFree ? "rgba(200,245,66,0.25)" : "rgba(99,102,241,0.28)"}`,
+                      }}>
+                        <svg width="11" height="11" viewBox="0 0 24 24" fill="none"
+                          stroke={isFree ? "#c8f542" : "#9b7ff0"}
+                          strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                          <circle cx="12" cy="12" r="10"/>
+                          <path d="M12 6v2m0 8v2M9.5 9.5A2.5 2.5 0 0 1 12 8c1.38 0 2.5.9 2.5 2s-1.12 2-2.5 2-2.5.9-2.5 2 1.12 2 2.5 2a2.5 2.5 0 0 0 2.5-1.5"/>
+                        </svg>
+                        <span style={{
+                          fontSize:"12px", fontWeight:700,
+                          fontFamily:"'Syne',sans-serif",
+                          color: isFree ? "#c8f542" : "#9b7ff0",
+                          letterSpacing:"0.2px",
+                        }}>
+                          {priceDisplay}
+                        </span>
+                      </div>
+ 
                     </div>
                   </div>
                 )

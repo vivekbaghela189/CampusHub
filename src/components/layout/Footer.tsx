@@ -147,7 +147,7 @@ export default function Footer() {
             © {new Date().getFullYear()} CampusHub. All rights reserved.
           </p>
           <p style={{ color: "rgba(255,255,255,0.15)", fontSize: 12 }}>
-            Made with ♥ for Parul University
+            Made with ♥ for students everywhere
           </p>
         </div>
       </div>
