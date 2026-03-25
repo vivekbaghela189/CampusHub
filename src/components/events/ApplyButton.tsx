@@ -3,22 +3,37 @@
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { useRouter } from "next/navigation"
+import { useSession } from "next-auth/react"
 
 interface ApplyButtonProps {
   eventId: string
-  isLoggedIn: boolean
+  isLoggedIn?: boolean
+  disabled?: boolean
+  disabledMessage?: string
 }
 
 export default function ApplyButton({
   eventId,
   isLoggedIn,
+  disabled = false,
+  disabledMessage,
 }: ApplyButtonProps) {
   const router = useRouter()
+  const { status: sessionStatus } = useSession()
   const [loading, setLoading] = useState(false)
   const [status, setStatus] = useState<string | null>(null)
+  const resolvedIsLoggedIn =
+    typeof isLoggedIn === "boolean" ? isLoggedIn : sessionStatus === "authenticated"
 
   const handleApply = async () => {
-    if (!isLoggedIn) {
+    if (disabled) {
+      if (disabledMessage) {
+        setStatus(disabledMessage)
+      }
+      return
+    }
+
+    if (!resolvedIsLoggedIn) {
       router.push("/login")
       return
     }
@@ -51,15 +66,15 @@ export default function ApplyButton({
     <div className="space-y-3">
       <Button
         onClick={handleApply}
-        disabled={loading}
+        disabled={loading || disabled}
         className="w-full"
       >
         {loading ? "Applying..." : "Apply Now"}
       </Button>
 
-      {status && (
+      {(status || disabledMessage) && (
         <p className="text-sm text-center text-muted-foreground">
-          {status}
+          {status || disabledMessage}
         </p>
       )}
     </div>

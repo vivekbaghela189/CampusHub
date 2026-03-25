@@ -40,6 +40,21 @@ model Event {
 
   createdBy    User          @relation("UserEvents", fields: [createdById], references: [id])
   applications Application[]
+  details      EventDetails?
+}
+
+model EventDetails {
+  id          String   @id @default(uuid())
+  eventId      String   @unique
+  eventDate    String?
+  eventTime    String?
+  venue        String?
+  rules        String?
+  privacyNote  String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  event Event @relation(fields: [eventId], references: [id], onDelete: Cascade)
 }
 
 model Application {

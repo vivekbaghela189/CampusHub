@@ -89,13 +89,13 @@ export default async function DashboardPage() {
                     {new Date(app.event.deadline).toLocaleDateString()}
                   </p>
 
-                  <Link href={`/events/${app.event.id}`}>
+                  <Link href="/events">
                     <Button
                       variant="outline"
                       size="sm"
                       className="mt-2 w-full"
                     >
-                      View Event
+                      Browse Events
                     </Button>
                   </Link>
                 </CardContent>

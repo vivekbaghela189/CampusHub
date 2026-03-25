@@ -2,6 +2,7 @@ import Link from "next/link"
 import { prisma } from "@/lib/prisma"
 import { Prisma } from "@prisma/client"
 import { Badge } from "@/components/ui/badge"
+import EventDetailsModal from "@/components/events/EventDetailsModal"
 import { unstable_noStore as noStore } from "next/cache"
 
 export const dynamic = "force-dynamic"
@@ -39,6 +40,11 @@ export default async function EventsPage({
     price: number | string | null
     isPaid: boolean | null
     currency: string
+    eventDate: string | null
+    eventTime: string | null
+    venue: string | null
+    rules: string | null
+    privacyNote: string | null
   }> = []
   let databaseError = false
  
@@ -67,19 +73,30 @@ export default async function EventsPage({
       price: number | string | null
       isPaid: boolean | null
       currency: string
+      eventDate: string | null
+      eventTime: string | null
+      venue: string | null
+      rules: string | null
+      privacyNote: string | null
     }>>(Prisma.sql`
       SELECT
-        id,
-        title,
-        description,
-        type,
-        deadline,
-        price,
-        "isPaid",
-        currency
-      FROM "Event"
+        e.id,
+        e.title,
+        e.description,
+        e.type,
+        e.deadline,
+        e.price,
+        e."isPaid",
+        e.currency,
+        d."eventDate",
+        d."eventTime",
+        d.venue,
+        d.rules,
+        d."privacyNote"
+      FROM "Event" e
+      LEFT JOIN "EventDetails" d ON d."eventId" = e.id
       ${whereSql}
-      ORDER BY deadline ASC
+      ORDER BY e.deadline ASC
     `)
   } catch {
     databaseError = true
@@ -448,8 +465,25 @@ export default async function EventsPage({
                     <div style={{ padding:"0.8rem 1.3rem", display:"flex", alignItems:"center", gap:"8px" }}>
  
                       {/* View Details button — left, 50% width */}
-                      <Link href={`/events/${event.id}`} style={{ textDecoration:"none", display:"block", flex:1 }}>
-                        <button
+                      <div style={{ display:"block", flex:1 }}>
+                        <EventDetailsModal
+                          event={{
+                            id: event.id,
+                            title: event.title,
+                            description: event.description,
+                            type: event.type,
+                            deadline: new Date(event.deadline).toISOString(),
+                            price: event.price === null ? null : Number(event.price),
+                            currency: event.currency,
+                            eventDate: event.eventDate,
+                            eventTime: event.eventTime,
+                            venue: event.venue,
+                            rules: event.rules,
+                            privacyNote: event.privacyNote,
+                          }}
+                        />
+                        {false && <button
+                          type="button"
                           className="view-btn"
                           style={{
                             width:"100%", height:"38px",
@@ -457,7 +491,7 @@ export default async function EventsPage({
                             border:"1px solid rgba(255,255,255,0.08)",
                             borderRadius:"10px",
                             fontFamily:"'Syne',sans-serif", fontSize:"12.5px", fontWeight:700,
-                            color:"#f0efe8", cursor:"pointer",
+                            color:"#f0efe8", cursor:"default",
                             display:"flex", alignItems:"center", justifyContent:"center", gap:"7px",
                             transition:"color 0.2s",
                           }}
@@ -472,8 +506,8 @@ export default async function EventsPage({
                               fontSize:"10px", transition:"transform 0.2s, background 0.2s",
                             }}
                           >{"↗"}</span>
-                        </button>
-                      </Link>
+                        </button>}
+                      </div>
  
                       {/* Price badge — right, 50% width, equal to button */}
                       <div style={{
