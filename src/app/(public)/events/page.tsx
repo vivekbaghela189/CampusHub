@@ -14,14 +14,15 @@ const DEFAULT_CFG = { bar: "#9998a8", color: "#9998a8", bg: "rgba(153,152,168,0.
 export default async function EventsPage({
   searchParams,
 }: {
-  searchParams: {
+  searchParams: Promise<{
     search?: string
     type?: string
-  }
+  }>
 }) {
   // ── Original Prisma logic completely intact ──────────────────────────────
-  const search = searchParams.search || ""
-  const type   = searchParams.type   || ""
+  const resolvedSearchParams = await searchParams
+  const search = resolvedSearchParams.search || ""
+  const type   = resolvedSearchParams.type   || ""
  
   let events: Array<{
     id: string
