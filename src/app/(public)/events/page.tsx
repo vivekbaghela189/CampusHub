@@ -215,6 +215,7 @@ export default async function EventsPage({
               <option value="SPORTS">Sports</option>
               <option value="CULTURAL">Cultural</option>
               <option value="FEST">Fest</option>
+              <option value="SCREENING">Screening</option>
             </select>
  
             {/* Submit */}
@@ -257,6 +258,7 @@ export default async function EventsPage({
               { label:"Sports",   val:"SPORTS",   color:"#42e8a0", bg:"rgba(66,232,160,0.10)",  border:"rgba(66,232,160,0.38)"  },
               { label:"Cultural", val:"CULTURAL", color:"#c084fc", bg:"rgba(192,132,252,0.10)", border:"rgba(192,132,252,0.38)" },
               { label:"Fest",     val:"FEST",     color:"#ffb940", bg:"rgba(255,185,64,0.10)",  border:"rgba(255,185,64,0.38)"  },
+              { label:"Screening", val:"SCREENING", color:"#9b7ff0", bg:"rgba(155,127,240,0.10)", border:"rgba(155,127,240,0.38)" },
             ].map((p) => {
               const isActive = type === p.val || (p.val === "" && !type)
               const href = p.val
