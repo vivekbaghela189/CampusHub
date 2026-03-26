@@ -99,11 +99,13 @@ export default function Navbar() {
           border-bottom: 1px solid rgba(255, 255, 255, 0.055) !important;
         }
         .profile-sheet-item {
-          transition: background-color .18s ease, border-color .18s ease !important;
+          transition: background-color .18s ease, border-color .18s ease, transform .18s ease, box-shadow .18s ease !important;
         }
         .profile-sheet-item:hover {
-          background: rgba(255,255,255,0.06) !important;
-          border-color: rgba(255,255,255,0.12) !important;
+          background: linear-gradient(135deg, rgba(99,102,241,0.18), rgba(124,58,237,0.14) 55%, rgba(8,11,18,0.72) 100%) !important;
+          border-color: rgba(167,139,250,0.22) !important;
+          box-shadow: 0 12px 28px rgba(0,0,0,0.22) !important;
+          transform: translateY(-1px) !important;
         }
         .profile-sheet {
           width: min(40vw, 560px);
@@ -243,8 +245,9 @@ export default function Navbar() {
                             gap: 14,
                             borderRadius: 24,
                             padding: "18px 18px",
-                            background: "rgba(255,255,255,0.02)",
-                            border: "1px solid rgba(255,255,255,0.09)",
+                            background: "linear-gradient(180deg, rgba(99,102,241,0.1) 0%, rgba(124,58,237,0.08) 45%, rgba(18,18,31,0.94) 100%)",
+                            border: "1px solid rgba(167,139,250,0.16)",
+                            boxShadow: "inset 0 1px 0 rgba(255,255,255,0.05)",
                           }}
                         >
                           <div style={{ display: "flex", alignItems: "center", gap: 16, minWidth: 0 }}>
@@ -253,15 +256,15 @@ export default function Navbar() {
                               width: 58,
                               height: 58,
                               borderRadius: "999px",
-                              background: "linear-gradient(135deg, #f27a3d, #d95b2d)",
-                              color: "#fff3eb",
+                              background: "linear-gradient(135deg, #6366f1, #7c3aed)",
+                              color: "#f5f3ff",
                               display: "flex",
                               alignItems: "center",
                               justifyContent: "center",
                               fontWeight: 700,
                               fontSize: 28,
                               flexShrink: 0,
-                              boxShadow: "inset 0 0 0 2px rgba(255,255,255,0.28)",
+                              boxShadow: "inset 0 0 0 2px rgba(255,255,255,0.18), 0 12px 24px rgba(99,102,241,0.24)",
                             }}
                           >
                             {avatarInitial}
@@ -286,8 +289,8 @@ export default function Navbar() {
                             style={{
                               border: "none",
                               borderRadius: 999,
-                              background: "#ffe7e0",
-                              color: "#a24a2f",
+                              background: "linear-gradient(135deg, rgba(99,102,241,0.18), rgba(124,58,237,0.24))",
+                              color: "#ddd6fe",
                               fontWeight: 700,
                               fontSize: 13,
                               padding: "8px 15px",
@@ -296,6 +299,7 @@ export default function Navbar() {
                               alignItems: "center",
                               gap: 6,
                               flexShrink: 0,
+                              border: "1px solid rgba(167,139,250,0.2)",
                             }}
                           >
                             <Pencil size={13} />
@@ -313,11 +317,11 @@ export default function Navbar() {
                             justifyContent: "space-between",
                             borderRadius: 22,
                             padding: "18px 20px",
-                            background: "rgba(255,255,255,0.035)",
+                            background: "linear-gradient(135deg, rgba(99,102,241,0.12), rgba(124,58,237,0.1) 55%, rgba(8,11,18,0.62) 100%)",
                             textDecoration: "none",
                             color: "#f0efe8",
                             fontSize: 16,
-                            border: "1px solid rgba(255,255,255,0.09)",
+                            border: "1px solid rgba(167,139,250,0.16)",
                           }}
                         >
                           <span style={{ display: "flex", alignItems: "center", gap: 14 }}>
@@ -326,12 +330,13 @@ export default function Navbar() {
                                 width: 42,
                                 height: 42,
                                 borderRadius: 14,
-                                background: "#fff2eb",
-                                color: "#d3673d",
+                                background: "linear-gradient(135deg, rgba(99,102,241,0.28), rgba(139,92,246,0.2))",
+                                color: "#c4b5fd",
                                 display: "flex",
                                 alignItems: "center",
                                 justifyContent: "center",
                                 flexShrink: 0,
+                                border: "1px solid rgba(167,139,250,0.22)",
                               }}
                             >
                               <NotebookTabs size={20} />
@@ -352,11 +357,11 @@ export default function Navbar() {
                               justifyContent: "space-between",
                               borderRadius: 22,
                               padding: "18px 20px",
-                              background: "rgba(255,255,255,0.035)",
+                              background: "linear-gradient(135deg, rgba(99,102,241,0.12), rgba(124,58,237,0.1) 55%, rgba(8,11,18,0.62) 100%)",
                               textDecoration: "none",
                               color: "#f0efe8",
                               fontSize: 16,
-                              border: "1px solid rgba(255,255,255,0.09)",
+                              border: "1px solid rgba(167,139,250,0.16)",
                             }}
                           >
                             <span style={{ display: "flex", alignItems: "center", gap: 14 }}>
@@ -365,12 +370,13 @@ export default function Navbar() {
                                   width: 42,
                                   height: 42,
                                   borderRadius: 14,
-                                  background: "#e9fff7",
-                                  color: "#2ba080",
+                                  background: "linear-gradient(135deg, rgba(99,102,241,0.28), rgba(139,92,246,0.2))",
+                                  color: "#c4b5fd",
                                   display: "flex",
                                   alignItems: "center",
                                   justifyContent: "center",
                                   flexShrink: 0,
+                                  border: "1px solid rgba(167,139,250,0.22)",
                                 }}
                               >
                                 <MessageSquareMore size={20} />
@@ -385,14 +391,15 @@ export default function Navbar() {
                           <p style={{ fontSize: 13, fontWeight: 800, color: "#9a97a7", letterSpacing: "0.08em" }}>MORE</p>
                           <div
                             style={{
-                              background: "rgba(255,255,255,0.035)",
+                              background: "linear-gradient(180deg, rgba(99,102,241,0.08) 0%, rgba(124,58,237,0.06) 35%, rgba(18,18,31,0.92) 100%)",
                               borderRadius: 22,
                               overflow: "hidden",
-                              border: "1px solid rgba(255,255,255,0.09)",
+                              border: "1px solid rgba(167,139,250,0.16)",
                             }}
                           >
-                            <a
-                              href="#"
+                            <Link
+                              href="/terms"
+                              onClick={() => setOpen(false)}
                               className="profile-sheet-item"
                               style={{
                                 display: "flex",
@@ -402,21 +409,24 @@ export default function Navbar() {
                                 textDecoration: "none",
                                 color: "#f0efe8",
                                 fontSize: 16,
-                                borderBottom: "1px solid rgba(255,255,255,0.07)",
+                                background: "linear-gradient(135deg, rgba(99,102,241,0.12), rgba(124,58,237,0.1) 55%, rgba(8,11,18,0.62) 100%)",
+                                borderBottom: "1px solid rgba(167,139,250,0.12)",
                               }}
-                            >
+                              >
                               <span style={{ display: "flex", alignItems: "center", gap: 14 }}>
                                 <span
                                   style={{
                                     width: 42,
                                     height: 42,
                                     borderRadius: 14,
-                                    background: "#e8f1ff",
-                                    color: "#4d79d8",
+                                    background: "linear-gradient(135deg, rgba(99,102,241,0.28), rgba(139,92,246,0.2))",
+                                    color: "#c4b5fd",
                                     display: "flex",
                                     alignItems: "center",
                                     justifyContent: "center",
                                     flexShrink: 0,
+                                    border: "1px solid rgba(167,139,250,0.22)",
+                                    boxShadow: "inset 0 1px 0 rgba(255,255,255,0.08)",
                                   }}
                                 >
                                   <ScrollText size={20} />
@@ -424,10 +434,11 @@ export default function Navbar() {
                                 <span>Terms & Conditions</span>
                               </span>
                               <ChevronRight size={22} />
-                            </a>
+                            </Link>
 
-                            <a
-                              href="#"
+                            <Link
+                              href="/privacy-policy"
+                              onClick={() => setOpen(false)}
                               className="profile-sheet-item"
                               style={{
                                 display: "flex",
@@ -437,20 +448,22 @@ export default function Navbar() {
                                 textDecoration: "none",
                                 color: "#f0efe8",
                                 fontSize: 16,
+                                background: "linear-gradient(135deg, rgba(99,102,241,0.12), rgba(124,58,237,0.1) 55%, rgba(8,11,18,0.62) 100%)",
                               }}
-                            >
+                              >
                               <span style={{ display: "flex", alignItems: "center", gap: 14 }}>
                                 <span
                                   style={{
                                     width: 42,
                                     height: 42,
                                     borderRadius: 14,
-                                    background: "#f4f1ea",
-                                    color: "#87806e",
+                                    background: "linear-gradient(135deg, rgba(99,102,241,0.28), rgba(139,92,246,0.2))",
+                                    color: "#c4b5fd",
                                     display: "flex",
                                     alignItems: "center",
                                     justifyContent: "center",
                                     flexShrink: 0,
+                                    border: "1px solid rgba(167,139,250,0.22)",
                                   }}
                                 >
                                   <FileText size={20} />
@@ -458,7 +471,7 @@ export default function Navbar() {
                                 <span>Privacy Policy</span>
                               </span>
                               <ChevronRight size={22} />
-                            </a>
+                            </Link>
                           </div>
                         </div>
 
@@ -467,18 +480,18 @@ export default function Navbar() {
                           onClick={() => signOut({ callbackUrl: "/" })}
                           className="profile-sheet-item"
                           style={{
-                            border: "none",
+                            border: "1px solid rgba(167,139,250,0.16)",
                             width: "100%",
                             borderRadius: 22,
                             padding: "18px 20px",
-                            background: "#ffe6e6",
-                            color: "#bb3f3f",
+                            background: "linear-gradient(135deg, rgba(99,102,241,0.14), rgba(124,58,237,0.12) 55%, rgba(8,11,18,0.68) 100%)",
+                            color: "#f0e9ff",
                             fontSize: 16,
                             cursor: "pointer",
                             display: "flex",
                             alignItems: "center",
                             gap: 14,
-                            border: "1px solid rgba(255,230,230,0.25)",
+                            boxShadow: "inset 0 1px 0 rgba(255,255,255,0.04)",
                           }}
                         >
                           <LogOut size={22} />
