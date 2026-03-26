@@ -24,19 +24,7 @@ function getInitial(name?: string | null, email?: string | null) {
 export default function Navbar() {
   const { data: session, status } = useSession()
   const [open, setOpen] = useState(false)
-  const [portalRoot, setPortalRoot] = useState<HTMLElement | null>(null)
   const panelRef = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    const root = document.createElement("div")
-    root.setAttribute("data-profile-sheet-root", "true")
-    document.body.appendChild(root)
-    setPortalRoot(root)
-
-    return () => {
-      root.remove()
-    }
-  }, [])
 
   useEffect(() => {
     document.body.dataset.profileOpen = open ? "true" : "false"
@@ -107,6 +95,29 @@ export default function Navbar() {
           box-shadow: 0 12px 28px rgba(0,0,0,0.22) !important;
           transform: translateY(-1px) !important;
         }
+        .nav-link {
+          position: relative;
+          color: rgba(255,255,255,0.58);
+          transition: color .2s ease;
+        }
+        .nav-link::after {
+          content: "";
+          position: absolute;
+          left: 0;
+          bottom: -6px;
+          width: 100%;
+          height: 2px;
+          transform: scaleX(0);
+          transform-origin: left;
+          background: linear-gradient(90deg, rgba(99,102,241,1), rgba(244,114,182,1));
+          transition: transform .2s ease;
+        }
+        .nav-link:hover {
+          color: rgba(255,255,255,0.92);
+        }
+        .nav-link:hover::after {
+          transform: scaleX(1);
+        }
         .profile-sheet {
           width: min(40vw, 560px);
           min-width: 380px;
@@ -132,7 +143,7 @@ export default function Navbar() {
       `}</style>
 
       <header className="campus-navbar sticky top-0 z-50">
-        <div className="container mx-auto flex h-16 items-center justify-between px-8">
+        <div className="container mx-auto flex h-16 items-center justify-between gap-4 px-5 md:px-8">
           <Link href="/" className="flex items-center gap-2.5 transition-opacity hover:opacity-90">
             <div
               className="flex h-[30px] w-[30px] shrink-0 items-center justify-center rounded-[10px] text-[20px] font-bold"
@@ -145,6 +156,8 @@ export default function Navbar() {
             </div>
             <span className="text-[20px] font-semibold tracking-tight text-white">CampusHub</span>
           </Link>
+
+          <div className="hidden md:block" />
 
           <nav className="flex items-center gap-2">
             {status === "authenticated" ? (
@@ -172,7 +185,7 @@ export default function Navbar() {
                   {avatarInitial}
                 </button>
 
-                {open && portalRoot && createPortal(
+                {open && createPortal(
                   <>
                     <div
                       style={{
@@ -500,14 +513,21 @@ export default function Navbar() {
                       </div>
                     </div>
                   </>,
-                  portalRoot
+                  document.body
                 )}
               </>
             ) : (
               <>
                 <Link
+                  href="/highlights"
+                  className="nav-link inline-flex h-9 items-center rounded-lg px-3 py-1.5 text-sm font-medium text-white/60 transition-colors duration-150 hover:bg-white/[0.06] hover:text-white"
+                >
+                  Highlights
+                </Link>
+
+                <Link
                   href="/login"
-                  className="rounded-lg px-3 py-1.5 text-sm text-white/45 transition-colors duration-150 hover:bg-white/[0.06] hover:text-white"
+                  className="nav-link inline-flex h-9 items-center rounded-lg px-3 py-1.5 text-sm font-medium text-white/45 transition-colors duration-150 hover:bg-white/[0.06] hover:text-white"
                 >
                   Login
                 </Link>
@@ -519,6 +539,7 @@ export default function Navbar() {
             )}
           </nav>
         </div>
+
       </header>
     </>
   )

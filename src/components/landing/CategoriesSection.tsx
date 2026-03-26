@@ -66,6 +66,7 @@ export default function CategoriesSection() {
  
   return (
     <section
+      id="categories"
       className="relative py-28 overflow-hidden"
       style={{ background: "#080b12" }}
     >
@@ -109,7 +110,7 @@ export default function CategoriesSection() {
             className="font-extrabold leading-[1.04] tracking-tight mx-auto"
             style={{ fontSize: "clamp(36px,4vw,56px)", color: "#fff" }}
           >
-            Explore what's{" "}
+            Explore what&apos;s{" "}
             <span
               style={{
                 background: "linear-gradient(90deg, #818cf8, #c084fc)",

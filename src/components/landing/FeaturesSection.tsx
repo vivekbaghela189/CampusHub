@@ -48,6 +48,7 @@ export default function HowItWorks() {
  
   return (
     <section
+      id="features"
       className="relative py-28 overflow-hidden"
       style={{ background: "#080b12" }}
     >

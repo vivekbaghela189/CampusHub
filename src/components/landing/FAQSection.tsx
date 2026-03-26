@@ -37,6 +37,7 @@ export default function FAQSection() {
  
   return (
     <section
+      id="faqs"
       className="relative py-28 overflow-hidden"
       style={{ background: "#080b12" }}
     >
