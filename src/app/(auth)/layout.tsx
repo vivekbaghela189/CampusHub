@@ -1,6 +1,7 @@
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
 import { redirect } from "next/navigation"
+import Navbar from "@/components/layout/Navbar"
 
 export default async function AuthLayout({
   children,
@@ -14,8 +15,11 @@ export default async function AuthLayout({
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-muted/40 px-4">
-      {children}
+    <div className="flex min-h-screen flex-col bg-[#080b12]">
+      <Navbar />
+      <main className="flex flex-1 items-center justify-center px-4 py-10">
+        {children}
+      </main>
     </div>
   )
 }

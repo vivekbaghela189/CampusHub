@@ -174,6 +174,13 @@ export default function Navbar() {
           <nav className="flex items-center gap-2">
             {status === "authenticated" ? (
               <>
+                <Link
+                  href="/highlights"
+                  className="nav-link inline-flex h-9 items-center rounded-lg px-3 py-1.5 text-sm font-medium text-white/60 transition-colors duration-150 hover:bg-white/[0.06] hover:text-white"
+                >
+                  Highlights
+                </Link>
+
                 <button
                   type="button"
                   onClick={() => setOpen(true)}
