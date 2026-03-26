@@ -24,7 +24,19 @@ function getInitial(name?: string | null, email?: string | null) {
 export default function Navbar() {
   const { data: session, status } = useSession()
   const [open, setOpen] = useState(false)
+  const [portalRoot, setPortalRoot] = useState<HTMLElement | null>(null)
   const panelRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const root = document.createElement("div")
+    root.setAttribute("data-profile-sheet-root", "true")
+    document.body.appendChild(root)
+    setPortalRoot(root)
+
+    return () => {
+      root.remove()
+    }
+  }, [])
 
   useEffect(() => {
     document.body.dataset.profileOpen = open ? "true" : "false"
@@ -185,7 +197,7 @@ export default function Navbar() {
                   {avatarInitial}
                 </button>
 
-                {open && createPortal(
+                {open && portalRoot && createPortal(
                   <>
                     <div
                       style={{
@@ -513,7 +525,7 @@ export default function Navbar() {
                       </div>
                     </div>
                   </>,
-                  document.body
+                  portalRoot
                 )}
               </>
             ) : (
