@@ -142,7 +142,7 @@ export default async function DashboardPage() {
               </div>
             </div>
           ) : (
-            <div className="grid gap-5 xl:grid-cols-2">
+            <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
               {applications.map((app) => {
                 const eventDetail = detailsByEventId.get(app.eventId)
                 const statusColor =
@@ -165,7 +165,7 @@ export default async function DashboardPage() {
                 return (
                   <Card
                     key={app.id}
-                    className="group max-w-[430px] overflow-hidden rounded-[24px] border border-[#d7dff7] bg-[radial-gradient(circle_at_top_left,rgba(99,102,241,0.12),transparent_24%),radial-gradient(circle_at_top_right,rgba(244,114,182,0.08),transparent_28%),radial-gradient(circle_at_bottom,rgba(59,130,246,0.06),transparent_30%),linear-gradient(180deg,#eef2ff_0%,#e6edf9_100%)] shadow-[0_18px_38px_-24px_rgba(15,23,42,0.52)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_24px_50px_-28px_rgba(79,70,229,0.38)]"
+                    className="group w-full overflow-hidden rounded-[24px] border border-[#d7dff7] bg-[radial-gradient(circle_at_top_left,rgba(99,102,241,0.12),transparent_24%),radial-gradient(circle_at_top_right,rgba(244,114,182,0.08),transparent_28%),radial-gradient(circle_at_bottom,rgba(59,130,246,0.06),transparent_30%),linear-gradient(180deg,#eef2ff_0%,#e6edf9_100%)] shadow-[0_18px_38px_-24px_rgba(15,23,42,0.52)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_24px_50px_-28px_rgba(79,70,229,0.38)]"
                   >
                     <CardHeader className="relative overflow-hidden border-b border-[#d7dff7] bg-[linear-gradient(180deg,rgba(243,246,255,0.96),rgba(233,239,252,0.95))] px-5 pb-5 pt-5">
                       <div className="pointer-events-none absolute inset-x-0 top-0 h-1 bg-[linear-gradient(90deg,#6366f1,#ec4899)]" />
