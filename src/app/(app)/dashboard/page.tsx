@@ -5,10 +5,10 @@ import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
 import { redirect } from "next/navigation"
 import {
-  ArrowRight,
   CalendarClock,
   CheckCircle2,
   Clock3,
+  Download,
   Sparkles,
   Ticket,
   XCircle,
@@ -145,6 +145,17 @@ export default async function DashboardPage() {
             <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
               {applications.map((app) => {
                 const eventDetail = detailsByEventId.get(app.eventId)
+                const downloadContent = [
+                  `Event: ${app.event.title}`,
+                  `Status: ${app.status}`,
+                  `Type: ${app.event.type}`,
+                  `Event Date: ${eventDetail?.eventDate || "Date to be announced"}`,
+                  `Event Time: ${eventDetail?.eventTime || "Time to be announced"}`,
+                ].join("\n")
+                const downloadName = `${app.event.title
+                  .toLowerCase()
+                  .replace(/[^a-z0-9]+/g, "-")
+                  .replace(/^-|-$/g, "") || "registration"}-details.txt`
                 const statusColor =
                   app.status === "APPROVED"
                     ? "border-emerald-200 bg-emerald-50 text-emerald-700"
@@ -213,14 +224,18 @@ export default async function DashboardPage() {
                         </div>
                       </div>
 
-                      <Link href="/events">
-                        <Button
-                          className="h-10 w-full rounded-full bg-slate-950 text-xs font-semibold text-white transition group-hover:bg-indigo-600 hover:bg-indigo-600"
+                      <Button
+                        asChild
+                        className="h-10 w-full rounded-full bg-slate-950 text-xs font-semibold text-white transition group-hover:bg-indigo-600 hover:bg-indigo-600"
+                      >
+                        <a
+                          href={`data:text/plain;charset=utf-8,${encodeURIComponent(downloadContent)}`}
+                          download={downloadName}
                         >
-                          Browse Events
-                          <ArrowRight className="ml-2 h-3.5 w-3.5" />
-                        </Button>
-                      </Link>
+                          Download
+                          <Download className="ml-2 h-3.5 w-3.5" />
+                        </a>
+                      </Button>
                     </CardContent>
                   </Card>
                 )
