@@ -39,7 +39,8 @@ export default function LoginCard() {
     setLoading(false)
  
     if (!res?.error) {
-      router.push("/events")
+      router.replace("/events")
+      router.refresh()
     } else {
       setError("Invalid email or password")
     }

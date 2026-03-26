@@ -59,13 +59,13 @@ export default function Footer() {
           <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
             <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
               <div style={{
-                width: 28, height: 28, borderRadius: 8,
+                width: 30, height: 30, borderRadius: 8,
                 background: "linear-gradient(135deg,#6366f1,#7c3aed)",
                 boxShadow: "0 4px 14px rgba(99,102,241,.45)",
                 display: "flex", alignItems: "center", justifyContent: "center",
-                fontSize: 14, flexShrink: 0,
+                fontSize: 20, flexShrink: 0,
               }}>🎓</div>
-              <span style={{ color: "#fff", fontWeight: 600, fontSize: 15, letterSpacing: "-0.3px" }}>CampusHub</span>
+              <span style={{ color: "#fff", fontWeight: 600, fontSize: 20, letterSpacing: "-0.5px" }}>CampusHub</span>
             </div>
  
             <p style={{ color: "rgba(255,255,255,0.32)", fontSize: 13, lineHeight: 1.7, maxWidth: 220 }}>

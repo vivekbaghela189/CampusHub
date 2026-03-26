@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button"
 import {
   ArrowLeft,
   ChevronRight,
+  Pencil,
   FileText,
   LogOut,
   MessageSquareMore,
@@ -98,10 +99,11 @@ export default function Navbar() {
           border-bottom: 1px solid rgba(255, 255, 255, 0.055) !important;
         }
         .profile-sheet-item {
-          transition: background-color .18s ease !important;
+          transition: background-color .18s ease, border-color .18s ease !important;
         }
         .profile-sheet-item:hover {
           background: rgba(255,255,255,0.06) !important;
+          border-color: rgba(255,255,255,0.12) !important;
         }
         .profile-sheet {
           width: min(40vw, 560px);
@@ -131,15 +133,15 @@ export default function Navbar() {
         <div className="container mx-auto flex h-16 items-center justify-between px-8">
           <Link href="/" className="flex items-center gap-2.5 transition-opacity hover:opacity-90">
             <div
-              className="flex h-[28px] w-[28px] shrink-0 items-center justify-center rounded-[8px] text-[11px] font-bold"
+              className="flex h-[30px] w-[30px] shrink-0 items-center justify-center rounded-[10px] text-[20px] font-bold"
               style={{
                 background: "linear-gradient(135deg,#6366f1,#7c3aed)",
                 boxShadow: "0 4px 14px rgba(99,102,241,.45)",
               }}
             >
-              CH
+              🎓
             </div>
-            <span className="text-[15px] font-semibold tracking-tight text-white">CampusHub</span>
+            <span className="text-[20px] font-semibold tracking-tight text-white">CampusHub</span>
           </Link>
 
           <nav className="flex items-center gap-2">
@@ -227,37 +229,49 @@ export default function Navbar() {
 
                       <div
                         style={{
-                          padding: "30px 30px 34px",
+                          padding: "22px 28px 28px",
                           display: "grid",
-                          gap: 28,
+                          gap: 18,
                           overflowY: "auto",
                         }}
                       >
-                        <div style={{ display: "flex", alignItems: "center", gap: 18 }}>
+                        <div
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "space-between",
+                            gap: 14,
+                            borderRadius: 24,
+                            padding: "18px 18px",
+                            background: "rgba(255,255,255,0.02)",
+                            border: "1px solid rgba(255,255,255,0.09)",
+                          }}
+                        >
+                          <div style={{ display: "flex", alignItems: "center", gap: 16, minWidth: 0 }}>
                           <div
                             style={{
-                              width: 88,
-                              height: 88,
+                              width: 58,
+                              height: 58,
                               borderRadius: "999px",
-                              background: "linear-gradient(135deg, rgba(155,127,240,0.34), rgba(192,132,252,0.24))",
-                              color: "#b794ff",
+                              background: "linear-gradient(135deg, #f27a3d, #d95b2d)",
+                              color: "#fff3eb",
                               display: "flex",
                               alignItems: "center",
                               justifyContent: "center",
                               fontWeight: 700,
-                              fontSize: 42,
+                              fontSize: 28,
                               flexShrink: 0,
-                              boxShadow: "inset 0 0 0 1px rgba(192,132,252,0.18)",
+                              boxShadow: "inset 0 0 0 2px rgba(255,255,255,0.28)",
                             }}
                           >
                             {avatarInitial}
                           </div>
 
                           <div style={{ minWidth: 0 }}>
-                            <p style={{ fontSize: 20, fontWeight: 700, marginBottom: 6, color: "#f0efe8" }}>{userName}</p>
+                            <p style={{ fontSize: 16, fontWeight: 700, marginBottom: 2, color: "#f0efe8" }}>{userName}</p>
                             <p
                               style={{
-                                fontSize: 15,
+                                fontSize: 13,
                                 color: "#9998a8",
                                 lineHeight: 1.45,
                                 wordBreak: "break-word",
@@ -266,6 +280,27 @@ export default function Navbar() {
                               {userEmail}
                             </p>
                           </div>
+                        </div>
+                          <button
+                            type="button"
+                            style={{
+                              border: "none",
+                              borderRadius: 999,
+                              background: "#ffe7e0",
+                              color: "#a24a2f",
+                              fontWeight: 700,
+                              fontSize: 13,
+                              padding: "8px 15px",
+                              cursor: "pointer",
+                              display: "flex",
+                              alignItems: "center",
+                              gap: 6,
+                              flexShrink: 0,
+                            }}
+                          >
+                            <Pencil size={13} />
+                            <span>Edit</span>
+                          </button>
                         </div>
 
                         <Link
@@ -277,23 +312,37 @@ export default function Navbar() {
                             alignItems: "center",
                             justifyContent: "space-between",
                             borderRadius: 22,
-                            padding: "22px 22px",
-                            background: "rgba(255,255,255,0.04)",
+                            padding: "18px 20px",
+                            background: "rgba(255,255,255,0.035)",
                             textDecoration: "none",
                             color: "#f0efe8",
-                            fontSize: 17,
-                            border: "1px solid rgba(255,255,255,0.07)",
+                            fontSize: 16,
+                            border: "1px solid rgba(255,255,255,0.09)",
                           }}
                         >
-                          <span style={{ display: "flex", alignItems: "center", gap: 16 }}>
-                            <NotebookTabs size={22} />
+                          <span style={{ display: "flex", alignItems: "center", gap: 14 }}>
+                            <span
+                              style={{
+                                width: 42,
+                                height: 42,
+                                borderRadius: 14,
+                                background: "#fff2eb",
+                                color: "#d3673d",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                flexShrink: 0,
+                              }}
+                            >
+                              <NotebookTabs size={20} />
+                            </span>
                             <span>View all bookings</span>
                           </span>
                           <ChevronRight size={22} />
                         </Link>
 
                         <div style={{ display: "grid", gap: 14 }}>
-                          <p style={{ fontSize: 15, fontWeight: 700 }}>Support</p>
+                          <p style={{ fontSize: 13, fontWeight: 800, color: "#9a97a7", letterSpacing: "0.08em" }}>SUPPORT</p>
                           <a
                             href="mailto:support@campushub.com"
                             className="profile-sheet-item"
@@ -302,16 +351,30 @@ export default function Navbar() {
                               alignItems: "center",
                               justifyContent: "space-between",
                               borderRadius: 22,
-                              padding: "22px 22px",
-                              background: "rgba(255,255,255,0.04)",
+                              padding: "18px 20px",
+                              background: "rgba(255,255,255,0.035)",
                               textDecoration: "none",
                               color: "#f0efe8",
-                              fontSize: 17,
-                              border: "1px solid rgba(255,255,255,0.07)",
+                              fontSize: 16,
+                              border: "1px solid rgba(255,255,255,0.09)",
                             }}
                           >
-                            <span style={{ display: "flex", alignItems: "center", gap: 16 }}>
-                              <MessageSquareMore size={22} />
+                            <span style={{ display: "flex", alignItems: "center", gap: 14 }}>
+                              <span
+                                style={{
+                                  width: 42,
+                                  height: 42,
+                                  borderRadius: 14,
+                                  background: "#e9fff7",
+                                  color: "#2ba080",
+                                  display: "flex",
+                                  alignItems: "center",
+                                  justifyContent: "center",
+                                  flexShrink: 0,
+                                }}
+                              >
+                                <MessageSquareMore size={20} />
+                              </span>
                               <span>Chat with us</span>
                             </span>
                             <ChevronRight size={22} />
@@ -319,13 +382,13 @@ export default function Navbar() {
                         </div>
 
                         <div style={{ display: "grid", gap: 14 }}>
-                          <p style={{ fontSize: 15, fontWeight: 700 }}>More</p>
+                          <p style={{ fontSize: 13, fontWeight: 800, color: "#9a97a7", letterSpacing: "0.08em" }}>MORE</p>
                           <div
                             style={{
-                              background: "rgba(255,255,255,0.04)",
+                              background: "rgba(255,255,255,0.035)",
                               borderRadius: 22,
                               overflow: "hidden",
-                              border: "1px solid rgba(255,255,255,0.07)",
+                              border: "1px solid rgba(255,255,255,0.09)",
                             }}
                           >
                             <a
@@ -335,15 +398,29 @@ export default function Navbar() {
                                 display: "flex",
                                 alignItems: "center",
                                 justifyContent: "space-between",
-                                padding: "20px 22px",
+                                padding: "18px 20px",
                                 textDecoration: "none",
                                 color: "#f0efe8",
-                                fontSize: 17,
+                                fontSize: 16,
                                 borderBottom: "1px solid rgba(255,255,255,0.07)",
                               }}
                             >
-                              <span style={{ display: "flex", alignItems: "center", gap: 16 }}>
-                                <ScrollText size={22} />
+                              <span style={{ display: "flex", alignItems: "center", gap: 14 }}>
+                                <span
+                                  style={{
+                                    width: 42,
+                                    height: 42,
+                                    borderRadius: 14,
+                                    background: "#e8f1ff",
+                                    color: "#4d79d8",
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                    flexShrink: 0,
+                                  }}
+                                >
+                                  <ScrollText size={20} />
+                                </span>
                                 <span>Terms & Conditions</span>
                               </span>
                               <ChevronRight size={22} />
@@ -356,14 +433,28 @@ export default function Navbar() {
                                 display: "flex",
                                 alignItems: "center",
                                 justifyContent: "space-between",
-                                padding: "20px 22px",
+                                padding: "18px 20px",
                                 textDecoration: "none",
                                 color: "#f0efe8",
-                                fontSize: 17,
+                                fontSize: 16,
                               }}
                             >
-                              <span style={{ display: "flex", alignItems: "center", gap: 16 }}>
-                                <FileText size={22} />
+                              <span style={{ display: "flex", alignItems: "center", gap: 14 }}>
+                                <span
+                                  style={{
+                                    width: 42,
+                                    height: 42,
+                                    borderRadius: 14,
+                                    background: "#f4f1ea",
+                                    color: "#87806e",
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                    flexShrink: 0,
+                                  }}
+                                >
+                                  <FileText size={20} />
+                                </span>
                                 <span>Privacy Policy</span>
                               </span>
                               <ChevronRight size={22} />
@@ -379,15 +470,15 @@ export default function Navbar() {
                             border: "none",
                             width: "100%",
                             borderRadius: 22,
-                            padding: "22px 22px",
-                            background: "rgba(255,255,255,0.04)",
-                            color: "#f0efe8",
-                            fontSize: 17,
+                            padding: "18px 20px",
+                            background: "#ffe6e6",
+                            color: "#bb3f3f",
+                            fontSize: 16,
                             cursor: "pointer",
                             display: "flex",
                             alignItems: "center",
-                            gap: 16,
-                            border: "1px solid rgba(255,255,255,0.07)",
+                            gap: 14,
+                            border: "1px solid rgba(255,230,230,0.25)",
                           }}
                         >
                           <LogOut size={22} />
