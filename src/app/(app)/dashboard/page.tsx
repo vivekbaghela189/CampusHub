@@ -1,4 +1,5 @@
 import Link from "next/link"
+import { Prisma } from "@prisma/client"
 import { prisma } from "@/lib/prisma"
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
@@ -40,6 +41,19 @@ export default async function DashboardPage() {
     },
   })
 
+  const eventIds = applications.map((app) => app.eventId)
+  const eventDetails = eventIds.length
+    ? await prisma.$queryRaw<Array<{ eventId: string; eventDate: string | null; eventTime: string | null }>>(
+        Prisma.sql`
+          SELECT "eventId", "eventDate", "eventTime"
+          FROM "EventDetails"
+          WHERE "eventId" IN (${Prisma.join(eventIds)})
+        `
+      )
+    : []
+
+  const detailsByEventId = new Map(eventDetails.map((detail) => [detail.eventId, detail]))
+
   const approvedCount = applications.filter((app) => app.status === "APPROVED").length
   const pendingCount = applications.filter((app) => app.status === "PENDING").length
   const rejectedCount = applications.filter((app) => app.status === "REJECTED").length
@@ -51,9 +65,9 @@ export default async function DashboardPage() {
           <div className="max-w-2xl">
             <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-semibold uppercase tracking-[0.22em] text-white/70">
               <Sparkles className="h-3.5 w-3.5 text-fuchsia-300" />
-              Applications Dashboard
+              Registrations Dashboard
             </div>
-            <h1 className="text-5xl font-semibold tracking-tight md:text-6xl">My Applications</h1>
+            <h1 className="text-5xl font-semibold tracking-tight md:text-6xl">My Registrations</h1>
             <p className="mt-5 max-w-3xl text-lg leading-8 text-white/65 md:text-[1.45rem]">
               Track every registration, review approval progress, and jump back into upcoming
               campus events from one clean place.
@@ -128,8 +142,9 @@ export default async function DashboardPage() {
               </div>
             </div>
           ) : (
-            <div className="grid gap-8 xl:grid-cols-2">
+            <div className="grid gap-5 xl:grid-cols-2">
               {applications.map((app) => {
+                const eventDetail = detailsByEventId.get(app.eventId)
                 const statusColor =
                   app.status === "APPROVED"
                     ? "border-emerald-200 bg-emerald-50 text-emerald-700"
@@ -150,11 +165,11 @@ export default async function DashboardPage() {
                 return (
                   <Card
                     key={app.id}
-                    className="group overflow-hidden rounded-[34px] border border-white/70 bg-[linear-gradient(180deg,rgba(255,255,255,0.98),rgba(248,250,255,0.96))] shadow-[0_25px_55px_-32px_rgba(15,23,42,0.55)] transition duration-300 hover:-translate-y-1.5 hover:shadow-[0_35px_80px_-35px_rgba(79,70,229,0.45)]"
+                    className="group max-w-[430px] overflow-hidden rounded-[24px] border border-[#d7dff7] bg-[radial-gradient(circle_at_top_left,rgba(99,102,241,0.12),transparent_24%),radial-gradient(circle_at_top_right,rgba(244,114,182,0.08),transparent_28%),radial-gradient(circle_at_bottom,rgba(59,130,246,0.06),transparent_30%),linear-gradient(180deg,#eef2ff_0%,#e6edf9_100%)] shadow-[0_18px_38px_-24px_rgba(15,23,42,0.52)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_24px_50px_-28px_rgba(79,70,229,0.38)]"
                   >
-                    <CardHeader className="relative overflow-hidden border-b border-slate-100/80 bg-[linear-gradient(180deg,rgba(255,255,255,1),rgba(247,249,255,0.95))] px-8 pb-8 pt-9">
+                    <CardHeader className="relative overflow-hidden border-b border-[#d7dff7] bg-[linear-gradient(180deg,rgba(243,246,255,0.96),rgba(233,239,252,0.95))] px-5 pb-5 pt-5">
                       <div className="pointer-events-none absolute inset-x-0 top-0 h-1 bg-[linear-gradient(90deg,#6366f1,#ec4899)]" />
-                      <div className="pointer-events-none absolute right-0 top-0 h-28 w-28 rounded-full bg-indigo-500/8 blur-3xl" />
+                      <div className="pointer-events-none absolute right-0 top-0 h-28 w-28 rounded-full bg-indigo-500/12 blur-3xl" />
 
                       <div className="mb-5 flex items-start justify-between gap-3">
                         <div
@@ -168,46 +183,42 @@ export default async function DashboardPage() {
                         </Badge>
                       </div>
 
-                      <CardTitle className="max-w-[92%] text-[2.35rem] font-semibold leading-tight tracking-tight text-slate-950">
+                      <CardTitle className="max-w-[92%] text-[1.38rem] font-semibold leading-tight tracking-tight text-slate-950">
                         {app.event.title}
                       </CardTitle>
 
-                      <p className="mt-4 max-w-2xl text-base leading-8 text-slate-500">
+                      <p className="mt-2 max-w-2xl text-[13px] leading-6 text-slate-600">
                         Keep an eye on your application progress and jump back into open campus events
                         whenever you want to register for more.
                       </p>
                     </CardHeader>
 
-                    <CardContent className="space-y-7 bg-[radial-gradient(circle_at_top_left,rgba(99,102,241,0.06),transparent_24%),linear-gradient(180deg,rgba(255,255,255,0.94),rgba(248,250,252,0.94))] p-8 text-sm">
-                      <div className="grid gap-5 sm:grid-cols-2">
-                        <div className="rounded-[26px] border border-slate-200/80 bg-white/90 p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.7)]">
+                    <CardContent className="space-y-4 bg-[radial-gradient(circle_at_top_left,rgba(99,102,241,0.08),transparent_24%),radial-gradient(circle_at_bottom_right,rgba(244,114,182,0.05),transparent_30%),linear-gradient(180deg,rgba(237,242,255,0.94),rgba(228,236,250,0.92))] p-4 text-sm">
+                      <div className="grid gap-3 sm:grid-cols-2">
+                        <div className="rounded-[18px] border border-[#d5def6] bg-[#f7f9ff]/85 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.7)] backdrop-blur-sm">
                           <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">
-                            Event type
+                            Event date
                           </p>
-                          <p className="mt-4 text-xl font-semibold tracking-tight text-slate-950">
-                            {app.event.type}
+                          <p className="mt-2 text-[15px] font-semibold tracking-tight text-slate-950">
+                            {eventDetail?.eventDate || "Date to be announced"}
                           </p>
                         </div>
-                        <div className="rounded-[26px] border border-slate-200/80 bg-white/90 p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.7)]">
+                        <div className="rounded-[18px] border border-[#d5def6] bg-[#f7f9ff]/85 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.7)] backdrop-blur-sm">
                           <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">
-                            Deadline
+                            Event time
                           </p>
-                          <p className="mt-4 text-xl font-semibold tracking-tight text-slate-950">
-                            {new Date(app.event.deadline).toLocaleDateString("en-IN", {
-                              day: "numeric",
-                              month: "short",
-                              year: "numeric",
-                            })}
+                          <p className="mt-2 text-[15px] font-semibold tracking-tight text-slate-950">
+                            {eventDetail?.eventTime || "Time to be announced"}
                           </p>
                         </div>
                       </div>
 
                       <Link href="/events">
                         <Button
-                          className="h-14 w-full rounded-full bg-slate-950 text-base font-semibold text-white transition group-hover:bg-indigo-600 hover:bg-indigo-600"
+                          className="h-10 w-full rounded-full bg-slate-950 text-xs font-semibold text-white transition group-hover:bg-indigo-600 hover:bg-indigo-600"
                         >
                           Browse Events
-                          <ArrowRight className="ml-2 h-4 w-4" />
+                          <ArrowRight className="ml-2 h-3.5 w-3.5" />
                         </Button>
                       </Link>
                     </CardContent>
