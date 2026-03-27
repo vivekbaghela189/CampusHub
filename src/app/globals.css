@@ -158,10 +158,6 @@
 }
 
 @layer utilities {
-  .landing-grid {
-    animation: landingGridShift 24s linear infinite;
-  }
-
   .landing-orb {
     animation: landingOrbFloat 14s ease-in-out infinite;
     will-change: transform;
@@ -181,7 +177,6 @@
     scroll-behavior: auto;
   }
 
-  .landing-grid,
   .landing-orb,
   .landing-glow {
     animation: none !important;

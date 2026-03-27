@@ -25,19 +25,6 @@ const socials = ["GitHub", "LinkedIn", "Twitter"]
 export default function Footer() {
   return (
     <footer style={{ background: "#080b12", position: "relative", overflow: "hidden" }}>
- 
-      {/* Grid */}
-      <div
-        style={{
-          position: "absolute", inset: 0, pointerEvents: "none",
-          backgroundImage: `
-            linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px)
-          `,
-          backgroundSize: "54px 54px",
-        }}
-      />
- 
       {/* Orb */}
       <div
         style={{

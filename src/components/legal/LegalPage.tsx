@@ -32,17 +32,6 @@ export default function LegalPage({
       <div
         style={{
           position: "absolute",
-          inset: 0,
-          backgroundImage:
-            "linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px)",
-          backgroundSize: "56px 56px",
-          pointerEvents: "none",
-        }}
-      />
-
-      <div
-        style={{
-          position: "absolute",
           top: -120,
           left: "50%",
           transform: "translateX(-50%)",

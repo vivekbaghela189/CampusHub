@@ -33,23 +33,6 @@ function HeroCanvas() {
       const h = canvas.offsetHeight
       ctx.clearRect(0, 0, w, h)
 
-      ctx.strokeStyle = "rgba(255,255,255,0.03)"
-      ctx.lineWidth = 1
-
-      for (let x = 0; x < w; x += 54) {
-        ctx.beginPath()
-        ctx.moveTo(x, 0)
-        ctx.lineTo(x, h)
-        ctx.stroke()
-      }
-
-      for (let y = 0; y < h; y += 54) {
-        ctx.beginPath()
-        ctx.moveTo(0, y)
-        ctx.lineTo(w, y)
-        ctx.stroke()
-      }
-
       const orbs = [
         { bx: 0.15, by: 0.25, r: 340, c: "99,102,241" },
         { bx: 0.85, by: 0.38, r: 280, c: "139,92,246" },
@@ -148,6 +131,13 @@ export default function HeroSection() {
 
       <section className="relative flex min-h-screen flex-col overflow-hidden bg-[#080b12]">
         <HeroCanvas />
+        <div
+          className="pointer-events-none absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(180deg, rgba(8,11,18,0.2) 0%, rgba(8,11,18,0.68) 100%)",
+          }}
+        />
 
         <div className="relative z-20 flex flex-1 flex-col items-center justify-center px-6 py-20 text-center">
           <FadeIn>

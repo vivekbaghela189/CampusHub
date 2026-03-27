@@ -22,16 +22,6 @@ export default async function AppLayout({
         <div
           className="pointer-events-none absolute inset-0"
           style={{
-            backgroundImage: `
-              linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
-              linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px)
-            `,
-            backgroundSize: "60px 60px",
-          }}
-        />
-        <div
-          className="pointer-events-none absolute inset-0"
-          style={{
             background:
               "radial-gradient(circle at top left, rgba(99,102,241,0.12) 0%, transparent 28%), radial-gradient(circle at top right, rgba(236,72,153,0.08) 0%, transparent 24%)",
           }}

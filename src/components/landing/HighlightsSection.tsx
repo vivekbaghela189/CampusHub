@@ -69,17 +69,6 @@ export default function HighlightsSection() {
       className="relative overflow-hidden bg-[#080b12] py-28 scroll-mt-24"
     >
       <div
-        className="pointer-events-none absolute inset-0"
-        style={{
-          backgroundImage: `
-            linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px)
-          `,
-          backgroundSize: "54px 54px",
-        }}
-      />
-
-      <div
         className="pointer-events-none absolute left-1/2 top-1/2 h-[620px] w-[620px] -translate-x-1/2 -translate-y-1/2 rounded-full"
         style={{
           background: "radial-gradient(circle, rgba(244,114,182,0.08) 0%, transparent 68%)",
