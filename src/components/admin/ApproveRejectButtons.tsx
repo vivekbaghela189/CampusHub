@@ -34,6 +34,7 @@ export default function ApproveRejectButtons({
       <Button
         onClick={() => updateStatus("APPROVED")}
         disabled={loading}
+        className="rounded-full bg-white text-slate-950 hover:bg-white/90"
       >
         Approve
       </Button>
@@ -42,6 +43,7 @@ export default function ApproveRejectButtons({
         variant="destructive"
         onClick={() => updateStatus("REJECTED")}
         disabled={loading}
+        className="rounded-full bg-rose-500 text-white hover:bg-rose-500/90"
       >
         Reject
       </Button>
