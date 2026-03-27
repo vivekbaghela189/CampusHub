@@ -84,7 +84,7 @@ export default function Navbar() {
   const userName = session?.user?.name || "User"
   const userEmail = session?.user?.email || "user@campushub.com"
   const isAdmin = session?.user?.role === "ADMIN"
-  const homeHref = isAdmin ? "/admin/explore-events" : "/"
+  const homeHref = isAdmin ? "/admin" : "/"
   const avatarInitial = useMemo(
     () => getInitial(session?.user?.name, session?.user?.email),
     [session?.user?.name, session?.user?.email]
