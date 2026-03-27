@@ -66,13 +66,15 @@ export default function LoginCard() {
   return (
     <div
       style={{
-        position: "fixed",
-        inset: 0,
-        background: "#080c14",
+        position: "relative",
+        width: "100%",
+        minHeight: "calc(100vh - 9rem)",
+        background: "transparent",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
         overflow: "hidden",
+        padding: "24px 0",
       }}
     >
       {/* Glow — top center */}
@@ -83,7 +85,7 @@ export default function LoginCard() {
           height: 520,
           borderRadius: "50%",
           background:
-            "radial-gradient(circle, rgba(109,40,217,0.24) 0%, transparent 65%)",
+            "radial-gradient(circle, rgba(109,40,217,0.14) 0%, transparent 65%)",
           top: -220,
           left: "50%",
           transform: "translateX(-50%)",
@@ -98,7 +100,7 @@ export default function LoginCard() {
           height: 360,
           borderRadius: "50%",
           background:
-            "radial-gradient(circle, rgba(192,100,255,0.12) 0%, transparent 65%)",
+            "radial-gradient(circle, rgba(192,100,255,0.07) 0%, transparent 65%)",
           bottom: -90,
           right: "3%",
           pointerEvents: "none",
@@ -113,6 +115,7 @@ export default function LoginCard() {
           border: "1px solid rgba(167,139,250,0.2)",
           borderRadius: 24,
           backdropFilter: "blur(20px)",
+          boxShadow: "0 18px 42px rgba(0,0,0,0.2)",
           zIndex: 2,
         }}
       >

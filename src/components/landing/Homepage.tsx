@@ -19,6 +19,7 @@ import {
 } from "lucide-react"
 
 import FadeIn from "@/components/animations/FadeIn"
+import BackgroundLines from "@/components/layout/BackgroundLines"
 import { Button } from "@/components/ui/button"
 
 const steps = [
@@ -524,6 +525,7 @@ function HeroSection() {
       `}</style>
 
       <section className="relative flex min-h-screen flex-col overflow-hidden bg-[#080b12]">
+        <BackgroundLines />
         <HeroCanvas />
         <div
           className="pointer-events-none absolute inset-0"
@@ -615,6 +617,7 @@ function FeaturesSection() {
       className="relative overflow-hidden py-28"
       style={{ background: "#080b12" }}
     >
+      <BackgroundLines />
       <div
         className="absolute pointer-events-none"
         style={{
@@ -755,6 +758,7 @@ function CategoriesSection() {
       className="relative overflow-hidden py-28"
       style={{ background: "#080b12" }}
     >
+      <BackgroundLines />
       <div
         className="absolute pointer-events-none"
         style={{
@@ -892,6 +896,7 @@ function TestimonialsSection() {
       className="relative overflow-hidden py-28"
       style={{ background: "#080b12" }}
     >
+      <BackgroundLines />
       <div
         className="absolute pointer-events-none"
         style={{
@@ -947,6 +952,7 @@ function FAQSection() {
       className="relative overflow-hidden py-28"
       style={{ background: "#080b12" }}
     >
+      <BackgroundLines />
       <div
         className="absolute pointer-events-none"
         style={{

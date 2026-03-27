@@ -93,7 +93,7 @@ export default function Navbar() {
           transform: translateY(-1px) !important;
         }
         .campus-navbar {
-          background: rgba(8, 11, 18, 0.92) !important;
+          background: #080b12 !important;
           backdrop-filter: blur(12px) !important;
           -webkit-backdrop-filter: blur(12px) !important;
           border-bottom: 1px solid rgba(255, 255, 255, 0.055) !important;

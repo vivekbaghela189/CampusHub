@@ -1,6 +1,7 @@
 "use client"
 
 import { CalendarRange, Camera, Mic2, Sparkles, Star, Users2 } from "lucide-react"
+import BackgroundLines from "@/components/layout/BackgroundLines"
 
 const featuredEvents = [
   {
@@ -68,6 +69,7 @@ export default function HighlightsSection() {
       id="highlights"
       className="relative overflow-hidden bg-[#080b12] py-28 scroll-mt-24"
     >
+      <BackgroundLines />
       <div
         className="pointer-events-none absolute left-1/2 top-1/2 h-[620px] w-[620px] -translate-x-1/2 -translate-y-1/2 rounded-full"
         style={{

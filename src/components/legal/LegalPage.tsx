@@ -1,4 +1,5 @@
 import Link from "next/link"
+import BackgroundLines from "@/components/layout/BackgroundLines"
 
 type LegalSection = {
   title: string
@@ -29,6 +30,7 @@ export default function LegalPage({
         overflow: "hidden",
       }}
     >
+      <BackgroundLines />
       <div
         style={{
           position: "absolute",

@@ -2,6 +2,7 @@ import Link from "next/link"
 import { prisma } from "@/lib/prisma"
 import { Prisma } from "@prisma/client"
 import { Badge } from "@/components/ui/badge"
+import BackgroundLines from "@/components/layout/BackgroundLines"
 import EventDetailsModal from "@/components/events/EventDetailsModal"
 import { unstable_noStore as noStore } from "next/cache"
 
@@ -128,6 +129,7 @@ export default async function EventsPage({
         minHeight:"100vh", fontFamily:"'DM Sans',sans-serif",
         position:"relative", overflow:"hidden",
       }}>
+        <BackgroundLines />
  
         {/* Subtle grid lines — matches homepage */}
         {/* Purple ambient glow */}

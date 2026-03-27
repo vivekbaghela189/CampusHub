@@ -1,6 +1,7 @@
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
 import { redirect } from "next/navigation"
+import BackgroundLines from "@/components/layout/BackgroundLines"
 import Navbar from "@/components/layout/Navbar"
 
 export default async function AppLayout({
@@ -19,6 +20,7 @@ export default async function AppLayout({
     <div className="flex min-h-screen flex-col bg-[#080b12]">
       <Navbar />
       <main className="relative flex-1 overflow-hidden bg-[#0b0d1b] px-4 py-6 md:px-6">
+        <BackgroundLines />
         <div
           className="pointer-events-none absolute inset-0"
           style={{
