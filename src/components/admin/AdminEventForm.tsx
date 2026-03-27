@@ -71,17 +71,17 @@ export default function AdminEventForm() {
   }
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Create Event</CardTitle>
-        <CardDescription>
+    <Card className="overflow-hidden rounded-[30px] border border-white/10 bg-[radial-gradient(circle_at_top_left,rgba(99,102,241,0.16),transparent_24%),radial-gradient(circle_at_top_right,rgba(244,114,182,0.12),transparent_24%),linear-gradient(180deg,rgba(17,20,34,0.96),rgba(15,23,42,0.94))] text-white shadow-[0_25px_60px_-35px_rgba(15,23,42,0.85)]">
+      <CardHeader className="border-b border-white/10">
+        <CardTitle className="text-2xl text-white">Create Event</CardTitle>
+        <CardDescription className="text-white/65">
           Add a new event with schedule, rules, and pricing details for students.
         </CardDescription>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="grid gap-6">
           <div className="grid gap-2">
-            <Label htmlFor="title">Event title</Label>
+            <Label htmlFor="title" className="text-white/85">Event title</Label>
             <Input
               id="title"
               value={form.title}
@@ -89,12 +89,13 @@ export default function AdminEventForm() {
                 setForm((current) => ({ ...current, title: event.target.value }))
               }
               placeholder="Hackathon 2026"
+              className="border-white/10 bg-white/5 text-white placeholder:text-white/35"
               required
             />
           </div>
 
           <div className="grid gap-2">
-            <Label htmlFor="description">Short description</Label>
+            <Label htmlFor="description" className="text-white/85">Short description</Label>
             <textarea
               id="description"
               value={form.description}
@@ -104,7 +105,7 @@ export default function AdminEventForm() {
                   description: event.target.value,
                 }))
               }
-              className="border-input min-h-28 rounded-md border bg-transparent px-3 py-2 text-sm outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]"
+              className="min-h-28 rounded-md border border-white/10 bg-white/5 px-3 py-2 text-sm text-white outline-none placeholder:text-white/35 focus-visible:border-white/25 focus-visible:ring-[3px] focus-visible:ring-white/10"
               placeholder="Tell students what the event is about."
               required
             />
@@ -112,14 +113,14 @@ export default function AdminEventForm() {
 
           <div className="grid gap-4 md:grid-cols-2">
             <div className="grid gap-2">
-              <Label htmlFor="type">Event type</Label>
+              <Label htmlFor="type" className="text-white/85">Event type</Label>
               <select
                 id="type"
                 value={form.type}
                 onChange={(event) =>
                   setForm((current) => ({ ...current, type: event.target.value }))
                 }
-                className="border-input h-9 rounded-md border bg-transparent px-3 text-sm outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]"
+                className="h-10 rounded-md border border-white/10 bg-white/5 px-3 text-sm text-white outline-none focus-visible:border-white/25 focus-visible:ring-[3px] focus-visible:ring-white/10"
               >
                 {EVENT_TYPES.map((type) => (
                   <option key={type.value} value={type.value}>
@@ -130,7 +131,7 @@ export default function AdminEventForm() {
             </div>
 
             <div className="grid gap-2">
-              <Label htmlFor="deadline">Registration deadline</Label>
+              <Label htmlFor="deadline" className="text-white/85">Registration deadline</Label>
               <Input
                 id="deadline"
                 type="datetime-local"
@@ -141,6 +142,7 @@ export default function AdminEventForm() {
                     deadline: event.target.value,
                   }))
                 }
+                className="border-white/10 bg-white/5 text-white [color-scheme:dark]"
                 required
               />
             </div>
@@ -148,7 +150,7 @@ export default function AdminEventForm() {
 
           <div className="grid gap-4 md:grid-cols-3">
             <div className="grid gap-2">
-              <Label htmlFor="eventDate">Event date</Label>
+              <Label htmlFor="eventDate" className="text-white/85">Event date</Label>
               <Input
                 id="eventDate"
                 value={form.eventDate}
@@ -159,11 +161,12 @@ export default function AdminEventForm() {
                   }))
                 }
                 placeholder="12 April 2026"
+                className="border-white/10 bg-white/5 text-white placeholder:text-white/35"
               />
             </div>
 
             <div className="grid gap-2">
-              <Label htmlFor="eventTime">Event time</Label>
+              <Label htmlFor="eventTime" className="text-white/85">Event time</Label>
               <Input
                 id="eventTime"
                 value={form.eventTime}
@@ -174,11 +177,12 @@ export default function AdminEventForm() {
                   }))
                 }
                 placeholder="10:00 AM onwards"
+                className="border-white/10 bg-white/5 text-white placeholder:text-white/35"
               />
             </div>
 
             <div className="grid gap-2">
-              <Label htmlFor="venue">Venue</Label>
+              <Label htmlFor="venue" className="text-white/85">Venue</Label>
               <Input
                 id="venue"
                 value={form.venue}
@@ -186,12 +190,13 @@ export default function AdminEventForm() {
                   setForm((current) => ({ ...current, venue: event.target.value }))
                 }
                 placeholder="Main auditorium"
+                className="border-white/10 bg-white/5 text-white placeholder:text-white/35"
               />
             </div>
           </div>
 
-          <div className="grid gap-3 rounded-lg border p-4">
-            <label className="flex items-center gap-3 text-sm font-medium">
+          <div className="grid gap-3 rounded-[20px] border border-white/10 bg-white/[0.04] p-4">
+            <label className="flex items-center gap-3 text-sm font-medium text-white/85">
               <input
                 type="checkbox"
                 checked={form.isPaid}
@@ -208,7 +213,7 @@ export default function AdminEventForm() {
 
             <div className="grid gap-4 md:grid-cols-2">
               <div className="grid gap-2">
-                <Label htmlFor="price">Price</Label>
+                <Label htmlFor="price" className="text-white/85">Price</Label>
                 <Input
                   id="price"
                   type="number"
@@ -220,11 +225,12 @@ export default function AdminEventForm() {
                   }
                   placeholder="199"
                   disabled={!form.isPaid}
+                  className="border-white/10 bg-white/5 text-white placeholder:text-white/35"
                 />
               </div>
 
               <div className="grid gap-2">
-                <Label htmlFor="currency">Currency</Label>
+                <Label htmlFor="currency" className="text-white/85">Currency</Label>
                 <Input
                   id="currency"
                   value={form.currency}
@@ -235,26 +241,27 @@ export default function AdminEventForm() {
                     }))
                   }
                   maxLength={5}
+                  className="border-white/10 bg-white/5 text-white placeholder:text-white/35"
                 />
               </div>
             </div>
           </div>
 
           <div className="grid gap-2">
-            <Label htmlFor="rules">Rules and instructions</Label>
+            <Label htmlFor="rules" className="text-white/85">Rules and instructions</Label>
             <textarea
               id="rules"
               value={form.rules}
               onChange={(event) =>
                 setForm((current) => ({ ...current, rules: event.target.value }))
               }
-              className="border-input min-h-32 rounded-md border bg-transparent px-3 py-2 text-sm outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]"
+              className="min-h-32 rounded-md border border-white/10 bg-white/5 px-3 py-2 text-sm text-white outline-none placeholder:text-white/35 focus-visible:border-white/25 focus-visible:ring-[3px] focus-visible:ring-white/10"
               placeholder={"Add one rule per line.\nCarry your college ID.\nReach 15 minutes early."}
             />
           </div>
 
           <div className="grid gap-2">
-            <Label htmlFor="privacyNote">Consent / privacy note</Label>
+            <Label htmlFor="privacyNote" className="text-white/85">Consent / privacy note</Label>
             <textarea
               id="privacyNote"
               value={form.privacyNote}
@@ -264,20 +271,24 @@ export default function AdminEventForm() {
                   privacyNote: event.target.value,
                 }))
               }
-              className="border-input min-h-24 rounded-md border bg-transparent px-3 py-2 text-sm outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]"
+              className="min-h-24 rounded-md border border-white/10 bg-white/5 px-3 py-2 text-sm text-white outline-none placeholder:text-white/35 focus-visible:border-white/25 focus-visible:ring-[3px] focus-visible:ring-white/10"
               placeholder="Students must accept this before applying."
             />
           </div>
 
           {error ? (
-            <p className="text-sm text-red-500">{error}</p>
+            <p className="text-sm text-rose-300">{error}</p>
           ) : null}
 
           {success ? (
-            <p className="text-sm text-green-600">{success}</p>
+            <p className="text-sm text-emerald-300">{success}</p>
           ) : null}
 
-          <Button type="submit" disabled={submitting} className="w-full md:w-fit">
+          <Button
+            type="submit"
+            disabled={submitting}
+            className="h-12 w-full rounded-full bg-white text-sm font-semibold text-slate-950 hover:bg-white/90 md:w-fit md:px-8"
+          >
             {submitting ? "Creating..." : "Create event"}
           </Button>
         </form>
