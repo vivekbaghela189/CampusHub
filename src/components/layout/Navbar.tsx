@@ -24,19 +24,28 @@ function getInitial(name?: string | null, email?: string | null) {
 export default function Navbar() {
   const { data: session, status } = useSession()
   const [open, setOpen] = useState(false)
-  const [portalRoot, setPortalRoot] = useState<HTMLElement | null>(null)
   const panelRef = useRef<HTMLDivElement>(null)
+  const portalRoot = useMemo(() => {
+    if (typeof document === "undefined") {
+      return null
+    }
 
-  useEffect(() => {
     const root = document.createElement("div")
     root.setAttribute("data-profile-sheet-root", "true")
-    document.body.appendChild(root)
-    setPortalRoot(root)
+    return root
+  }, [])
+
+  useEffect(() => {
+    if (!portalRoot) {
+      return
+    }
+
+    document.body.appendChild(portalRoot)
 
     return () => {
-      root.remove()
+      portalRoot.remove()
     }
-  }, [])
+  }, [portalRoot])
 
   useEffect(() => {
     document.body.dataset.profileOpen = open ? "true" : "false"
@@ -74,6 +83,7 @@ export default function Navbar() {
 
   const userName = session?.user?.name || "User"
   const userEmail = session?.user?.email || "user@campushub.com"
+  const isAdmin = session?.user?.role === "ADMIN"
   const avatarInitial = useMemo(
     () => getInitial(session?.user?.name, session?.user?.email),
     [session?.user?.name, session?.user?.email]
@@ -340,7 +350,7 @@ export default function Navbar() {
                         </div>
 
                         <Link
-                          href="/dashboard"
+                          href={isAdmin ? "/admin" : "/dashboard"}
                           onClick={() => setOpen(false)}
                           className="profile-sheet-item"
                           style={{
@@ -373,7 +383,7 @@ export default function Navbar() {
                             >
                               <NotebookTabs size={20} />
                             </span>
-                            <span>View all bookings</span>
+                            <span>{isAdmin ? "Manage events and students" : "View all bookings"}</span>
                           </span>
                           <ChevronRight size={22} />
                         </Link>

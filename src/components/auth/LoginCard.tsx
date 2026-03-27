@@ -1,10 +1,11 @@
 "use client"
- 
+
 import { useState } from "react"
 import { signIn } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
- 
+import { Eye, EyeOff } from "lucide-react"
+
 import {
   Card,
   CardContent,
@@ -16,36 +17,37 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
- 
+
 export default function LoginCard() {
   const router = useRouter()
- 
+
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+  const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
- 
+
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
     setError("")
- 
+
     const res = await signIn("credentials", {
       email,
       password,
       redirect: false,
     })
- 
+
     setLoading(false)
- 
+
     if (!res?.error) {
-      router.replace("/events")
+      router.replace("/dashboard")
       router.refresh()
     } else {
       setError("Invalid email or password")
     }
   }
- 
+
   const labelStyle = {
     color: "rgba(220,210,255,0.8)",
     fontSize: 11,
@@ -53,7 +55,7 @@ export default function LoginCard() {
     textTransform: "uppercase" as const,
     letterSpacing: "0.1em",
   }
- 
+
   const inputStyle = {
     background: "rgba(255,255,255,0.05)",
     border: "1px solid rgba(167,139,250,0.22)",
@@ -62,7 +64,7 @@ export default function LoginCard() {
     fontSize: 13.5,
     height: 40,
   }
- 
+
   return (
     <div
       style={{
@@ -77,7 +79,6 @@ export default function LoginCard() {
         padding: "24px 0",
       }}
     >
-      {/* Glow — top center */}
       <div
         style={{
           position: "absolute",
@@ -92,7 +93,6 @@ export default function LoginCard() {
           pointerEvents: "none",
         }}
       />
-      {/* Glow — bottom right */}
       <div
         style={{
           position: "absolute",
@@ -106,7 +106,7 @@ export default function LoginCard() {
           pointerEvents: "none",
         }}
       />
- 
+
       <Card
         className="w-full relative overflow-hidden"
         style={{
@@ -119,7 +119,6 @@ export default function LoginCard() {
           zIndex: 2,
         }}
       >
-        {/* Top shine */}
         <div
           style={{
             position: "absolute",
@@ -131,9 +130,8 @@ export default function LoginCard() {
               "linear-gradient(90deg, transparent, rgba(167,139,250,0.9), transparent)",
           }}
         />
- 
+
         <CardHeader className="text-center pt-8 pb-4 px-8 space-y-3">
-          {/* Badge */}
           <div className="flex justify-center">
             <span
               style={{
@@ -165,7 +163,7 @@ export default function LoginCard() {
               Campus Events Platform
             </span>
           </div>
- 
+
           <CardTitle
             className="font-extrabold"
             style={{
@@ -186,7 +184,7 @@ export default function LoginCard() {
               back.
             </span>
           </CardTitle>
- 
+
           <CardDescription
             style={{
               color: "rgba(200,185,255,0.45)",
@@ -197,7 +195,7 @@ export default function LoginCard() {
             Sign in to access campus events
           </CardDescription>
         </CardHeader>
- 
+
         <CardContent className="px-8 pt-1 pb-7">
           <form
             onSubmit={handleLogin}
@@ -217,25 +215,35 @@ export default function LoginCard() {
                 className="placeholder:text-[rgba(200,185,255,0.25)] focus-visible:ring-[rgba(124,58,237,0.35)] focus-visible:border-[rgba(167,139,250,0.6)]"
               />
             </div>
- 
+
             <div className="space-y-1.5">
               <Label style={labelStyle}>Password</Label>
-              <Input
-                type="password"
-                placeholder="••••••••"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                autoComplete="current-password"
-                style={inputStyle}
-                className="placeholder:text-[rgba(200,185,255,0.25)] focus-visible:ring-[rgba(124,58,237,0.35)] focus-visible:border-[rgba(167,139,250,0.6)]"
-              />
+              <div className="relative">
+                <Input
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Enter your password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  autoComplete="current-password"
+                  style={{ ...inputStyle, paddingRight: 44 }}
+                  className="placeholder:text-[rgba(200,185,255,0.25)] focus-visible:ring-[rgba(124,58,237,0.35)] focus-visible:border-[rgba(167,139,250,0.6)]"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword((current) => !current)}
+                  aria-label={showPassword ? "Hide password" : "Show password"}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-[rgba(200,185,255,0.65)] hover:text-white"
+                >
+                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
+              </div>
             </div>
- 
+
             {error && (
               <p className="text-xs text-destructive">{error}</p>
             )}
- 
+
             <Button
               type="submit"
               className="w-full font-bold tracking-wide text-white mt-1"
@@ -252,15 +260,15 @@ export default function LoginCard() {
                   "0 4px 20px rgba(109,40,217,0.5), 0 0 0 1px rgba(167,139,250,0.15)",
               }}
             >
-              {loading ? "Signing in..." : "Sign In →"}
+              {loading ? "Signing in..." : "Sign In ->"}
             </Button>
           </form>
- 
+
           <Separator
             className="my-5"
             style={{ background: "rgba(167,139,250,0.1)" }}
           />
- 
+
           <p
             className="text-xs text-center"
             style={{ color: "rgba(200,185,255,0.38)" }}
@@ -277,11 +285,11 @@ export default function LoginCard() {
           </p>
         </CardContent>
       </Card>
- 
+
       <style>{`
         @keyframes livepulse {
           0%, 100% { box-shadow: 0 0 0 2px rgba(167,139,250,0.3); }
-          50%       { box-shadow: 0 0 0 6px rgba(167,139,250,0); }
+          50% { box-shadow: 0 0 0 6px rgba(167,139,250,0); }
         }
       `}</style>
     </div>
