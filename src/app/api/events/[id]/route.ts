@@ -1,6 +1,6 @@
+import { authOptions } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
 import { getServerSession } from "next-auth"
-import { authOptions } from "@/lib/auth"
 
 function normalizeOptionalString(value: unknown) {
   if (typeof value !== "string") {
@@ -11,11 +11,14 @@ function normalizeOptionalString(value: unknown) {
   return trimmed ? trimmed : null
 }
 
-export async function POST(req: Request) {
+export async function PATCH(
+  req: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
   try {
     const session = await getServerSession(authOptions)
 
-    if (!session || !session.user?.id) {
+    if (!session?.user?.id) {
       return Response.json({ error: "Unauthorized" }, { status: 401 })
     }
 
@@ -23,6 +26,7 @@ export async function POST(req: Request) {
       return Response.json({ error: "Forbidden" }, { status: 403 })
     }
 
+    const { id } = await params
     const body = await req.json()
     const title = normalizeOptionalString(body.title)
     const description = normalizeOptionalString(body.description)
@@ -50,25 +54,34 @@ export async function POST(req: Request) {
       return Response.json({ error: "Invalid price." }, { status: 400 })
     }
 
-    const hasPaidPrice = Number.isFinite(numericPrice) && numericPrice > 0
+    const isPaid = Boolean(body.isPaid) && numericPrice > 0
 
-    const event = await prisma.event.create({
+    const updatedEvent = await prisma.event.update({
+      where: { id },
       data: {
         title,
         description,
         type: normalizeOptionalString(body.type) || "GENERAL",
         deadline,
-        isPaid: Boolean(body.isPaid) ? hasPaidPrice : false,
-        price: hasPaidPrice ? numericPrice : 0,
+        isPaid,
+        price: isPaid ? numericPrice : 0,
         currency: normalizeOptionalString(body.currency) || "INR",
-        createdById: session.user.id,
         details: {
-          create: {
-            eventDate: normalizeOptionalString(body.eventDate),
-            eventTime: normalizeOptionalString(body.eventTime),
-            venue: normalizeOptionalString(body.venue),
-            rules: normalizeOptionalString(body.rules),
-            privacyNote: normalizeOptionalString(body.privacyNote),
+          upsert: {
+            create: {
+              eventDate: normalizeOptionalString(body.eventDate),
+              eventTime: normalizeOptionalString(body.eventTime),
+              venue: normalizeOptionalString(body.venue),
+              rules: normalizeOptionalString(body.rules),
+              privacyNote: normalizeOptionalString(body.privacyNote),
+            },
+            update: {
+              eventDate: normalizeOptionalString(body.eventDate),
+              eventTime: normalizeOptionalString(body.eventTime),
+              venue: normalizeOptionalString(body.venue),
+              rules: normalizeOptionalString(body.rules),
+              privacyNote: normalizeOptionalString(body.privacyNote),
+            },
           },
         },
       },
@@ -77,9 +90,9 @@ export async function POST(req: Request) {
       },
     })
 
-    return Response.json(event)
+    return Response.json(updatedEvent)
   } catch (error) {
-    console.error("EVENT CREATE ERROR:", error)
+    console.error("EVENT UPDATE ERROR:", error)
     return Response.json({ error: "Internal Server Error" }, { status: 500 })
   }
 }

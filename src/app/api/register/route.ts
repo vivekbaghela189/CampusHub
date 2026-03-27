@@ -5,18 +5,43 @@ import bcrypt from "bcrypt"
 export async function POST(req: Request) {
   try {
     const body = await req.json()
-const { name, email, password, branch, year } = body
-    // 1️⃣ Basic validation
-  if (!name || !email || !password || !branch || !year) {
-  return NextResponse.json(
-    { error: "All fields are required" },
-    { status: 400 }
-  )
-}
+    const { name, email, password, branch, year, role, adminInviteCode } = body
+    const requestedRole = role === "ADMIN" ? "ADMIN" : "STUDENT"
 
-    // 2️⃣ Check if user already exists
+    if (!name || !email || !password) {
+      return NextResponse.json(
+        { error: "All fields are required" },
+        { status: 400 }
+      )
+    }
+
+    if (requestedRole === "STUDENT" && (!branch || !year)) {
+      return NextResponse.json(
+        { error: "Branch and year are required for students" },
+        { status: 400 }
+      )
+    }
+
+    if (requestedRole === "ADMIN") {
+      const configuredInviteCode = process.env.ADMIN_INVITE_CODE
+
+      if (!configuredInviteCode) {
+        return NextResponse.json(
+          { error: "Admin registration is not configured yet" },
+          { status: 500 }
+        )
+      }
+
+      if (!adminInviteCode || adminInviteCode !== configuredInviteCode) {
+        return NextResponse.json(
+          { error: "Invalid admin invite code" },
+          { status: 403 }
+        )
+      }
+    }
+
     const existingUser = await prisma.user.findUnique({
-      where: { email }
+      where: { email },
     })
 
     if (existingUser) {
@@ -26,20 +51,18 @@ const { name, email, password, branch, year } = body
       )
     }
 
-    // 3️⃣ Hash password
     const hashedPassword = await bcrypt.hash(password, 10)
 
-    // 4️⃣ Create user
-   const newUser = await prisma.user.create({
-  data: {
-    name,
-    email,
-    password: hashedPassword,
-    branch,
-    year,
-    role: "STUDENT"
-  }
-})
+    const newUser = await prisma.user.create({
+      data: {
+        name,
+        email,
+        password: hashedPassword,
+        branch: requestedRole === "ADMIN" ? null : branch,
+        year: requestedRole === "ADMIN" ? null : year,
+        role: requestedRole,
+      },
+    })
 
     return NextResponse.json(
       { message: "User created successfully", user: newUser },

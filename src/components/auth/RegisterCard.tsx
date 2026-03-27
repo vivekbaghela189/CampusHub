@@ -1,9 +1,9 @@
 "use client";
- 
+
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
- 
+
 import {
   Card,
   CardContent,
@@ -22,23 +22,38 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
- 
-export default function RegisterCard() {
+
+type RegisterCardProps = {
+  mode?: "student" | "admin";
+};
+
+export default function RegisterCard({
+  mode = "student",
+}: RegisterCardProps) {
   const router = useRouter();
- 
+  const isAdminMode = mode === "admin";
+
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [branch, setBranch] = useState("");
   const [year, setYear] = useState("");
+  const [adminInviteCode, setAdminInviteCode] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
- 
+
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError("");
- 
+
+    if (password !== confirmPassword) {
+      setError("Passwords do not match");
+      setLoading(false);
+      return;
+    }
+
     try {
       const res = await fetch("/api/register", {
         method: "POST",
@@ -47,26 +62,28 @@ export default function RegisterCard() {
           name,
           email,
           password,
-          branch,
-          year: Number(year),
+          branch: isAdminMode ? undefined : branch,
+          year: isAdminMode ? undefined : Number(year),
+          role: isAdminMode ? "ADMIN" : "STUDENT",
+          adminInviteCode: isAdminMode ? adminInviteCode : undefined,
         }),
       });
- 
+
       const data = await res.json();
- 
+
       if (!res.ok) {
         setError(data.error || "Something went wrong");
         setLoading(false);
         return;
       }
- 
+
       router.push("/login");
-    } catch (err) {
+    } catch {
       setError("Registration failed");
       setLoading(false);
     }
   };
- 
+
   const labelStyle = {
     color: "rgba(220,210,255,0.8)",
     fontSize: 11,
@@ -74,7 +91,7 @@ export default function RegisterCard() {
     textTransform: "uppercase" as const,
     letterSpacing: "0.1em",
   };
- 
+
   const inputStyle = {
     background: "rgba(255,255,255,0.05)",
     border: "1px solid rgba(167,139,250,0.22)",
@@ -83,7 +100,7 @@ export default function RegisterCard() {
     fontSize: 13.5,
     height: 38,
   };
- 
+
   return (
     <div
       style={{
@@ -98,7 +115,6 @@ export default function RegisterCard() {
         padding: "24px 0",
       }}
     >
-      {/* Glow — top center */}
       <div
         style={{
           position: "absolute",
@@ -113,7 +129,7 @@ export default function RegisterCard() {
           pointerEvents: "none",
         }}
       />
-      {/* Glow — bottom right */}
+
       <div
         style={{
           position: "absolute",
@@ -127,7 +143,7 @@ export default function RegisterCard() {
           pointerEvents: "none",
         }}
       />
- 
+
       <Card
         className="w-full relative overflow-hidden"
         style={{
@@ -140,7 +156,6 @@ export default function RegisterCard() {
           zIndex: 2,
         }}
       >
-        {/* Top shine */}
         <div
           style={{
             position: "absolute",
@@ -152,9 +167,8 @@ export default function RegisterCard() {
               "linear-gradient(90deg, transparent, rgba(167,139,250,0.9), transparent)",
           }}
         />
- 
+
         <CardHeader className="space-y-2.5 px-8 pb-3 pt-6 text-center">
-          {/* Live badge */}
           <div className="flex justify-center">
             <span
               style={{
@@ -183,10 +197,10 @@ export default function RegisterCard() {
                   animation: "livepulse 2s infinite",
                 }}
               />
-              42 events live now
+              {isAdminMode ? "Admin onboarding" : "42 events live now"}
             </span>
           </div>
- 
+
           <CardTitle
             className="font-extrabold"
             style={{
@@ -196,7 +210,7 @@ export default function RegisterCard() {
               letterSpacing: "-0.01em",
             }}
           >
-            Join &amp; explore{" "}
+            {isAdminMode ? "Create an " : "Join and explore "}
             <span
               style={{
                 background: "linear-gradient(90deg, #a78bfa 0%, #e879f9 100%)",
@@ -204,10 +218,10 @@ export default function RegisterCard() {
                 WebkitTextFillColor: "transparent",
               }}
             >
-              campus events.
+              {isAdminMode ? "admin account." : "campus events."}
             </span>
           </CardTitle>
- 
+
           <CardDescription
             style={{
               color: "rgba(200,185,255,0.45)",
@@ -215,14 +229,14 @@ export default function RegisterCard() {
               lineHeight: 1.4,
             }}
           >
-            Create your account and never miss a moment.
+            {isAdminMode
+              ? "Use your admin invite code to create a privileged account."
+              : "Create your account and never miss a moment."}
           </CardDescription>
         </CardHeader>
- 
+
         <CardContent className="px-8 pb-5 pt-1">
-          {/* autoComplete="off" on the form prevents browser autofill entirely */}
           <form onSubmit={handleRegister} className="space-y-3" autoComplete="off">
- 
             <div className="space-y-1">
               <Label style={labelStyle}>Full Name</Label>
               <Input
@@ -236,7 +250,7 @@ export default function RegisterCard() {
                 className="placeholder:text-[rgba(200,185,255,0.25)] focus-visible:ring-[rgba(124,58,237,0.35)] focus-visible:border-[rgba(167,139,250,0.6)]"
               />
             </div>
- 
+
             <div className="space-y-1">
               <Label style={labelStyle}>Email</Label>
               <Input
@@ -250,52 +264,54 @@ export default function RegisterCard() {
                 className="placeholder:text-[rgba(200,185,255,0.25)] focus-visible:ring-[rgba(124,58,237,0.35)] focus-visible:border-[rgba(167,139,250,0.6)]"
               />
             </div>
- 
-            <div className="grid grid-cols-2 gap-3">
-              <div className="space-y-1">
-                <Label style={labelStyle}>Branch</Label>
-                <Select onValueChange={setBranch} value={branch}>
-                  <SelectTrigger style={{ ...inputStyle }}>
-                    <SelectValue placeholder="Select branch" />
-                  </SelectTrigger>
-                  <SelectContent
-                    style={{
-                      background: "#120c26",
-                      border: "1px solid rgba(167,139,250,0.2)",
-                      color: "#ede9ff",
-                    }}
-                  >
-                    <SelectItem value="CSE">Computer Science</SelectItem>
-                    <SelectItem value="IT">Information Technology</SelectItem>
-                    <SelectItem value="ECE">Electronics</SelectItem>
-                    <SelectItem value="ME">Mechanical</SelectItem>
-                    <SelectItem value="CE">Civil</SelectItem>
-                  </SelectContent>
-                </Select>
+
+            {!isAdminMode && (
+              <div className="grid grid-cols-2 gap-3">
+                <div className="space-y-1">
+                  <Label style={labelStyle}>Branch</Label>
+                  <Select onValueChange={setBranch} value={branch}>
+                    <SelectTrigger style={{ ...inputStyle }}>
+                      <SelectValue placeholder="Select branch" />
+                    </SelectTrigger>
+                    <SelectContent
+                      style={{
+                        background: "#120c26",
+                        border: "1px solid rgba(167,139,250,0.2)",
+                        color: "#ede9ff",
+                      }}
+                    >
+                      <SelectItem value="CSE">Computer Science</SelectItem>
+                      <SelectItem value="IT">Information Technology</SelectItem>
+                      <SelectItem value="ECE">Electronics</SelectItem>
+                      <SelectItem value="ME">Mechanical</SelectItem>
+                      <SelectItem value="CE">Civil</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="space-y-1">
+                  <Label style={labelStyle}>Year</Label>
+                  <Select onValueChange={(value) => setYear(value)} value={year}>
+                    <SelectTrigger style={{ ...inputStyle }}>
+                      <SelectValue placeholder="Select year" />
+                    </SelectTrigger>
+                    <SelectContent
+                      style={{
+                        background: "#120c26",
+                        border: "1px solid rgba(167,139,250,0.2)",
+                        color: "#ede9ff",
+                      }}
+                    >
+                      <SelectItem value="1">1st Year</SelectItem>
+                      <SelectItem value="2">2nd Year</SelectItem>
+                      <SelectItem value="3">3rd Year</SelectItem>
+                      <SelectItem value="4">4th Year</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
               </div>
- 
-              <div className="space-y-1">
-                <Label style={labelStyle}>Year</Label>
-                <Select onValueChange={(value) => setYear(value)} value={year}>
-                  <SelectTrigger style={{ ...inputStyle }}>
-                    <SelectValue placeholder="Select year" />
-                  </SelectTrigger>
-                  <SelectContent
-                    style={{
-                      background: "#120c26",
-                      border: "1px solid rgba(167,139,250,0.2)",
-                      color: "#ede9ff",
-                    }}
-                  >
-                    <SelectItem value="1">1st Year</SelectItem>
-                    <SelectItem value="2">2nd Year</SelectItem>
-                    <SelectItem value="3">3rd Year</SelectItem>
-                    <SelectItem value="4">4th Year</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
- 
+            )}
+
             <div className="space-y-1">
               <Label style={labelStyle}>Password</Label>
               <Input
@@ -309,11 +325,39 @@ export default function RegisterCard() {
                 className="placeholder:text-[rgba(200,185,255,0.25)] focus-visible:ring-[rgba(124,58,237,0.35)] focus-visible:border-[rgba(167,139,250,0.6)]"
               />
             </div>
- 
-            {error && (
-              <p className="text-xs text-destructive">{error}</p>
+
+            <div className="space-y-1">
+              <Label style={labelStyle}>Confirm Password</Label>
+              <Input
+                type="password"
+                placeholder="Re-enter password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                required
+                autoComplete="new-password"
+                style={inputStyle}
+                className="placeholder:text-[rgba(200,185,255,0.25)] focus-visible:ring-[rgba(124,58,237,0.35)] focus-visible:border-[rgba(167,139,250,0.6)]"
+              />
+            </div>
+
+            {isAdminMode && (
+              <div className="space-y-1">
+                <Label style={labelStyle}>Admin Invite Code</Label>
+                <Input
+                  type="password"
+                  placeholder="Enter admin invite code"
+                  value={adminInviteCode}
+                  onChange={(e) => setAdminInviteCode(e.target.value)}
+                  required
+                  autoComplete="off"
+                  style={inputStyle}
+                  className="placeholder:text-[rgba(200,185,255,0.25)] focus-visible:ring-[rgba(124,58,237,0.35)] focus-visible:border-[rgba(167,139,250,0.6)]"
+                />
+              </div>
             )}
- 
+
+            {error && <p className="text-xs text-destructive">{error}</p>}
+
             <Button
               type="submit"
               className="w-full font-bold tracking-wide text-white mt-1"
@@ -330,15 +374,19 @@ export default function RegisterCard() {
                   "0 4px 20px rgba(109,40,217,0.5), 0 0 0 1px rgba(167,139,250,0.15)",
               }}
             >
-              {loading ? "Creating account..." : "Register & Enjoy →"}
+              {loading
+                ? "Creating account..."
+                : isAdminMode
+                  ? "Create Admin Account ->"
+                  : "Register and Enjoy ->"}
             </Button>
           </form>
- 
+
           <Separator
             className="my-4"
             style={{ background: "rgba(167,139,250,0.1)" }}
           />
- 
+
           <p
             className="text-xs text-center"
             style={{ color: "rgba(200,185,255,0.38)" }}
@@ -353,13 +401,30 @@ export default function RegisterCard() {
               <Link href="/login">Sign in</Link>
             </Button>
           </p>
+
+          {!isAdminMode && (
+            <p
+              className="mt-3 text-xs text-center"
+              style={{ color: "rgba(200,185,255,0.38)" }}
+            >
+              Need admin access?{" "}
+              <Button
+                asChild
+                variant="link"
+                className="p-0 text-xs font-semibold h-auto"
+                style={{ color: "#c084fc" }}
+              >
+                <Link href="/admin-register">Register as admin</Link>
+              </Button>
+            </p>
+          )}
         </CardContent>
       </Card>
- 
+
       <style>{`
         @keyframes livepulse {
           0%, 100% { box-shadow: 0 0 0 2px rgba(167,139,250,0.3); }
-          50%       { box-shadow: 0 0 0 6px rgba(167,139,250,0); }
+          50% { box-shadow: 0 0 0 6px rgba(167,139,250,0); }
         }
       `}</style>
     </div>
