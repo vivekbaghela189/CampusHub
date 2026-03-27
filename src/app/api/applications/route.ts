@@ -15,6 +15,13 @@ export async function POST(req: Request) {
       )
     }
 
+    if (session.user.role === "ADMIN") {
+      return NextResponse.json(
+        { error: "Admins cannot register for events" },
+        { status: 403 }
+      )
+    }
+
     const body = await req.json()
     const { eventId } = body
 

@@ -19,16 +19,20 @@ export default function ApplyButton({
   disabledMessage,
 }: ApplyButtonProps) {
   const router = useRouter()
-  const { status: sessionStatus } = useSession()
+  const { data: session, status: sessionStatus } = useSession()
   const [loading, setLoading] = useState(false)
   const [status, setStatus] = useState<string | null>(null)
   const resolvedIsLoggedIn =
     typeof isLoggedIn === "boolean" ? isLoggedIn : sessionStatus === "authenticated"
+  const isAdmin = session?.user?.role === "ADMIN"
+  const isBlocked = disabled || isAdmin
+  const blockedMessage =
+    disabledMessage || (isAdmin ? "Admins cannot register for events." : undefined)
 
   const handleApply = async () => {
-    if (disabled) {
-      if (disabledMessage) {
-        setStatus(disabledMessage)
+    if (isBlocked) {
+      if (blockedMessage) {
+        setStatus(blockedMessage)
       }
       return
     }
@@ -55,7 +59,7 @@ export default function ApplyButton({
       } else {
         setStatus("Application submitted successfully 🎉")
       }
-    } catch (error) {
+    } catch {
       setStatus("Something went wrong")
     }
 
@@ -66,15 +70,15 @@ export default function ApplyButton({
     <div className="space-y-3">
       <Button
         onClick={handleApply}
-        disabled={loading || disabled}
+        disabled={loading || isBlocked}
         className="w-full"
       >
-        {loading ? "Applying..." : "Apply Now"}
+        {loading ? "Applying..." : isAdmin ? "Admin Access Only" : "Apply Now"}
       </Button>
 
-      {(status || disabledMessage) && (
+      {(status || blockedMessage) && (
         <p className="text-sm text-center text-muted-foreground">
-          {status || disabledMessage}
+          {status || blockedMessage}
         </p>
       )}
     </div>

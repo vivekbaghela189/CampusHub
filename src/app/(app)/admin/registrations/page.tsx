@@ -31,6 +31,20 @@ export default async function AdminRegistrationsPage() {
     },
   })
 
+  const serializedEvents = events.map((event) => ({
+    id: event.id,
+    title: event.title,
+    type: event.type,
+    applications: event.applications.map((application) => ({
+      id: application.id,
+      status: application.status,
+      user: {
+        name: application.user.name,
+        email: application.user.email,
+      },
+    })),
+  }))
+
   const totalRegistrations = events.reduce(
     (sum, event) => sum + event.applications.length,
     0
@@ -62,7 +76,7 @@ export default async function AdminRegistrationsPage() {
         </div>
 
         <div className="mt-10">
-          <AdminRegistrationsAccordion events={events} />
+          <AdminRegistrationsAccordion events={serializedEvents} />
         </div>
       </section>
     </div>

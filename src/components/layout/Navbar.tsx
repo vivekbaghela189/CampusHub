@@ -84,6 +84,7 @@ export default function Navbar() {
   const userName = session?.user?.name || "User"
   const userEmail = session?.user?.email || "user@campushub.com"
   const isAdmin = session?.user?.role === "ADMIN"
+  const homeHref = isAdmin ? "/admin/explore-events" : "/"
   const avatarInitial = useMemo(
     () => getInitial(session?.user?.name, session?.user?.email),
     [session?.user?.name, session?.user?.email]
@@ -166,7 +167,7 @@ export default function Navbar() {
 
       <header className="campus-navbar sticky top-0 z-50">
         <div className="container mx-auto flex h-16 items-center justify-between gap-4 px-5 md:px-8">
-          <Link href="/" className="flex items-center gap-2.5 transition-opacity hover:opacity-90">
+          <Link href={homeHref} className="flex items-center gap-2.5 transition-opacity hover:opacity-90">
             <div
               className="flex h-[30px] w-[30px] shrink-0 items-center justify-center rounded-[10px] text-[20px] font-bold"
               style={{
