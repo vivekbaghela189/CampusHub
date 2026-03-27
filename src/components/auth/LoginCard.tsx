@@ -41,7 +41,7 @@ export default function LoginCard() {
     setLoading(false)
 
     if (!res?.error) {
-      router.replace("/dashboard")
+      router.replace("/post-login")
       router.refresh()
     } else {
       setError("Invalid email or password")

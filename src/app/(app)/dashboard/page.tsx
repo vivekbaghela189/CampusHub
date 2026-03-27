@@ -79,7 +79,7 @@ export default async function DashboardPage() {
           </div>
 
           <Link href="/events">
-            <Button className="h-14 rounded-full bg-white px-8 text-base font-semibold text-slate-950 hover:bg-white/90">
+            <Button className="h-14 rounded-full bg-white px-8 text-base font-semibold text-slate-950 shadow-[0_18px_40px_-24px_rgba(255,255,255,0.7)] transition duration-300 hover:-translate-y-1 hover:bg-fuchsia-200 hover:text-slate-950 hover:shadow-[0_24px_50px_-24px_rgba(99,102,241,0.45)]">
               Browse Events
             </Button>
           </Link>
@@ -133,7 +133,7 @@ export default async function DashboardPage() {
 
                 <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row">
                   <Link href="/events">
-                    <Button className="h-11 rounded-full bg-white px-6 text-sm font-semibold text-slate-950 hover:bg-white/90">
+                    <Button className="h-11 rounded-full bg-white px-6 text-sm font-semibold text-slate-950 shadow-[0_16px_36px_-24px_rgba(255,255,255,0.7)] transition duration-300 hover:-translate-y-1 hover:bg-fuchsia-200 hover:text-slate-950 hover:shadow-[0_22px_44px_-24px_rgba(99,102,241,0.45)]">
                       Browse Events
                     </Button>
                   </Link>
@@ -168,61 +168,87 @@ export default async function DashboardPage() {
                     : "border-amber-200 bg-amber-50 text-amber-700"
                 const typeAccent =
                   app.event.type === "TECH"
-                    ? "from-sky-500/16 to-indigo-500/10 text-sky-700 border-sky-200"
+                    ? "from-sky-500/18 to-indigo-500/12 text-sky-700 border-sky-200"
                     : app.event.type === "SPORTS"
-                    ? "from-emerald-500/16 to-lime-500/10 text-emerald-700 border-emerald-200"
+                    ? "from-emerald-500/18 to-lime-500/12 text-emerald-700 border-emerald-200"
                     : app.event.type === "CULTURAL"
-                    ? "from-fuchsia-500/16 to-violet-500/10 text-fuchsia-700 border-fuchsia-200"
+                    ? "from-fuchsia-500/18 to-violet-500/12 text-fuchsia-700 border-fuchsia-200"
                     : app.event.type === "FEST"
-                    ? "from-amber-500/16 to-orange-500/10 text-amber-700 border-amber-200"
-                    : "from-indigo-500/16 to-pink-500/10 text-indigo-700 border-indigo-200"
+                    ? "from-amber-500/18 to-orange-500/12 text-amber-700 border-amber-200"
+                    : "from-indigo-500/18 to-pink-500/12 text-indigo-700 border-indigo-200"
+                const accentBar =
+                  app.event.type === "TECH"
+                    ? "linear-gradient(90deg,#60a5fa,#8b5cf6,#ec4899)"
+                    : app.event.type === "SPORTS"
+                    ? "linear-gradient(90deg,#22c55e,#14b8a6,#84cc16)"
+                    : app.event.type === "CULTURAL"
+                    ? "linear-gradient(90deg,#d946ef,#a855f7,#6366f1)"
+                    : app.event.type === "FEST"
+                    ? "linear-gradient(90deg,#fb923c,#f97316,#fb7185)"
+                    : "linear-gradient(90deg,#6366f1,#8b5cf6,#ec4899)"
+                const eventIcon =
+                  app.event.type === "TECH"
+                    ? "💻"
+                    : app.event.type === "SPORTS"
+                    ? "🏅"
+                    : app.event.type === "CULTURAL"
+                    ? "🎭"
+                    : app.event.type === "FEST"
+                    ? "🎉"
+                    : "🎬"
 
                 return (
                   <Card
                     key={app.id}
-                    className="group flex h-full w-full flex-col overflow-hidden rounded-[24px] border border-[#d7dff7] bg-[radial-gradient(circle_at_top_left,rgba(99,102,241,0.12),transparent_24%),radial-gradient(circle_at_top_right,rgba(244,114,182,0.08),transparent_28%),radial-gradient(circle_at_bottom,rgba(59,130,246,0.06),transparent_30%),linear-gradient(180deg,#eef2ff_0%,#e6edf9_100%)] shadow-[0_18px_38px_-24px_rgba(15,23,42,0.52)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_24px_50px_-28px_rgba(79,70,229,0.38)]"
+                    className="group flex h-full w-full flex-col overflow-hidden rounded-[30px] border border-white/10 bg-[radial-gradient(circle_at_top_left,rgba(99,102,241,0.18),transparent_24%),radial-gradient(circle_at_top_right,rgba(244,114,182,0.12),transparent_28%),radial-gradient(circle_at_bottom,rgba(59,130,246,0.08),transparent_30%),linear-gradient(180deg,#161a2b_0%,#111827_100%)] shadow-[0_18px_38px_-24px_rgba(15,23,42,0.72)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_24px_50px_-28px_rgba(79,70,229,0.32)]"
                   >
-                    <CardHeader className="relative flex min-h-[250px] flex-col overflow-hidden border-b border-[#d7dff7] bg-[linear-gradient(180deg,rgba(243,246,255,0.96),rgba(233,239,252,0.95))] px-5 pb-5 pt-5">
-                      <div className="pointer-events-none absolute inset-x-0 top-0 h-1 bg-[linear-gradient(90deg,#6366f1,#ec4899)]" />
+                    <CardHeader className="relative flex min-h-[272px] flex-col overflow-hidden border-b border-white/10 bg-[linear-gradient(180deg,rgba(24,30,50,0.96),rgba(19,24,41,0.95))] px-5 pb-6 pt-5">
+                      <div className="pointer-events-none absolute inset-x-0 top-0 h-1" style={{ background: accentBar }} />
                       <div className="pointer-events-none absolute right-0 top-0 h-28 w-28 rounded-full bg-indigo-500/12 blur-3xl" />
+                      <div className="pointer-events-none absolute left-0 bottom-0 h-24 w-24 rounded-full bg-sky-400/8 blur-3xl" />
 
                       <div className="mb-5 flex items-start justify-between gap-3">
                         <div
-                          className={`inline-flex items-center gap-2 rounded-full border bg-gradient-to-r px-3 py-1 text-xs font-semibold uppercase tracking-[0.22em] ${typeAccent}`}
+                          className={`inline-flex items-center gap-2 rounded-full border bg-gradient-to-r px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.22em] shadow-[inset_0_1px_0_rgba(255,255,255,0.55)] ${typeAccent}`}
                         >
                           <Ticket className="h-3.5 w-3.5" />
                           {app.event.type}
                         </div>
-                        <Badge className={`border px-3 py-1 text-[11px] font-semibold tracking-[0.16em] ${statusColor}`}>
+                        <Badge className={`rounded-full border px-3 py-1.5 text-[11px] font-semibold tracking-[0.16em] shadow-[inset_0_1px_0_rgba(255,255,255,0.18)] ${statusColor}`}>
                           {app.status}
                         </Badge>
                       </div>
 
-                      <CardTitle className="max-w-[92%] min-h-[72px] text-[1.38rem] font-semibold leading-tight tracking-tight text-slate-950">
-                        {app.event.title}
-                      </CardTitle>
+                      <div className="flex items-start gap-3">
+                        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-[18px] bg-[linear-gradient(135deg,rgba(99,102,241,0.24),rgba(244,114,182,0.16))] text-[22px] shadow-[inset_0_1px_0_rgba(255,255,255,0.12)]">
+                          {eventIcon}
+                        </div>
+                        <CardTitle className="max-w-[92%] min-h-[72px] text-[1.45rem] font-semibold leading-tight tracking-tight text-white">
+                          {app.event.title}
+                        </CardTitle>
+                      </div>
 
-                      <p className="mt-2 min-h-[72px] max-w-2xl text-[13px] leading-6 text-slate-600">
+                      <p className="mt-5 min-h-[78px] max-w-2xl text-[13.5px] leading-7 text-white/60">
                         Keep an eye on your application progress and jump back into open campus events
                         whenever you want to register for more.
                       </p>
                     </CardHeader>
 
-                    <CardContent className="flex flex-1 flex-col space-y-4 bg-[radial-gradient(circle_at_top_left,rgba(99,102,241,0.08),transparent_24%),radial-gradient(circle_at_bottom_right,rgba(244,114,182,0.05),transparent_30%),linear-gradient(180deg,rgba(237,242,255,0.94),rgba(228,236,250,0.92))] p-4 text-sm">
+                    <CardContent className="flex flex-1 flex-col space-y-5 bg-[radial-gradient(circle_at_top_left,rgba(99,102,241,0.10),transparent_24%),radial-gradient(circle_at_bottom_right,rgba(244,114,182,0.06),transparent_30%),linear-gradient(180deg,rgba(19,24,41,0.96),rgba(15,23,42,0.94))] p-4 text-sm">
                       <div className="grid gap-3 sm:grid-cols-2">
-                        <div className="rounded-[18px] border border-[#d5def6] bg-[#f7f9ff]/85 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.7)] backdrop-blur-sm">
-                          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">
+                        <div className="rounded-[20px] border border-white/10 bg-white/[0.04] p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] backdrop-blur-sm">
+                          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-white/40">
                             Event date
                           </p>
-                          <p className="mt-2 text-[15px] font-semibold tracking-tight text-slate-950">
+                          <p className="mt-3 text-[15px] font-semibold tracking-tight text-white">
                             {eventDetail?.eventDate || "Date to be announced"}
                           </p>
                         </div>
-                        <div className="rounded-[18px] border border-[#d5def6] bg-[#f7f9ff]/85 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.7)] backdrop-blur-sm">
-                          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">
+                        <div className="rounded-[20px] border border-white/10 bg-white/[0.04] p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] backdrop-blur-sm">
+                          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-white/40">
                             Event time
                           </p>
-                          <p className="mt-2 text-[15px] font-semibold tracking-tight text-slate-950">
+                          <p className="mt-3 text-[15px] font-semibold tracking-tight text-white">
                             {eventDetail?.eventTime || "Time to be announced"}
                           </p>
                         </div>
@@ -230,14 +256,14 @@ export default async function DashboardPage() {
 
                       <Button
                         asChild
-                        className="mt-auto h-10 w-full rounded-full bg-slate-950 text-xs font-semibold text-white transition group-hover:bg-indigo-600 hover:bg-indigo-600"
+                        className="mt-auto h-11 w-full rounded-full bg-slate-950 text-xs font-semibold text-white transition group-hover:bg-indigo-600 hover:bg-indigo-600"
                       >
                         <a
                           href={`data:text/plain;charset=utf-8,${encodeURIComponent(downloadContent)}`}
                           download={downloadName}
                         >
                           Download
-                          <Download className="ml-2 h-3.5 w-3.5" />
+                          <Download className="ml-2 h-4 w-4" />
                         </a>
                       </Button>
                     </CardContent>

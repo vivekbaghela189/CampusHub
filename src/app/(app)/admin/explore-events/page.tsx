@@ -8,43 +8,49 @@ import { Button } from "@/components/ui/button"
 
 const TYPE_STYLES: Record<
   string,
-  { color: string; bg: string; border: string; glow: string }
+  { color: string; bg: string; border: string; glow: string; accent: string }
 > = {
   TECH: {
     color: "#7dd3fc",
     bg: "rgba(125,211,252,0.10)",
     border: "rgba(125,211,252,0.25)",
     glow: "rgba(14,165,233,0.18)",
+    accent: "linear-gradient(90deg,#60a5fa,#8b5cf6)",
   },
   SPORTS: {
     color: "#86efac",
     bg: "rgba(134,239,172,0.10)",
     border: "rgba(134,239,172,0.25)",
     glow: "rgba(34,197,94,0.18)",
+    accent: "linear-gradient(90deg,#22c55e,#14b8a6)",
   },
   CULTURAL: {
     color: "#f0abfc",
     bg: "rgba(240,171,252,0.10)",
     border: "rgba(240,171,252,0.25)",
     glow: "rgba(217,70,239,0.18)",
+    accent: "linear-gradient(90deg,#d946ef,#8b5cf6)",
   },
   FEST: {
     color: "#fdba74",
     bg: "rgba(253,186,116,0.10)",
     border: "rgba(253,186,116,0.25)",
     glow: "rgba(249,115,22,0.18)",
+    accent: "linear-gradient(90deg,#f97316,#fb7185)",
   },
   SCREENING: {
     color: "#c4b5fd",
     bg: "rgba(196,181,253,0.10)",
     border: "rgba(196,181,253,0.25)",
     glow: "rgba(139,92,246,0.18)",
+    accent: "linear-gradient(90deg,#8b5cf6,#ec4899)",
   },
   GENERAL: {
     color: "#cbd5e1",
     bg: "rgba(203,213,225,0.10)",
     border: "rgba(203,213,225,0.25)",
     glow: "rgba(148,163,184,0.18)",
+    accent: "linear-gradient(90deg,#94a3b8,#64748b)",
   },
 }
 
@@ -104,14 +110,18 @@ export default async function AdminExploreEventsPage() {
             return (
               <div
                 key={event.id}
-                className="group relative overflow-hidden rounded-[28px] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.05),rgba(255,255,255,0.02))] p-6 shadow-[0_25px_60px_-35px_rgba(15,23,42,0.85)] transition duration-300 hover:-translate-y-1 hover:border-white/20 hover:shadow-[0_25px_60px_-28px_rgba(99,102,241,0.30)]"
+                className="group relative flex min-h-[480px] flex-col overflow-hidden rounded-[30px] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.05),rgba(255,255,255,0.02))] shadow-[0_25px_60px_-35px_rgba(15,23,42,0.85)] transition duration-300 hover:-translate-y-1 hover:border-white/20 hover:shadow-[0_25px_60px_-28px_rgba(99,102,241,0.30)]"
               >
+                <div
+                  className="pointer-events-none h-1 w-full"
+                  style={{ background: typeStyle.accent }}
+                />
                 <div
                   className="pointer-events-none absolute right-0 top-0 h-28 w-28 rounded-full blur-3xl transition duration-300 group-hover:scale-110"
                   style={{ background: typeStyle.glow }}
                 />
 
-                <div className="relative">
+                <div className="relative flex h-full flex-col p-6">
                   <div className="mb-5 flex items-start justify-between gap-3">
                     <Badge
                       className="rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em]"
@@ -133,11 +143,11 @@ export default async function AdminExploreEventsPage() {
                     {event.title}
                   </h2>
 
-                  <p className="mt-4 min-h-[88px] text-sm leading-7 text-white/60">
+                  <p className="mt-4 min-h-[96px] text-sm leading-7 text-white/60">
                     {event.description}
                   </p>
 
-                  <div className="grid gap-3 sm:grid-cols-2">
+                  <div className="mt-2 grid gap-3 sm:grid-cols-2">
                     <div className="rounded-[20px] border border-white/10 bg-white/[0.04] p-4">
                       <p className="text-xs font-semibold uppercase tracking-[0.18em] text-white/40">
                         Deadline
@@ -178,7 +188,7 @@ export default async function AdminExploreEventsPage() {
 
                   <Button
                     asChild
-                    className="mt-6 h-12 rounded-full bg-white text-sm font-semibold text-slate-950 hover:bg-white/90"
+                    className="mt-auto h-12 rounded-full bg-white text-sm font-semibold text-slate-950 hover:bg-white/90"
                   >
                     <Link href={`/admin/event/${event.id}`}>View Event Registrations</Link>
                   </Button>
