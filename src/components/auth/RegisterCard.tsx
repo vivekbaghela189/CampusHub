@@ -81,7 +81,7 @@ export default function RegisterCard() {
     borderRadius: 10,
     color: "#ede9ff",
     fontSize: 13.5,
-    height: 40,
+    height: 38,
   };
  
   return (
@@ -153,7 +153,7 @@ export default function RegisterCard() {
           }}
         />
  
-        <CardHeader className="text-center pt-8 pb-4 px-8 space-y-3">
+        <CardHeader className="space-y-2.5 px-8 pb-3 pt-6 text-center">
           {/* Live badge */}
           <div className="flex justify-center">
             <span
@@ -164,7 +164,7 @@ export default function RegisterCard() {
                 background: "rgba(124,58,237,0.18)",
                 border: "1px solid rgba(167,139,250,0.38)",
                 borderRadius: 100,
-                padding: "5px 16px",
+                padding: "4px 14px",
                 fontSize: 11,
                 fontWeight: 600,
                 color: "#d8b4fe",
@@ -191,7 +191,7 @@ export default function RegisterCard() {
             className="font-extrabold"
             style={{
               color: "#f0eeff",
-              fontSize: 26,
+              fontSize: 24,
               lineHeight: 1.2,
               letterSpacing: "-0.01em",
             }}
@@ -211,19 +211,19 @@ export default function RegisterCard() {
           <CardDescription
             style={{
               color: "rgba(200,185,255,0.45)",
-              fontSize: 12.5,
-              lineHeight: 1.5,
+              fontSize: 12,
+              lineHeight: 1.4,
             }}
           >
             Create your account and never miss a moment.
           </CardDescription>
         </CardHeader>
  
-        <CardContent className="px-8 pt-1 pb-7">
+        <CardContent className="px-8 pb-5 pt-1">
           {/* autoComplete="off" on the form prevents browser autofill entirely */}
-          <form onSubmit={handleRegister} className="space-y-3.5" autoComplete="off">
+          <form onSubmit={handleRegister} className="space-y-3" autoComplete="off">
  
-            <div className="space-y-1.5">
+            <div className="space-y-1">
               <Label style={labelStyle}>Full Name</Label>
               <Input
                 type="text"
@@ -237,7 +237,7 @@ export default function RegisterCard() {
               />
             </div>
  
-            <div className="space-y-1.5">
+            <div className="space-y-1">
               <Label style={labelStyle}>Email</Label>
               <Input
                 type="email"
@@ -252,7 +252,7 @@ export default function RegisterCard() {
             </div>
  
             <div className="grid grid-cols-2 gap-3">
-              <div className="space-y-1.5">
+              <div className="space-y-1">
                 <Label style={labelStyle}>Branch</Label>
                 <Select onValueChange={setBranch} value={branch}>
                   <SelectTrigger style={{ ...inputStyle }}>
@@ -274,7 +274,7 @@ export default function RegisterCard() {
                 </Select>
               </div>
  
-              <div className="space-y-1.5">
+              <div className="space-y-1">
                 <Label style={labelStyle}>Year</Label>
                 <Select onValueChange={(value) => setYear(value)} value={year}>
                   <SelectTrigger style={{ ...inputStyle }}>
@@ -296,7 +296,7 @@ export default function RegisterCard() {
               </div>
             </div>
  
-            <div className="space-y-1.5">
+            <div className="space-y-1">
               <Label style={labelStyle}>Password</Label>
               <Input
                 type="password"
@@ -323,7 +323,7 @@ export default function RegisterCard() {
                   "linear-gradient(135deg, #6d28d9 0%, #9333ea 55%, #c026d3 100%)",
                 border: "none",
                 borderRadius: 11,
-                height: 44,
+                height: 42,
                 fontSize: 14,
                 letterSpacing: "0.03em",
                 boxShadow:
@@ -335,7 +335,7 @@ export default function RegisterCard() {
           </form>
  
           <Separator
-            className="my-5"
+            className="my-4"
             style={{ background: "rgba(167,139,250,0.1)" }}
           />
  
