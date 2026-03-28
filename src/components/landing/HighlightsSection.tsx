@@ -54,7 +54,7 @@ export default async function HighlightsSection() {
   return (
     <section
       id="highlights"
-      className="relative overflow-hidden bg-[#080b12] py-28 scroll-mt-24"
+      className="relative overflow-hidden bg-[#080b12] py-7 scroll-mt-24"
     >
       <BackgroundLines />
       <div
@@ -65,7 +65,7 @@ export default async function HighlightsSection() {
       />
 
       <div className="container relative z-10 mx-auto px-8">
-        <div className="mb-16 max-w-3xl">
+        <div className="mb-14 max-w-3xl">
           <p
             className="mb-4 text-[11px] font-semibold uppercase tracking-[0.22em]"
             style={{ color: "rgba(255,255,255,0.42)" }}
