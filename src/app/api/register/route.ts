@@ -6,9 +6,10 @@ export async function POST(req: Request) {
   try {
     const body = await req.json()
     const { name, email, password, branch, year, role, adminInviteCode } = body
+    const normalizedEmail = String(email || "").trim().toLowerCase()
     const requestedRole = role === "ADMIN" ? "ADMIN" : "STUDENT"
 
-    if (!name || !email || !password) {
+    if (!name || !normalizedEmail || !password) {
       return NextResponse.json(
         { error: "All fields are required" },
         { status: 400 }
@@ -41,7 +42,7 @@ export async function POST(req: Request) {
     }
 
     const existingUser = await prisma.user.findUnique({
-      where: { email },
+      where: { email: normalizedEmail },
     })
 
     if (existingUser) {
@@ -56,7 +57,7 @@ export async function POST(req: Request) {
     const newUser = await prisma.user.create({
       data: {
         name,
-        email,
+        email: normalizedEmail,
         password: hashedPassword,
         branch: requestedRole === "ADMIN" ? null : branch,
         year: requestedRole === "ADMIN" ? null : year,
