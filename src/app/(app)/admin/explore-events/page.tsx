@@ -186,12 +186,22 @@ export default async function AdminExploreEventsPage() {
                     </div>
                   </div>
 
-                  <Button
-                    asChild
-                    className="mt-auto h-12 rounded-full bg-white text-sm font-semibold text-slate-950 hover:bg-white/90"
-                  >
-                    <Link href={`/admin/event/${event.id}`}>View Event Registrations</Link>
-                  </Button>
+                  <div className="mt-auto flex flex-col gap-3 sm:flex-row">
+                    <Button
+                      asChild
+                      variant="outline"
+                      className="h-12 flex-1 rounded-full border-white/15 bg-white/5 text-sm font-semibold text-white hover:bg-white/10 hover:text-white"
+                    >
+                      <Link href={`/admin/edit-event/${event.id}`}>Edit Event</Link>
+                    </Button>
+
+                    <Button
+                      asChild
+                      className="h-12 flex-1 rounded-full bg-white text-sm font-semibold text-slate-950 hover:bg-white/90"
+                    >
+                      <Link href={`/admin/event/${event.id}`}>View Event Registrations</Link>
+                    </Button>
+                  </div>
                 </div>
               </div>
             )

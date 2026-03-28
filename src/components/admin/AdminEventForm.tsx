@@ -1,6 +1,7 @@
 "use client"
 
 import { FormEvent, useState } from "react"
+import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -30,11 +31,25 @@ const INITIAL_FORM = {
   privacyNote: "",
 }
 
-export default function AdminEventForm() {
-  const [form, setForm] = useState(INITIAL_FORM)
+type AdminEventFormValues = typeof INITIAL_FORM
+
+type AdminEventFormProps = {
+  mode?: "create" | "edit"
+  eventId?: string
+  initialValues?: AdminEventFormValues
+}
+
+export default function AdminEventForm({
+  mode = "create",
+  eventId,
+  initialValues,
+}: AdminEventFormProps) {
+  const router = useRouter()
+  const [form, setForm] = useState(initialValues ?? INITIAL_FORM)
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState("")
   const [success, setSuccess] = useState("")
+  const isEditMode = mode === "edit"
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -43,8 +58,8 @@ export default function AdminEventForm() {
     setSuccess("")
 
     try {
-      const response = await fetch("/api/events", {
-        method: "POST",
+      const response = await fetch(isEditMode ? `/api/events/${eventId}` : "/api/events", {
+        method: isEditMode ? "PATCH" : "POST",
         headers: {
           "Content-Type": "application/json",
         },
@@ -57,12 +72,18 @@ export default function AdminEventForm() {
       const data = await response.json()
 
       if (!response.ok) {
-        throw new Error(data.error || "Failed to create event")
+        throw new Error(data.error || `Failed to ${isEditMode ? "update" : "create"} event`)
       }
 
-      setForm(INITIAL_FORM)
-      setSuccess("Event created successfully.")
-      window.location.reload()
+      if (isEditMode) {
+        setSuccess("Event updated successfully.")
+        router.push("/admin/explore-events")
+        router.refresh()
+      } else {
+        setForm(INITIAL_FORM)
+        setSuccess("Event created successfully.")
+        router.refresh()
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong.")
     } finally {
@@ -73,9 +94,13 @@ export default function AdminEventForm() {
   return (
     <Card className="overflow-hidden rounded-[30px] border border-white/10 bg-[radial-gradient(circle_at_top_left,rgba(99,102,241,0.16),transparent_24%),radial-gradient(circle_at_top_right,rgba(244,114,182,0.12),transparent_24%),linear-gradient(180deg,rgba(17,20,34,0.96),rgba(15,23,42,0.94))] text-white shadow-[0_25px_60px_-35px_rgba(15,23,42,0.85)]">
       <CardHeader className="border-b border-white/10">
-        <CardTitle className="text-2xl text-white">Create Event</CardTitle>
+        <CardTitle className="text-2xl text-white">
+          {isEditMode ? "Edit Event" : "Create Event"}
+        </CardTitle>
         <CardDescription className="text-white/65">
-          Add a new event with schedule, rules, and pricing details for students.
+          {isEditMode
+            ? "Update the event details students see in the admin and public views."
+            : "Add a new event with schedule, rules, and pricing details for students."}
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -289,7 +314,13 @@ export default function AdminEventForm() {
             disabled={submitting}
             className="h-12 w-full rounded-full bg-white text-sm font-semibold text-slate-950 hover:bg-white/90 md:w-fit md:px-8"
           >
-            {submitting ? "Creating..." : "Create event"}
+            {submitting
+              ? isEditMode
+                ? "Updating..."
+                : "Creating..."
+              : isEditMode
+                ? "Update event"
+                : "Create event"}
           </Button>
         </form>
       </CardContent>
