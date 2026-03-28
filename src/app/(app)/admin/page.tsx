@@ -1,7 +1,7 @@
 import Link from "next/link"
 import { redirect } from "next/navigation"
 import { getServerSession } from "next-auth"
-import { CalendarPlus2, LayoutGrid, UsersRound } from "lucide-react"
+import { CalendarPlus2, LayoutGrid } from "lucide-react"
 import { authOptions } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
 import { Button } from "@/components/ui/button"
@@ -27,16 +27,6 @@ const ACTIONS = [
     accent:
       "from-sky-500/20 via-indigo-500/10 to-cyan-500/10",
   },
-  {
-    title: "Registered Students",
-    description:
-      "Open event-wise registrations, see every student grouped by event, and review approvals quickly.",
-    href: "/admin/registrations",
-    buttonLabel: "View Registrations",
-    icon: UsersRound,
-    accent:
-      "from-emerald-500/20 via-teal-500/10 to-lime-500/10",
-  },
 ] as const
 
 export default async function AdminPage() {
@@ -50,15 +40,11 @@ export default async function AdminPage() {
     redirect("/")
   }
 
-  const [eventsCount, applicationsCount] = await Promise.all([
-    prisma.event.count(),
-    prisma.application.count(),
-  ])
+  const eventsCount = await prisma.event.count()
 
   const metrics = {
     "/admin/register-event": "Create and publish",
     "/admin/explore-events": `${eventsCount} live events`,
-    "/admin/registrations": `${applicationsCount} registrations`,
   } as const
 
   return (
