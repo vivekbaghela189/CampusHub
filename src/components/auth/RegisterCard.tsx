@@ -157,7 +157,7 @@ export default function RegisterCard({
       <Card
         className="w-full relative overflow-hidden"
         style={{
-          maxWidth: 430,
+          maxWidth: isAdminMode ? 430 : 820,
           background: "rgba(16, 10, 34, 0.92)",
           border: "1px solid rgba(167,139,250,0.2)",
           borderRadius: 24,
@@ -178,7 +178,7 @@ export default function RegisterCard({
           }}
         />
 
-        <CardHeader className="space-y-2.5 px-8 pb-3 pt-6 text-center">
+        <CardHeader className="space-y-2.5 px-8 pb-4 pt-7 text-center">
           <div className="flex justify-center">
             <span
               style={{
@@ -245,9 +245,13 @@ export default function RegisterCard({
           </CardDescription>
         </CardHeader>
 
-        <CardContent className="px-8 pb-5 pt-1">
-          <form onSubmit={handleRegister} className="space-y-3" autoComplete="off">
-            <div className="space-y-1">
+        <CardContent className="px-8 pb-7 pt-2 md:px-10">
+          <form
+            onSubmit={handleRegister}
+            className={isAdminMode ? "space-y-3" : "grid gap-4 md:grid-cols-2"}
+            autoComplete="off"
+          >
+            <div className="space-y-1 md:col-span-1">
               <Label style={labelStyle}>Full Name</Label>
               <Input
                 type="text"
@@ -261,7 +265,7 @@ export default function RegisterCard({
               />
             </div>
 
-            <div className="space-y-1">
+            <div className="space-y-1 md:col-span-1">
               <Label style={labelStyle}>Email</Label>
               <Input
                 type="email"
@@ -276,7 +280,7 @@ export default function RegisterCard({
             </div>
 
             {!isAdminMode && (
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-2 gap-3 md:col-span-2">
                 <div className="space-y-1">
                   <Label style={labelStyle}>Branch</Label>
                   <Select onValueChange={setBranch} value={branch}>
@@ -322,7 +326,7 @@ export default function RegisterCard({
               </div>
             )}
 
-            <div className="space-y-1">
+            <div className="space-y-1 md:col-span-1">
               <Label style={labelStyle}>Password</Label>
               <div className="relative">
                 <Input
@@ -346,7 +350,7 @@ export default function RegisterCard({
               </div>
             </div>
 
-            <div className="space-y-1">
+            <div className="space-y-1 md:col-span-1">
               <Label style={labelStyle}>Confirm Password</Label>
               <div className="relative">
                 <Input
@@ -371,7 +375,7 @@ export default function RegisterCard({
             </div>
 
             {isAdminMode && (
-              <div className="space-y-1">
+              <div className="space-y-1 md:col-span-2">
                 <Label style={labelStyle}>Admin Invite Code</Label>
                 <Input
                   type="password"
@@ -386,11 +390,11 @@ export default function RegisterCard({
               </div>
             )}
 
-            {error && <p className="text-xs text-destructive">{error}</p>}
+            {error && <p className="text-xs text-destructive md:col-span-2">{error}</p>}
 
             <Button
               type="submit"
-              className="w-full font-bold tracking-wide text-white mt-1"
+              className="w-full font-bold tracking-wide text-white mt-1 md:col-span-2"
               disabled={loading}
               style={{
                 background:
