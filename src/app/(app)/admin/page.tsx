@@ -1,7 +1,8 @@
 import Link from "next/link"
 import { redirect } from "next/navigation"
 import { getServerSession } from "next-auth"
-import { CalendarPlus2, LayoutGrid } from "lucide-react"
+import { CalendarPlus2, Images, LayoutGrid } from "lucide-react"
+import { Prisma } from "@prisma/client"
 import { authOptions } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
 import { Button } from "@/components/ui/button"
@@ -27,6 +28,16 @@ const ACTIONS = [
     accent:
       "from-sky-500/20 via-indigo-500/10 to-cyan-500/10",
   },
+  {
+    title: "Manage Highlights",
+    description:
+      "Add highlight images with names so they appear in the public highlights gallery.",
+    href: "/admin/highlights",
+    buttonLabel: "Open Highlights",
+    icon: Images,
+    accent:
+      "from-amber-400/20 via-pink-500/10 to-rose-500/10",
+  },
 ] as const
 
 export default async function AdminPage() {
@@ -40,11 +51,19 @@ export default async function AdminPage() {
     redirect("/")
   }
 
-  const eventsCount = await prisma.event.count()
+  const [eventsCount, highlightRows] = await Promise.all([
+    prisma.event.count(),
+    prisma.$queryRaw<Array<{ count: number }>>(Prisma.sql`
+      SELECT COUNT(*)::int AS count
+      FROM "HighlightGalleryItem"
+    `),
+  ])
+  const highlightsCount = highlightRows[0]?.count ?? 0
 
   const metrics = {
     "/admin/register-event": "Create and publish",
     "/admin/explore-events": `${eventsCount} live events`,
+    "/admin/highlights": `${highlightsCount} gallery items`,
   } as const
 
   return (

@@ -71,3 +71,11 @@ model Application {
 
   @@unique([userId, eventId])
 }
+
+model HighlightGalleryItem {
+  id        String   @id @default(uuid())
+  name      String
+  imageUrl  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

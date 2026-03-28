@@ -1,47 +1,56 @@
-"use client"
-
-import Image from "next/image"
+import { Prisma } from "@prisma/client"
+import { prisma } from "@/lib/prisma"
 import BackgroundLines from "@/components/layout/BackgroundLines"
 
-const highlightGallery = [
+const highlightGallery: Array<{
+  name: string
+  image: string
+  tone?: string
+}> = [
   {
     name: "Armaan Malik",
-    role: "Concert Night",
-    event: "Main Stage Finale",
     tone: "from-orange-400/30 via-pink-500/18 to-transparent",
     image: "",
   },
   {
     name: "Mithila Palkar",
-    role: "Creator Session",
-    event: "Spotlight Stories",
     tone: "from-fuchsia-400/28 via-violet-500/18 to-transparent",
     image: "",
   },
   {
     name: "Gaurav Taneja",
-    role: "Campus Talk",
-    event: "Discipline & Growth",
     tone: "from-emerald-400/28 via-cyan-500/18 to-transparent",
     image: "",
   },
   {
     name: "DJ Crowd Set",
-    role: "Night Experience",
-    event: "Culture Fest Lights",
     tone: "from-sky-400/28 via-indigo-500/18 to-transparent",
     image: "",
   },
   {
     name: "Finale Moments",
-    role: "Audience Energy",
-    event: "Packed Arena Frames",
     tone: "from-amber-300/28 via-rose-500/18 to-transparent",
     image: "",
   },
 ]
 
-export default function HighlightsSection() {
+export default async function HighlightsSection() {
+  const storedItems = await prisma.$queryRaw<
+    Array<{ name: string; imageUrl: string }>
+  >(Prisma.sql`
+    SELECT "name", "imageUrl"
+    FROM "HighlightGalleryItem"
+    ORDER BY "createdAt" DESC
+  `)
+
+  const galleryItems =
+    storedItems.length > 0
+      ? storedItems.map((item) => ({
+          name: item.name,
+          image: item.imageUrl,
+        }))
+      : highlightGallery
+
   return (
     <section
       id="highlights"
@@ -87,59 +96,30 @@ export default function HighlightsSection() {
         </div>
 
         <div className="mt-8">
-          <div className="grid auto-rows-[180px] gap-4 md:grid-cols-6">
-            {highlightGallery.map((item, index) => {
-              const tileClass =
-                index === 0
-                  ? "md:col-span-2 md:row-span-2"
-                  : index === 1
-                    ? "md:col-span-2"
-                    : index === 2
-                      ? "md:col-span-2"
-                      : index === 3
-                        ? "md:col-span-3"
-                        : "md:col-span-3"
-
-              const initials = item.name
-                .split(" ")
-                .map((part) => part[0])
-                .join("")
-                .slice(0, 2)
-                .toUpperCase()
-
+          <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+            {galleryItems.map((item, index) => {
               return (
                 <article
-                  key={item.name}
-                  className={`group relative overflow-hidden rounded-[28px] border border-white/[0.08] bg-[#0e1320] ${tileClass}`}
+                  key={`${item.name}-${index}`}
+                  className="group relative aspect-[1.28/1] overflow-hidden rounded-[28px] border border-white/[0.08] bg-[#0e1320]"
                 >
                   {item.image ? (
-                    <Image
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
                       src={item.image}
                       alt={item.name}
-                      fill
-                      className="object-cover transition duration-500 group-hover:scale-105"
+                      className="absolute inset-0 h-full w-full object-cover transition duration-500 group-hover:scale-105"
                     />
-                  ) : (
+                  ) : item.tone ? (
                     <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.08),transparent_45%),linear-gradient(180deg,rgba(10,14,24,0.15),rgba(10,14,24,0.8))]">
                       <div className={`absolute inset-0 bg-gradient-to-br ${item.tone}`} />
-                      <div className="absolute inset-x-6 top-6 flex items-center justify-between">
-                        <span className="rounded-full border border-white/10 bg-black/15 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-white/70">
-                          {item.role}
-                        </span>
-                        <span className="flex h-12 w-12 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.06] text-lg font-semibold text-white/90">
-                          {initials}
-                        </span>
-                      </div>
                     </div>
-                  )}
+                  ) : null}
 
                   <div className="absolute inset-0 bg-[linear-gradient(180deg,transparent_10%,rgba(5,8,15,0.2)_45%,rgba(5,8,15,0.88)_100%)]" />
 
                   <div className="absolute inset-x-0 bottom-0 p-5">
-                    <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-white/45">
-                      {item.event}
-                    </p>
-                    <h4 className="mt-2 text-[22px] font-semibold tracking-tight text-white">
+                    <h4 className="text-[22px] font-semibold tracking-tight text-white">
                       {item.name}
                     </h4>
                   </div>
