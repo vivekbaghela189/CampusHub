@@ -54,6 +54,146 @@ const TYPE_STYLES: Record<
   },
 }
 
+function EventCard({
+  event,
+  expired = false,
+}: {
+  event: {
+    id: string
+    title: string
+    description: string
+    type: string
+    deadline: Date
+    isPaid: boolean
+    price: unknown
+    currency: string
+    details: {
+      venue: string | null
+      eventDate: string | null
+      eventTime: string | null
+    } | null
+    _count: {
+      applications: number
+    }
+  }
+  expired?: boolean
+}) {
+  const typeStyle = TYPE_STYLES[event.type] ?? TYPE_STYLES.GENERAL
+  const price =
+    event.isPaid && Number(event.price ?? 0) > 0
+      ? `${event.currency} ${Number(event.price).toLocaleString("en-IN")}`
+      : "Free"
+
+  return (
+    <div
+      className={`group relative flex h-full min-h-[520px] flex-col overflow-hidden rounded-[30px] border shadow-[0_25px_60px_-35px_rgba(15,23,42,0.85)] transition duration-300 ${
+        expired
+          ? "border-white/8 bg-[linear-gradient(180deg,rgba(255,255,255,0.035),rgba(255,255,255,0.015))] opacity-90 hover:border-white/15"
+          : "border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.05),rgba(255,255,255,0.02))] hover:-translate-y-1 hover:border-white/20 hover:shadow-[0_25px_60px_-28px_rgba(99,102,241,0.30)]"
+      }`}
+    >
+      <div
+        className="pointer-events-none h-1 w-full"
+        style={{ background: typeStyle.accent }}
+      />
+      <div
+        className="pointer-events-none absolute right-0 top-0 h-28 w-28 rounded-full blur-3xl transition duration-300 group-hover:scale-110"
+        style={{ background: typeStyle.glow }}
+      />
+
+      <div className="relative flex h-full flex-col gap-5 p-6">
+        <div className="flex flex-wrap items-start justify-between gap-3">
+          <Badge
+            className="rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em]"
+            style={{
+              color: typeStyle.color,
+              background: typeStyle.bg,
+              borderColor: typeStyle.border,
+            }}
+          >
+            {event.type}
+          </Badge>
+
+          <div className="flex flex-wrap justify-end gap-2 sm:flex-col sm:items-end">
+            {expired ? (
+              <span className="rounded-full border border-amber-300/20 bg-amber-300/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-amber-100">
+                Expired
+              </span>
+            ) : null}
+            <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-semibold tracking-[0.16em] text-white/70">
+              {event._count.applications} registrations
+            </span>
+          </div>
+        </div>
+
+        <h2 className="text-2xl font-semibold tracking-tight text-white">
+          {event.title}
+        </h2>
+
+        <p className="min-h-[96px] text-sm leading-7 text-white/60">
+          {event.description}
+        </p>
+
+        <div className="grid gap-3 sm:grid-cols-2">
+          <div className="rounded-[20px] border border-white/10 bg-white/[0.04] p-4">
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-white/40">
+              Deadline
+            </p>
+            <p className="mt-2 text-sm font-semibold text-white">
+              {new Date(event.deadline).toLocaleString("en-IN")}
+            </p>
+          </div>
+
+          <div className="rounded-[20px] border border-white/10 bg-white/[0.04] p-4">
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-white/40">
+              Price
+            </p>
+            <p className="mt-2 text-sm font-semibold text-white">
+              {price}
+            </p>
+          </div>
+
+          <div className="rounded-[20px] border border-white/10 bg-white/[0.04] p-4">
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-white/40">
+              Venue
+            </p>
+            <p className="mt-2 text-sm font-semibold text-white">
+              {event.details?.venue || "Not added yet"}
+            </p>
+          </div>
+
+          <div className="rounded-[20px] border border-white/10 bg-white/[0.04] p-4">
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-white/40">
+              Event date
+            </p>
+            <p className="mt-2 text-sm font-semibold text-white">
+              {event.details?.eventDate || "TBA"}
+              {event.details?.eventTime ? `, ${event.details.eventTime}` : ""}
+            </p>
+          </div>
+        </div>
+
+        <div className="mt-auto flex flex-col gap-3 pt-2 sm:flex-row">
+          <Button
+            asChild
+            variant="outline"
+            className="h-12 flex-1 rounded-full border-white/15 bg-white/5 text-sm font-semibold text-white hover:bg-white/10 hover:text-white"
+          >
+            <Link href={`/admin/edit-event/${event.id}`}>Edit Event</Link>
+          </Button>
+
+          <Button
+            asChild
+            className="h-12 flex-1 rounded-full bg-white text-sm font-semibold text-slate-950 hover:bg-white/90"
+          >
+            <Link href={`/admin/event/${event.id}`}>View Event Registrations</Link>
+          </Button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 export default async function AdminExploreEventsPage() {
   const session = await getServerSession(authOptions)
 
@@ -77,6 +217,10 @@ export default async function AdminExploreEventsPage() {
     orderBy: { createdAt: "desc" },
   })
 
+  const now = new Date()
+  const activeEvents = events.filter((event) => new Date(event.deadline) >= now)
+  const expiredEvents = events.filter((event) => new Date(event.deadline) < now)
+
   return (
     <div className="mx-auto flex w-full max-w-[1500px] flex-col gap-10 px-4 py-10 md:px-8">
       <section className="overflow-hidden rounded-[36px] border border-white/10 bg-[radial-gradient(circle_at_top_left,rgba(99,102,241,0.22),transparent_28%),radial-gradient(circle_at_top_right,rgba(244,114,182,0.18),transparent_24%),linear-gradient(180deg,#111422_0%,#0f172a_100%)] p-8 text-white shadow-[0_30px_80px_-40px_rgba(15,23,42,0.95)] md:p-12">
@@ -95,117 +239,62 @@ export default async function AdminExploreEventsPage() {
           </div>
 
           <Badge className="rounded-full border border-white/10 bg-white/10 px-4 py-2 text-sm font-semibold text-white/85">
-            {events.length} events
+            {events.length} total events
           </Badge>
         </div>
 
-        <div className="mt-10 grid gap-6 md:grid-cols-2">
-          {events.map((event) => {
-            const typeStyle = TYPE_STYLES[event.type] ?? TYPE_STYLES.GENERAL
-            const price =
-              event.isPaid && Number(event.price ?? 0) > 0
-                ? `${event.currency} ${Number(event.price).toLocaleString("en-IN")}`
-                : "Free"
-
-            return (
-              <div
-                key={event.id}
-                className="group relative flex min-h-[480px] flex-col overflow-hidden rounded-[30px] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.05),rgba(255,255,255,0.02))] shadow-[0_25px_60px_-35px_rgba(15,23,42,0.85)] transition duration-300 hover:-translate-y-1 hover:border-white/20 hover:shadow-[0_25px_60px_-28px_rgba(99,102,241,0.30)]"
-              >
-                <div
-                  className="pointer-events-none h-1 w-full"
-                  style={{ background: typeStyle.accent }}
-                />
-                <div
-                  className="pointer-events-none absolute right-0 top-0 h-28 w-28 rounded-full blur-3xl transition duration-300 group-hover:scale-110"
-                  style={{ background: typeStyle.glow }}
-                />
-
-                <div className="relative flex h-full flex-col p-6">
-                  <div className="mb-5 flex items-start justify-between gap-3">
-                    <Badge
-                      className="rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em]"
-                      style={{
-                        color: typeStyle.color,
-                        background: typeStyle.bg,
-                        borderColor: typeStyle.border,
-                      }}
-                    >
-                      {event.type}
-                    </Badge>
-
-                    <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-semibold tracking-[0.16em] text-white/70">
-                      {event._count.applications} registrations
-                    </span>
-                  </div>
-
-                  <h2 className="text-2xl font-semibold tracking-tight text-white">
-                    {event.title}
-                  </h2>
-
-                  <p className="mt-4 min-h-[96px] text-sm leading-7 text-white/60">
-                    {event.description}
-                  </p>
-
-                  <div className="mt-2 grid gap-3 sm:grid-cols-2">
-                    <div className="rounded-[20px] border border-white/10 bg-white/[0.04] p-4">
-                      <p className="text-xs font-semibold uppercase tracking-[0.18em] text-white/40">
-                        Deadline
-                      </p>
-                      <p className="mt-2 text-sm font-semibold text-white">
-                        {new Date(event.deadline).toLocaleString("en-IN")}
-                      </p>
-                    </div>
-
-                    <div className="rounded-[20px] border border-white/10 bg-white/[0.04] p-4">
-                      <p className="text-xs font-semibold uppercase tracking-[0.18em] text-white/40">
-                        Price
-                      </p>
-                      <p className="mt-2 text-sm font-semibold text-white">
-                        {price}
-                      </p>
-                    </div>
-
-                    <div className="rounded-[20px] border border-white/10 bg-white/[0.04] p-4">
-                      <p className="text-xs font-semibold uppercase tracking-[0.18em] text-white/40">
-                        Venue
-                      </p>
-                      <p className="mt-2 text-sm font-semibold text-white">
-                        {event.details?.venue || "Not added yet"}
-                      </p>
-                    </div>
-
-                    <div className="rounded-[20px] border border-white/10 bg-white/[0.04] p-4">
-                      <p className="text-xs font-semibold uppercase tracking-[0.18em] text-white/40">
-                        Event date
-                      </p>
-                      <p className="mt-2 text-sm font-semibold text-white">
-                        {event.details?.eventDate || "TBA"}
-                        {event.details?.eventTime ? `, ${event.details.eventTime}` : ""}
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="mt-auto flex flex-col gap-3 sm:flex-row">
-                    <Button
-                      asChild
-                      variant="outline"
-                      className="h-12 flex-1 rounded-full border-white/15 bg-white/5 text-sm font-semibold text-white hover:bg-white/10 hover:text-white"
-                    >
-                      <Link href={`/admin/edit-event/${event.id}`}>Edit Event</Link>
-                    </Button>
-
-                    <Button
-                      asChild
-                      className="h-12 flex-1 rounded-full bg-white text-sm font-semibold text-slate-950 hover:bg-white/90"
-                    >
-                      <Link href={`/admin/event/${event.id}`}>View Event Registrations</Link>
-                    </Button>
-                  </div>
-                </div>
+        <div className="mt-10 space-y-10">
+          <div className="rounded-[32px] border border-white/10 bg-white/[0.03] p-6 md:p-8">
+            <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <h2 className="text-2xl font-semibold text-white">Active Events</h2>
+                <p className="mt-1 text-sm text-white/55">
+                  Events with an upcoming or ongoing registration deadline.
+                </p>
               </div>
-            )
-          })}
+              <Badge className="w-fit rounded-full border border-emerald-400/20 bg-emerald-400/10 px-4 py-2 text-sm font-semibold text-emerald-100">
+                {activeEvents.length} active
+              </Badge>
+            </div>
+
+            {activeEvents.length === 0 ? (
+              <div className="rounded-[28px] border border-dashed border-white/12 bg-white/[0.03] p-8 text-white/55">
+                No active events available right now.
+              </div>
+            ) : (
+              <div className="grid gap-6 md:grid-cols-2">
+                {activeEvents.map((event) => (
+                  <EventCard key={event.id} event={event} />
+                ))}
+              </div>
+            )}
+          </div>
+
+          <div className="rounded-[32px] border border-white/10 bg-white/[0.03] p-6 md:p-8">
+            <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <h2 className="text-2xl font-semibold text-white">Expired Events</h2>
+                <p className="mt-1 text-sm text-white/55">
+                  Events whose registration deadline has already passed.
+                </p>
+              </div>
+              <Badge className="w-fit rounded-full border border-amber-300/20 bg-amber-300/10 px-4 py-2 text-sm font-semibold text-amber-100">
+                {expiredEvents.length} expired
+              </Badge>
+            </div>
+
+            {expiredEvents.length === 0 ? (
+              <div className="rounded-[28px] border border-dashed border-white/12 bg-white/[0.03] p-8 text-white/55">
+                No expired events yet.
+              </div>
+            ) : (
+              <div className="grid gap-6 md:grid-cols-2">
+                {expiredEvents.map((event) => (
+                  <EventCard key={event.id} event={event} expired />
+                ))}
+              </div>
+            )}
+          </div>
         </div>
       </section>
     </div>
