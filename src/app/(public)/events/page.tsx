@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth"
 import { prisma } from "@/lib/prisma"
 import { Prisma } from "@prisma/client"
 import { Badge } from "@/components/ui/badge"
+import AmbientBackdrop from "@/components/layout/AmbientBackdrop"
 import EventDetailsModal from "@/components/events/EventDetailsModal"
 import { unstable_noStore as noStore } from "next/cache"
 import { redirect } from "next/navigation"
@@ -136,6 +137,7 @@ export default async function EventsPage({
         minHeight:"100vh", fontFamily:"'DM Sans',sans-serif",
         position:"relative", overflow:"hidden",
       }}>
+        <AmbientBackdrop variant="default" />
  
         {/* Subtle grid lines — matches homepage */}
         {/* Purple ambient glow */}

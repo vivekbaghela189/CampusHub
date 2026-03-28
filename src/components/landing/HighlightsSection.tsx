@@ -1,5 +1,6 @@
 import { Prisma } from "@prisma/client"
 import { prisma } from "@/lib/prisma"
+import AmbientBackdrop from "@/components/layout/AmbientBackdrop"
 
 const highlightGallery: Array<{
   name: string
@@ -55,6 +56,7 @@ export default async function HighlightsSection() {
       id="highlights"
       className="relative overflow-hidden bg-[#080b12] py-7 scroll-mt-24"
     >
+      <AmbientBackdrop variant="default" />
       <div
         className="pointer-events-none absolute left-1/2 top-1/2 h-[620px] w-[620px] -translate-x-1/2 -translate-y-1/2 rounded-full"
         style={{

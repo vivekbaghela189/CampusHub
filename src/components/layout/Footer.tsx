@@ -1,6 +1,7 @@
 "use client"
  
 import Link from "next/link"
+import AmbientBackdrop from "@/components/layout/AmbientBackdrop"
  
 const links = {
   Platform: [
@@ -25,6 +26,7 @@ const socials = ["GitHub", "LinkedIn", "Twitter"]
 export default function Footer() {
   return (
     <footer style={{ background: "#080b12", position: "relative", overflow: "hidden" }}>
+      <AmbientBackdrop variant="subtle" />
       {/* Orb */}
       <div
         style={{

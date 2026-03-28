@@ -1,4 +1,5 @@
 import Link from "next/link"
+import AmbientBackdrop from "@/components/layout/AmbientBackdrop"
 
 type LegalSection = {
   title: string
@@ -29,6 +30,7 @@ export default function LegalPage({
         overflow: "hidden",
       }}
     >
+      <AmbientBackdrop variant="subtle" />
       <div
         style={{
           position: "absolute",
