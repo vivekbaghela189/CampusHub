@@ -751,14 +751,12 @@ function FeaturesSection() {
 
 function CategoriesSection() {
   const [hovered, setHovered] = useState<number | null>(null)
-
   return (
     <section
       id="categories"
       className="relative overflow-hidden py-28"
       style={{ background: "#080b12" }}
-    >
-      <BackgroundLines />
+    ><BackgroundLines/>
       <div
         className="absolute pointer-events-none"
         style={{
@@ -895,8 +893,7 @@ function TestimonialsSection() {
     <section
       className="relative overflow-hidden py-28"
       style={{ background: "#080b12" }}
-    >
-      <BackgroundLines />
+    ><BackgroundLines />
       <div
         className="absolute pointer-events-none"
         style={{
@@ -1106,6 +1103,7 @@ function FAQSection() {
 export default function Homepage() {
   return (
     <main className="flex flex-col bg-[#080b12]">
+      
       <HeroSection />
       <FeaturesSection />
       <CategoriesSection />
