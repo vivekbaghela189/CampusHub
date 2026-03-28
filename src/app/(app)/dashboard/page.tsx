@@ -4,6 +4,7 @@ import { prisma } from "@/lib/prisma"
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/lib/auth"
 import { redirect } from "next/navigation"
+import FadeIn from "@/components/animations/FadeIn"
 import {
   CalendarClock,
   CheckCircle2,
@@ -64,7 +65,7 @@ export default async function DashboardPage() {
 
   return (
     <div className="mx-auto flex w-full max-w-[1500px] flex-col gap-10 px-4 py-10 md:px-8">
-      <div className="overflow-hidden rounded-[36px] border border-white/10 bg-[radial-gradient(circle_at_top_left,rgba(99,102,241,0.22),transparent_30%),radial-gradient(circle_at_top_right,rgba(244,114,182,0.18),transparent_28%),linear-gradient(180deg,#111422_0%,#0f172a_100%)] p-10 text-white shadow-[0_30px_80px_-40px_rgba(15,23,42,0.95)] md:min-h-[820px] md:p-12">
+      <FadeIn className="overflow-hidden rounded-[36px] border border-white/10 bg-[radial-gradient(circle_at_top_left,rgba(99,102,241,0.22),transparent_30%),radial-gradient(circle_at_top_right,rgba(244,114,182,0.18),transparent_28%),linear-gradient(180deg,#111422_0%,#0f172a_100%)] p-10 text-white shadow-[0_30px_80px_-40px_rgba(15,23,42,0.95)] md:min-h-[820px] md:p-12">
         <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
           <div className="max-w-2xl">
             <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-semibold uppercase tracking-[0.22em] text-white/70">
@@ -86,35 +87,35 @@ export default async function DashboardPage() {
         </div>
 
         <div className="mt-10 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
-          <div className="rounded-[30px] border border-white/10 bg-white/6 p-7 backdrop-blur-sm">
+          <FadeIn className="rounded-[30px] border border-white/10 bg-white/6 p-7 backdrop-blur-sm" delay={0.04} distance={20}>
             <p className="text-base text-white/60">Total registrations</p>
             <p className="mt-4 text-5xl font-semibold">{applications.length}</p>
-          </div>
-          <div className="rounded-[30px] border border-emerald-400/20 bg-emerald-400/10 p-7 backdrop-blur-sm">
+          </FadeIn>
+          <FadeIn className="rounded-[30px] border border-emerald-400/20 bg-emerald-400/10 p-7 backdrop-blur-sm" delay={0.08} distance={20}>
             <div className="flex items-center gap-2 text-emerald-200">
               <CheckCircle2 className="h-5 w-5" />
               <p className="text-base">Approved</p>
             </div>
             <p className="mt-4 text-5xl font-semibold text-white">{approvedCount}</p>
-          </div>
-          <div className="rounded-[30px] border border-amber-300/20 bg-amber-300/10 p-7 backdrop-blur-sm">
+          </FadeIn>
+          <FadeIn className="rounded-[30px] border border-amber-300/20 bg-amber-300/10 p-7 backdrop-blur-sm" delay={0.12} distance={20}>
             <div className="flex items-center gap-2 text-amber-100">
               <Clock3 className="h-5 w-5" />
               <p className="text-base">Pending</p>
             </div>
             <p className="mt-4 text-5xl font-semibold text-white">{pendingCount}</p>
-          </div>
-          <div className="rounded-[30px] border border-rose-300/20 bg-rose-300/10 p-7 backdrop-blur-sm">
+          </FadeIn>
+          <FadeIn className="rounded-[30px] border border-rose-300/20 bg-rose-300/10 p-7 backdrop-blur-sm" delay={0.16} distance={20}>
             <div className="flex items-center gap-2 text-rose-100">
               <XCircle className="h-5 w-5" />
               <p className="text-base">Rejected</p>
             </div>
             <p className="mt-4 text-5xl font-semibold text-white">{rejectedCount}</p>
-          </div>
+          </FadeIn>
         </div>
         <div className="mt-10">
           {applications.length === 0 ? (
-            <div className="relative overflow-hidden rounded-[32px] border border-white/10 bg-white/[0.04] p-8 shadow-[0_25px_60px_-35px_rgba(15,23,42,0.35)] backdrop-blur-sm md:p-12">
+            <FadeIn className="relative overflow-hidden rounded-[32px] border border-white/10 bg-white/[0.04] p-8 shadow-[0_25px_60px_-35px_rgba(15,23,42,0.35)] backdrop-blur-sm md:p-12">
               <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(99,102,241,0.16),transparent_28%),radial-gradient(circle_at_bottom_right,rgba(244,114,182,0.12),transparent_28%)]" />
               <div className="relative mx-auto flex min-h-[380px] max-w-3xl flex-col items-center justify-center text-center">
                 <div className="mb-6 flex h-20 w-20 items-center justify-center rounded-[28px] bg-[linear-gradient(135deg,#6366f1,#ec4899)] text-white shadow-[0_20px_40px_-20px_rgba(99,102,241,0.8)]">
@@ -144,10 +145,10 @@ export default async function DashboardPage() {
                   </Link>
                 </div>
               </div>
-            </div>
+            </FadeIn>
           ) : (
             <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
-              {applications.map((app) => {
+              {applications.map((app, index) => {
                 const eventDetail = detailsByEventId.get(app.eventId)
                 const downloadContent = [
                   `Event: ${app.event.title}`,
@@ -198,8 +199,8 @@ export default async function DashboardPage() {
                     : "🎬"
 
                 return (
+                  <FadeIn key={app.id} delay={index * 0.04} distance={24} amount={0.08}>
                   <Card
-                    key={app.id}
                     className="group flex h-full w-full flex-col overflow-hidden rounded-[30px] border border-white/10 bg-[radial-gradient(circle_at_top_left,rgba(99,102,241,0.18),transparent_24%),radial-gradient(circle_at_top_right,rgba(244,114,182,0.12),transparent_28%),radial-gradient(circle_at_bottom,rgba(59,130,246,0.08),transparent_30%),linear-gradient(180deg,#161a2b_0%,#111827_100%)] shadow-[0_18px_38px_-24px_rgba(15,23,42,0.72)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_24px_50px_-28px_rgba(79,70,229,0.32)]"
                   >
                     <CardHeader className="relative flex min-h-[272px] flex-col overflow-hidden border-b border-white/10 bg-[linear-gradient(180deg,rgba(24,30,50,0.96),rgba(19,24,41,0.95))] px-5 pb-6 pt-5">
@@ -268,12 +269,13 @@ export default async function DashboardPage() {
                       </Button>
                     </CardContent>
                   </Card>
+                  </FadeIn>
                 )
               })}
             </div>
           )}
         </div>
-      </div>
+      </FadeIn>
     </div>
   )
 }

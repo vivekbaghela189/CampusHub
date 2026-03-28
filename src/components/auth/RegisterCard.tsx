@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Eye, EyeOff } from "lucide-react";
+import { motion } from "framer-motion";
 
 import {
   Card,
@@ -147,6 +148,12 @@ export default function RegisterCard({
         }}
       />
 
+      <motion.div
+        initial={isAdminMode ? false : { opacity: 0, y: 30, filter: "blur(10px)" }}
+        whileInView={isAdminMode ? undefined : { opacity: 1, y: 0, filter: "blur(0px)" }}
+        transition={{ duration: 0.7, ease: "easeOut" }}
+        viewport={{ once: false, amount: 0.35 }}
+      >
       <Card
         className="w-full relative overflow-hidden"
         style={{
@@ -443,6 +450,7 @@ export default function RegisterCard({
           )}
         </CardContent>
       </Card>
+      </motion.div>
 
       <style>{`
         @keyframes livepulse {

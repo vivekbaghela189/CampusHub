@@ -2,6 +2,7 @@ import Link from "next/link"
 import { getServerSession } from "next-auth"
 import { prisma } from "@/lib/prisma"
 import { Prisma } from "@prisma/client"
+import FadeIn from "@/components/animations/FadeIn"
 import { Badge } from "@/components/ui/badge"
 import AmbientBackdrop from "@/components/layout/AmbientBackdrop"
 import EventDetailsModal from "@/components/events/EventDetailsModal"
@@ -151,7 +152,7 @@ export default async function EventsPage({
         <div style={{ maxWidth:"1120px", margin:"0 auto", padding:"4rem 2rem 6rem", position:"relative", zIndex:1 }}>
  
           {/* ── PAGE HEADER ── */}
-          <div style={{ marginBottom:"3rem" }}>
+          <FadeIn style={{ marginBottom:"3rem" }}>
             {/* Live count pill */}
             <div style={{
               display:"inline-flex", alignItems:"center", gap:"8px",
@@ -186,9 +187,10 @@ export default async function EventsPage({
             <p style={{ color:"#6b6a72", fontSize:"15px", fontWeight:300 }}>
               Discover upcoming campus activities, competitions, and experiences.
             </p>
-          </div>
+          </FadeIn>
  
           {/* ── FILTER FORM (original form + searchParams + submit fully preserved) ── */}
+          <FadeIn delay={0.08} distance={24}>
           <form style={{ display:"flex", gap:"10px", marginBottom:"1.4rem", flexWrap:"wrap", alignItems:"center" }}>
  
             {/* Search input */}
@@ -270,8 +272,10 @@ export default async function EventsPage({
               </Link>
             )}
           </form>
+          </FadeIn>
  
           {/* ── Quick type pills (server-side link navigation) ── */}
+          <FadeIn delay={0.12} distance={24}>
           <div style={{ display:"flex", gap:"7px", marginBottom:"2.2rem", flexWrap:"wrap" }}>
             {[
               { label:"All",      val:"",         color:"#c8f542", bg:"rgba(200,245,66,0.08)",  border:"rgba(200,245,66,0.38)"  },
@@ -304,11 +308,13 @@ export default async function EventsPage({
               )
             })}
           </div>
+          </FadeIn>
  
           {/* ── EVENTS GRID — original 3-state logic fully preserved ── */}
  
           {databaseError ? (
             /* DB Error */
+            <FadeIn>
             <div style={{
               borderRadius:"18px", border:"1px solid rgba(255,80,80,0.16)",
               background:"rgba(255,60,60,0.04)", padding:"5rem 2rem", textAlign:"center",
@@ -341,9 +347,11 @@ export default async function EventsPage({
                 and Supabase credentials, then refresh this page.
               </p>
             </div>
+            </FadeIn>
  
           ) : events.length === 0 ? (
             /* Empty state */
+            <FadeIn>
             <div style={{
               borderRadius:"18px", border:"1px solid rgba(255,255,255,0.06)",
               background:"rgba(255,255,255,0.02)", padding:"5rem 2rem", textAlign:"center",
@@ -377,6 +385,7 @@ export default async function EventsPage({
                 }}>Clear filters</button>
               </Link>
             </div>
+            </FadeIn>
  
           ) : (
             /* Cards grid */
@@ -385,7 +394,7 @@ export default async function EventsPage({
               gridTemplateColumns:"repeat(auto-fill,minmax(320px,1fr))",
               gap:"14px",
             }}>
-              {events.map((event) => {
+              {events.map((event, index) => {
                 const cfg = TYPE_CONFIG[event.type] ?? DEFAULT_CFG
                 const eventPrice = Number(event.price ?? 0)
                 const isFree = eventPrice <= 0
@@ -394,8 +403,8 @@ export default async function EventsPage({
                   : `${event.currency === "INR" ? "₹" : "$"}${eventPrice.toLocaleString("en-IN")}`
  
                 return (
+                  <FadeIn key={event.id} delay={index * 0.04} distance={26} amount={0.08}>
                   <div
-                    key={event.id}
                     className="ev-card"
                     style={{
                       background:"#12121f",
@@ -532,6 +541,7 @@ export default async function EventsPage({
  
                     </div>
                   </div>
+                  </FadeIn>
                 )
               })}
             </div>

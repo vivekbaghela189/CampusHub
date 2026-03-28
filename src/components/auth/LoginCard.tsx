@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { Eye, EyeOff } from "lucide-react"
 
+import FadeIn from "@/components/animations/FadeIn"
 import {
   Card,
   CardContent,
@@ -107,6 +108,7 @@ export default function LoginCard() {
         }}
       />
 
+      <FadeIn amount={0.35} distance={30}>
       <Card
         className="w-full relative overflow-hidden"
         style={{
@@ -285,6 +287,7 @@ export default function LoginCard() {
           </p>
         </CardContent>
       </Card>
+      </FadeIn>
 
       <style>{`
         @keyframes livepulse {

@@ -1,4 +1,5 @@
 import Link from "next/link"
+import FadeIn from "@/components/animations/FadeIn"
 import AmbientBackdrop from "@/components/layout/AmbientBackdrop"
 
 type LegalSection = {
@@ -54,7 +55,7 @@ export default function LegalPage({
           padding: "72px 24px 96px",
         }}
       >
-        <div
+        <FadeIn
           style={{
             display: "inline-flex",
             alignItems: "center",
@@ -72,9 +73,9 @@ export default function LegalPage({
           }}
         >
           {eyebrow}
-        </div>
+        </FadeIn>
 
-        <div
+        <FadeIn
           style={{
             borderRadius: 30,
             background:
@@ -120,42 +121,43 @@ export default function LegalPage({
           </div>
 
           <div style={{ display: "grid", gap: 20 }}>
-            {sections.map((section) => (
-              <section
-                key={section.title}
-                style={{
-                  borderRadius: 22,
-                  background:
-                    "linear-gradient(135deg, rgba(99,102,241,0.09), rgba(124,58,237,0.08) 50%, rgba(8,11,18,0.56) 100%)",
-                  border: "1px solid rgba(167,139,250,0.12)",
-                  padding: "22px 20px",
-                }}
-              >
-                <h2
+            {sections.map((section, index) => (
+              <FadeIn key={section.title} delay={index * 0.06} distance={24}>
+                <section
                   style={{
-                    color: "#f5f3ff",
-                    fontSize: 20,
-                    fontWeight: 700,
-                    marginBottom: 12,
+                    borderRadius: 22,
+                    background:
+                      "linear-gradient(135deg, rgba(99,102,241,0.09), rgba(124,58,237,0.08) 50%, rgba(8,11,18,0.56) 100%)",
+                    border: "1px solid rgba(167,139,250,0.12)",
+                    padding: "22px 20px",
                   }}
                 >
-                  {section.title}
-                </h2>
-                <div style={{ display: "grid", gap: 12 }}>
-                  {section.points.map((point) => (
-                    <p
-                      key={point}
-                      style={{
-                        color: "rgba(226,232,255,0.74)",
-                        fontSize: 15,
-                        lineHeight: 1.75,
-                      }}
-                    >
-                      {point}
-                    </p>
-                  ))}
-                </div>
-              </section>
+                  <h2
+                    style={{
+                      color: "#f5f3ff",
+                      fontSize: 20,
+                      fontWeight: 700,
+                      marginBottom: 12,
+                    }}
+                  >
+                    {section.title}
+                  </h2>
+                  <div style={{ display: "grid", gap: 12 }}>
+                    {section.points.map((point) => (
+                      <p
+                        key={point}
+                        style={{
+                          color: "rgba(226,232,255,0.74)",
+                          fontSize: 15,
+                          lineHeight: 1.75,
+                        }}
+                      >
+                        {point}
+                      </p>
+                    ))}
+                  </div>
+                </section>
+              </FadeIn>
             ))}
           </div>
 
@@ -181,7 +183,7 @@ export default function LegalPage({
               Back to Events
             </Link>
           </div>
-        </div>
+        </FadeIn>
       </div>
     </main>
   )

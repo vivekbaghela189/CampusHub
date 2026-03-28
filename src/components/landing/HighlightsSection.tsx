@@ -1,5 +1,6 @@
 import { Prisma } from "@prisma/client"
 import { prisma } from "@/lib/prisma"
+import FadeIn from "@/components/animations/FadeIn"
 import AmbientBackdrop from "@/components/layout/AmbientBackdrop"
 
 const highlightGallery: Array<{
@@ -65,7 +66,7 @@ export default async function HighlightsSection() {
       />
 
       <div className="container relative z-10 mx-auto px-8">
-        <div className="mb-14 max-w-3xl">
+        <FadeIn className="mb-14 max-w-3xl">
           <p
             className="mb-4 text-[11px] font-semibold uppercase tracking-[0.22em]"
             style={{ color: "rgba(255,255,255,0.42)" }}
@@ -93,37 +94,41 @@ export default async function HighlightsSection() {
             Showcase guest appearances, crowd reactions and standout event moments in a dense
             photo-wall layout that instantly feels alive.
           </p>
-        </div>
+        </FadeIn>
 
         <div className="mt-8">
           <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
             {galleryItems.map((item, index) => {
               return (
-                <article
+                <FadeIn
                   key={`${item.name}-${index}`}
-                  className="group relative aspect-[1.28/1] overflow-hidden rounded-[28px] border border-white/[0.08] bg-[#0e1320]"
+                  delay={index * 0.06}
+                  distance={28}
+                  amount={0.15}
                 >
-                  {item.image ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
-                      src={item.image}
-                      alt={item.name}
-                      className="absolute inset-0 h-full w-full object-cover transition duration-500 group-hover:scale-105"
-                    />
-                  ) : item.tone ? (
-                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.08),transparent_45%),linear-gradient(180deg,rgba(10,14,24,0.15),rgba(10,14,24,0.8))]">
-                      <div className={`absolute inset-0 bg-gradient-to-br ${item.tone}`} />
+                  <article className="group relative aspect-[1.28/1] overflow-hidden rounded-[28px] border border-white/[0.08] bg-[#0e1320]">
+                    {item.image ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={item.image}
+                        alt={item.name}
+                        className="absolute inset-0 h-full w-full object-cover transition duration-500 group-hover:scale-105"
+                      />
+                    ) : item.tone ? (
+                      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.08),transparent_45%),linear-gradient(180deg,rgba(10,14,24,0.15),rgba(10,14,24,0.8))]">
+                        <div className={`absolute inset-0 bg-gradient-to-br ${item.tone}`} />
+                      </div>
+                    ) : null}
+
+                    <div className="absolute inset-0 bg-[linear-gradient(180deg,transparent_10%,rgba(5,8,15,0.2)_45%,rgba(5,8,15,0.88)_100%)]" />
+
+                    <div className="absolute inset-x-0 bottom-0 p-5">
+                      <h4 className="text-[22px] font-semibold tracking-tight text-white">
+                        {item.name}
+                      </h4>
                     </div>
-                  ) : null}
-
-                  <div className="absolute inset-0 bg-[linear-gradient(180deg,transparent_10%,rgba(5,8,15,0.2)_45%,rgba(5,8,15,0.88)_100%)]" />
-
-                  <div className="absolute inset-x-0 bottom-0 p-5">
-                    <h4 className="text-[22px] font-semibold tracking-tight text-white">
-                      {item.name}
-                    </h4>
-                  </div>
-                </article>
+                  </article>
+                </FadeIn>
               )
             })}
           </div>

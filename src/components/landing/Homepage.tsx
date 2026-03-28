@@ -630,7 +630,7 @@ function FeaturesSection() {
       />
 
       <div className="container relative z-10 mx-auto px-8">
-        <div className="mb-16 flex flex-col justify-between gap-6 sm:flex-row sm:items-end">
+        <FadeIn className="mb-16 flex flex-col justify-between gap-6 sm:flex-row sm:items-end">
           <div>
             <p
               className="mb-4 text-[11px] font-semibold uppercase tracking-[0.22em]"
@@ -656,7 +656,7 @@ function FeaturesSection() {
               </span>
             </h2>
           </div>
-        </div>
+        </FadeIn>
 
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
           {steps.map((step, i) => {
@@ -664,8 +664,8 @@ function FeaturesSection() {
             const isHovered = hovered === i
 
             return (
+              <FadeIn key={i} delay={i * 0.06} distance={24}>
               <motion.div
-                key={i}
                 onMouseEnter={() => setHovered(i)}
                 onMouseLeave={() => setHovered(null)}
                 animate={{
@@ -741,6 +741,7 @@ function FeaturesSection() {
                   }}
                 />
               </motion.div>
+              </FadeIn>
             )
           })}
         </div>
@@ -770,7 +771,7 @@ function CategoriesSection() {
       />
 
       <div className="container relative z-10 mx-auto px-8">
-        <div className="mb-16 text-center">
+        <FadeIn className="mb-16 text-center">
           <p
             className="mb-4 text-[11px] font-semibold uppercase tracking-[0.22em]"
             style={{ color: "#6366f1" }}
@@ -793,7 +794,7 @@ function CategoriesSection() {
               happening.
             </span>
           </h2>
-        </div>
+        </FadeIn>
 
         <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
           {categories.map((cat, i) => {
@@ -801,8 +802,8 @@ function CategoriesSection() {
             const isHovered = hovered === i
 
             return (
+              <FadeIn key={i} delay={i * 0.05} distance={24}>
               <motion.div
-                key={i}
                 onMouseEnter={() => setHovered(i)}
                 onMouseLeave={() => setHovered(null)}
                 animate={{
@@ -878,6 +879,7 @@ function CategoriesSection() {
                   }}
                 />
               </motion.div>
+              </FadeIn>
             )
           })}
         </div>
@@ -908,7 +910,7 @@ function TestimonialsSection() {
       />
 
       <div className="relative z-10">
-        <div className="mb-16 px-8 text-center">
+        <FadeIn className="mb-16 px-8 text-center">
           <p
             className="mb-4 text-[11px] font-semibold uppercase tracking-[0.22em]"
             style={{ color: "#6366f1" }}
@@ -931,12 +933,14 @@ function TestimonialsSection() {
               say.
             </span>
           </h2>
-        </div>
+        </FadeIn>
 
-        <MarqueeRow items={row1} direction="left" speed={38} />
-        <div className="mt-3">
+        <FadeIn distance={22}>
+          <MarqueeRow items={row1} direction="left" speed={38} />
+        </FadeIn>
+        <FadeIn className="mt-3" delay={0.08} distance={22}>
           <MarqueeRow items={row2} direction="right" speed={32} />
-        </div>
+        </FadeIn>
       </div>
     </section>
   )
@@ -964,7 +968,7 @@ function FAQSection() {
       />
 
       <div className="container relative z-10 mx-auto flex flex-col items-center px-8">
-        <div className="mb-16 text-center">
+        <FadeIn className="mb-16 text-center">
           <p
             className="mb-4 text-[11px] font-semibold uppercase tracking-[0.22em]"
             style={{ color: "#6366f1" }}
@@ -987,15 +991,15 @@ function FAQSection() {
               questions?
             </span>
           </h2>
-        </div>
+        </FadeIn>
 
         <div className="w-full max-w-2xl space-y-2">
           {faqs.map((faq, i) => {
             const isOpen = open === i
 
             return (
+              <FadeIn key={i} delay={i * 0.04} distance={18}>
               <motion.div
-                key={i}
                 animate={{
                   borderColor: isOpen
                     ? "rgba(99,102,241,0.3)"
@@ -1064,11 +1068,12 @@ function FAQSection() {
                   )}
                 </AnimatePresence>
               </motion.div>
+              </FadeIn>
             )
           })}
         </div>
 
-        <div className="mt-12 flex flex-col items-center gap-4">
+        <FadeIn className="mt-12 flex flex-col items-center gap-4" delay={0.08}>
           <Button
             variant="outline"
             className="rounded-xl px-8 py-2.5 text-[14px] font-medium"
@@ -1096,7 +1101,7 @@ function FAQSection() {
               support@campushub.com
             </a>
           </p>
-        </div>
+        </FadeIn>
       </div>
     </section>
   )
