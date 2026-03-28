@@ -1,10 +1,13 @@
 import Link from "next/link"
+import { getServerSession } from "next-auth"
 import { prisma } from "@/lib/prisma"
 import { Prisma } from "@prisma/client"
 import { Badge } from "@/components/ui/badge"
 import BackgroundLines from "@/components/layout/BackgroundLines"
 import EventDetailsModal from "@/components/events/EventDetailsModal"
 import { unstable_noStore as noStore } from "next/cache"
+import { redirect } from "next/navigation"
+import { authOptions } from "@/lib/auth"
 
 export const dynamic = "force-dynamic"
  
@@ -26,6 +29,11 @@ export default async function EventsPage({
   }>
 }) {
   noStore()
+  const session = await getServerSession(authOptions)
+
+  if (session?.user?.role === "ADMIN") {
+    redirect("/admin/explore-events")
+  }
 
   // ── Original Prisma logic completely intact ──────────────────────────────
   const resolvedSearchParams = await searchParams
