@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { signIn } from "next-auth/react"
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import Link from "next/link"
 import { Eye, EyeOff } from "lucide-react"
 
@@ -21,8 +21,11 @@ import { Separator } from "@/components/ui/separator"
 
 export default function LoginCard() {
   const router = useRouter()
+  const searchParams = useSearchParams()
+  const verificationEmail = searchParams.get("email")
+  const verificationState = searchParams.get("verification")
 
-  const [email, setEmail] = useState("")
+  const [email, setEmail] = useState(verificationEmail ?? "")
   const [password, setPassword] = useState("")
   const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -34,7 +37,7 @@ export default function LoginCard() {
     setError("")
 
     const res = await signIn("credentials", {
-      email,
+      email: email.trim().toLowerCase(),
       password,
       redirect: false,
     })
@@ -45,7 +48,11 @@ export default function LoginCard() {
       router.replace("/post-login")
       router.refresh()
     } else {
-      setError("Invalid email or password")
+      setError(
+        res.error === "Please verify your email before signing in."
+          ? res.error
+          : "Invalid email or password"
+      )
     }
   }
 
@@ -217,6 +224,24 @@ export default function LoginCard() {
                 className="placeholder:text-[rgba(200,185,255,0.25)] focus-visible:ring-[rgba(124,58,237,0.35)] focus-visible:border-[rgba(167,139,250,0.6)]"
               />
             </div>
+
+            {verificationState === "pending" && (
+              <p className="text-xs text-amber-300 md:col-span-2">
+                Verification email sent{verificationEmail ? ` to ${verificationEmail}` : ""}. Please confirm it before signing in.
+              </p>
+            )}
+
+            {verificationState === "success" && (
+              <p className="text-xs text-emerald-400 md:col-span-2">
+                Email verified successfully. You can sign in now.
+              </p>
+            )}
+
+            {verificationState === "invalid" && (
+              <p className="text-xs text-amber-300 md:col-span-2">
+                That verification link is invalid or expired. Please register again or resend verification from Supabase.
+              </p>
+            )}
 
             <div className="space-y-1.5 md:col-span-1">
               <Label style={labelStyle}>Password</Label>

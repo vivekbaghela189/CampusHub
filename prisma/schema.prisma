@@ -12,14 +12,17 @@ enum Role {
 }
 
 model User {
-  id        String   @id @default(uuid())
-  name      String?
-  email     String   @unique
-  password  String?
-  role      Role     @default(STUDENT)
-  branch    String?
-  year      Int?
-  createdAt DateTime @default(now())
+  id               String    @id @default(uuid())
+  supabaseAuthId   String?   @unique
+  name             String?
+  email            String    @unique
+  password         String?
+  role             Role      @default(STUDENT)
+  branch           String?
+  year             Int?
+  emailVerified    Boolean   @default(false)
+  emailVerifiedAt  DateTime?
+  createdAt        DateTime  @default(now())
 
   events       Event[]       @relation("UserEvents")
   applications Application[]

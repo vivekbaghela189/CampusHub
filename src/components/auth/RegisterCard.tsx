@@ -81,7 +81,8 @@ export default function RegisterCard({
         return;
       }
 
-      router.push("/login");
+      const verificationEmail = encodeURIComponent(email.trim().toLowerCase());
+      router.push(`/login?verification=pending&email=${verificationEmail}`);
     } catch {
       setError("Registration failed");
       setLoading(false);

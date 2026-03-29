@@ -121,11 +121,7 @@ function parseRules(rules: string | null | undefined, fallbackRules: string[]) {
 export default function EventDetailsModal({ event }: EventDetailsModalProps) {
   const [open, setOpen] = useState(false)
   const [accepted, setAccepted] = useState(false)
-  const [mounted, setMounted] = useState(false)
-
-  useEffect(() => {
-    setMounted(true)
-  }, [])
+  const mounted = typeof window !== "undefined"
 
   useEffect(() => {
     if (!open) {

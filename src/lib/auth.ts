@@ -1,6 +1,7 @@
 import { AuthOptions } from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials"
 import { prisma } from "./prisma"
+import { createSupabaseAdminClient } from "./supabase"
 import bcrypt from "bcrypt"
 
 export const authOptions: AuthOptions = {
@@ -28,6 +29,43 @@ export const authOptions: AuthOptions = {
         )
 
         if (!isValid) return null
+
+        if (!user.emailVerified) {
+          if (!user.supabaseAuthId) {
+            throw new Error("Please verify your email before signing in.")
+          }
+
+          try {
+            const supabaseAdmin = createSupabaseAdminClient()
+            const { data, error } = await supabaseAdmin.auth.admin.getUserById(
+              user.supabaseAuthId
+            )
+
+            if (error) {
+              throw error
+            }
+
+            const confirmedAt = data.user?.email_confirmed_at
+
+            if (!confirmedAt) {
+              throw new Error("Please verify your email before signing in.")
+            }
+
+            await prisma.user.update({
+              where: { id: user.id },
+              data: {
+                emailVerified: true,
+                emailVerifiedAt: new Date(confirmedAt),
+              },
+            })
+          } catch (error) {
+            if (error instanceof Error) {
+              throw error
+            }
+
+            throw new Error("Please verify your email before signing in.")
+          }
+        }
 
         return {
           id: user.id,
