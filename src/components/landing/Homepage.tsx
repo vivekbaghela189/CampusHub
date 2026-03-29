@@ -299,12 +299,12 @@ function StatItem({
   label: string
 }) {
   return (
-    <div className="flex flex-col items-center gap-1 border-r border-white/[0.07] px-8 last:border-r-0">
-      <span className="text-[26px] leading-none tracking-tight text-white">
+    <div className="flex min-w-0 flex-col items-center gap-1 rounded-2xl border border-white/[0.07] bg-white/[0.02] px-4 py-4 sm:border-r sm:border-y-0 sm:border-l-0 sm:border-white/[0.07] sm:bg-transparent sm:px-8 sm:py-0 sm:first:border-l-0 sm:last:border-r-0">
+      <span className="text-[24px] leading-none tracking-tight text-white sm:text-[26px]">
         {value}
         <span className="text-indigo-400">{suffix}</span>
       </span>
-      <span className="text-[12px] tracking-wide text-white/35">{label}</span>
+      <span className="text-center text-[11px] tracking-wide text-white/35 sm:text-[12px]">{label}</span>
     </div>
   )
 }
@@ -334,7 +334,7 @@ function TestimonialCard({
           : "0 0 0 0px transparent",
       }}
       transition={{ duration: 0.25, ease: "easeOut" }}
-      className="relative flex w-[320px] shrink-0 cursor-default flex-col justify-between gap-8 overflow-hidden rounded-2xl border p-7"
+      className="relative flex w-[280px] shrink-0 cursor-default flex-col justify-between gap-8 overflow-hidden rounded-2xl border p-6 sm:w-[320px] sm:p-7"
       style={{
         border: "1px solid rgba(255,255,255,0.07)",
         background: "rgba(255,255,255,0.02)",
@@ -535,9 +535,9 @@ function HeroSection() {
           }}
         />
 
-        <div className="relative z-20 flex flex-1 flex-col items-center justify-center px-6 py-20 text-center">
+        <div className="relative z-20 flex flex-1 flex-col items-center justify-center px-4 py-16 text-center sm:px-6 sm:py-20">
           <FadeIn>
-            <div className="badge-ring mb-8 inline-flex items-center gap-2 rounded-full border border-indigo-500/30 bg-indigo-500/10 px-4 py-1.5 backdrop-blur-sm">
+            <div className="badge-ring mb-6 inline-flex items-center gap-2 rounded-full border border-indigo-500/30 bg-indigo-500/10 px-4 py-1.5 backdrop-blur-sm sm:mb-8">
               <span className="dot-blink inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-indigo-400" />
               <span className="text-xs font-medium tracking-wide text-indigo-300">
                 Register & Enjoy
@@ -547,7 +547,7 @@ function HeroSection() {
           </FadeIn>
 
           <FadeIn delay={0.12}>
-            <h1 className="mx-auto mb-6 max-w-3xl text-[clamp(42px,6vw,76px)] font-extrabold leading-[1.05] tracking-[-0.04em] text-white">
+            <h1 className="mx-auto mb-5 max-w-3xl text-[clamp(34px,10vw,76px)] font-extrabold leading-[1.05] tracking-[-0.04em] text-white sm:mb-6">
               Your campus,
               <br />
               <span className="bg-gradient-to-r from-indigo-400 via-violet-400 to-purple-400 bg-clip-text text-transparent">
@@ -557,18 +557,18 @@ function HeroSection() {
           </FadeIn>
 
           <FadeIn delay={0.24}>
-            <p className="mx-auto mb-10 max-w-[500px] text-[17px] font-light leading-relaxed text-white/40">
+            <p className="mx-auto mb-8 max-w-[500px] px-1 text-[15px] font-light leading-relaxed text-white/45 sm:mb-10 sm:text-[17px]">
               Discover hackathons, cultural fests, sports tournaments and workshops,
               all in one place. Register in seconds, never miss a moment.
             </p>
           </FadeIn>
 
           <FadeIn delay={0.36}>
-            <div className="mb-14 flex flex-wrap justify-center gap-3">
+            <div className="mb-12 flex w-full flex-col justify-center gap-3 sm:mb-14 sm:w-auto sm:flex-row sm:flex-wrap">
               <Button
                 asChild
                 size="lg"
-                className="btn-indigo rounded-xl px-9 text-[15px] font-medium text-white"
+                className="btn-indigo w-full rounded-xl px-9 text-[15px] font-medium text-white sm:w-auto"
               >
                 <Link href="/events">Explore Events -&gt;</Link>
               </Button>
@@ -576,7 +576,7 @@ function HeroSection() {
                 asChild
                 size="lg"
                 variant="outline"
-                className="btn-glass rounded-xl px-9 text-[15px] font-medium"
+                className="btn-glass w-full rounded-xl px-9 text-[15px] font-medium sm:w-auto"
               >
                 <Link href="/register">Create Account</Link>
               </Button>
@@ -584,7 +584,7 @@ function HeroSection() {
           </FadeIn>
 
           <FadeIn delay={0.48}>
-            <div className="mb-16 flex flex-wrap justify-center gap-2.5">
+            <div className="mb-14 flex flex-wrap justify-center gap-2.5 sm:mb-16">
               <EventPill label="Hackathons" color="#6366f1" />
               <EventPill label="Cultural Fest" color="#f97316" />
               <EventPill label="Sports" color="#a78bfa" />
@@ -595,7 +595,7 @@ function HeroSection() {
           </FadeIn>
 
           <FadeIn delay={0.6}>
-            <div className="mx-auto flex w-full max-w-[600px] items-stretch border-y border-white/[0.07] py-6">
+            <div className="mx-auto grid w-full max-w-[600px] grid-cols-2 gap-3 border-y border-white/[0.07] py-6 sm:flex sm:items-stretch sm:gap-0">
               <StatItem value="4,200" suffix="+" label="Students" />
               <StatItem value="18" label="Colleges" />
               <StatItem value="200" suffix="+" label="Events/year" />
@@ -614,7 +614,7 @@ function FeaturesSection() {
   return (
     <section
       id="features"
-      className="relative overflow-hidden py-28"
+      className="relative overflow-hidden py-20 sm:py-28"
       style={{ background: "#080b12" }}
     >
       <AmbientBackdrop variant="default" />
@@ -629,8 +629,8 @@ function FeaturesSection() {
         }}
       />
 
-      <div className="container relative z-10 mx-auto px-8">
-        <FadeIn className="mb-16 flex flex-col justify-between gap-6 sm:flex-row sm:items-end">
+      <div className="container relative z-10 mx-auto px-5 sm:px-8">
+        <FadeIn className="mb-12 flex flex-col justify-between gap-6 sm:mb-16 sm:flex-row sm:items-end">
           <div>
             <p
               className="mb-4 text-[11px] font-semibold uppercase tracking-[0.22em]"
@@ -755,7 +755,7 @@ function CategoriesSection() {
   return (
     <section
       id="categories"
-      className="relative overflow-hidden py-28"
+      className="relative overflow-hidden py-20 sm:py-28"
       style={{ background: "#080b12" }}
     >
       <AmbientBackdrop variant="default" />
@@ -770,8 +770,8 @@ function CategoriesSection() {
         }}
       />
 
-      <div className="container relative z-10 mx-auto px-8">
-        <FadeIn className="mb-16 text-center">
+      <div className="container relative z-10 mx-auto px-5 sm:px-8">
+        <FadeIn className="mb-12 text-center sm:mb-16">
           <p
             className="mb-4 text-[11px] font-semibold uppercase tracking-[0.22em]"
             style={{ color: "#6366f1" }}
@@ -894,7 +894,7 @@ function TestimonialsSection() {
 
   return (
     <section
-      className="relative overflow-hidden py-28"
+      className="relative overflow-hidden py-20 sm:py-28"
       style={{ background: "#080b12" }}
     >
       <AmbientBackdrop variant="default" />
@@ -910,7 +910,7 @@ function TestimonialsSection() {
       />
 
       <div className="relative z-10">
-        <FadeIn className="mb-16 px-8 text-center">
+        <FadeIn className="mb-12 px-5 text-center sm:mb-16 sm:px-8">
           <p
             className="mb-4 text-[11px] font-semibold uppercase tracking-[0.22em]"
             style={{ color: "#6366f1" }}
@@ -952,7 +952,7 @@ function FAQSection() {
   return (
     <section
       id="faqs"
-      className="relative overflow-hidden py-28"
+      className="relative overflow-hidden py-20 sm:py-28"
       style={{ background: "#080b12" }}
     >
       <AmbientBackdrop variant="subtle" />
@@ -967,8 +967,8 @@ function FAQSection() {
         }}
       />
 
-      <div className="container relative z-10 mx-auto flex flex-col items-center px-8">
-        <FadeIn className="mb-16 text-center">
+      <div className="container relative z-10 mx-auto flex flex-col items-center px-5 sm:px-8">
+        <FadeIn className="mb-12 text-center sm:mb-16">
           <p
             className="mb-4 text-[11px] font-semibold uppercase tracking-[0.22em]"
             style={{ color: "#6366f1" }}
@@ -1014,10 +1014,10 @@ function FAQSection() {
               >
                 <button
                   onClick={() => setOpen(isOpen ? null : i)}
-                  className="flex w-full items-center justify-between gap-4 px-6 py-5 text-left"
+                  className="flex w-full items-center justify-between gap-3 px-4 py-4 text-left sm:gap-4 sm:px-6 sm:py-5"
                 >
                   <span
-                    className="text-[15px] font-medium leading-snug"
+                    className="text-[14px] font-medium leading-snug sm:text-[15px]"
                     style={{
                       color: isOpen ? "#fff" : "rgba(255,255,255,0.7)",
                       transition: "color 0.2s",
@@ -1059,7 +1059,7 @@ function FAQSection() {
                       style={{ overflow: "hidden" }}
                     >
                       <p
-                        className="px-6 pb-5 text-[14px] leading-relaxed"
+                        className="px-4 pb-4 text-[14px] leading-relaxed sm:px-6 sm:pb-5"
                         style={{ color: "rgba(255,255,255,0.42)" }}
                       >
                         {faq.a}

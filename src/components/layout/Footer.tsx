@@ -41,7 +41,7 @@ export default function Footer() {
       <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 1, background: "rgba(255,255,255,0.06)" }} />
  
       {/* Main */}
-      <div className="container mx-auto px-8 py-16" style={{ position: "relative", zIndex: 10 }}>
+      <div className="container mx-auto px-5 py-14 sm:px-8 sm:py-16" style={{ position: "relative", zIndex: 10 }}>
         <div className="grid gap-12 md:grid-cols-4">
  
           {/* Brand */}
@@ -57,12 +57,12 @@ export default function Footer() {
               <span style={{ color: "#fff", fontWeight: 600, fontSize: 20, letterSpacing: "-0.5px" }}>CampusHub</span>
             </div>
  
-            <p style={{ color: "rgba(255,255,255,0.32)", fontSize: 13, lineHeight: 1.7, maxWidth: 220 }}>
+            <p style={{ color: "rgba(255,255,255,0.32)", fontSize: 13, lineHeight: 1.7, maxWidth: 280 }}>
               Discover and register for campus events — hackathons, competitions, festivals and sports.
             </p>
  
             {/* Socials */}
-            <div style={{ display: "flex", gap: 8 }}>
+            <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
               {socials.map((s) => (
                 <Link
                   key={s}
@@ -129,7 +129,7 @@ export default function Footer() {
       {/* Bottom bar */}
       <div style={{ borderTop: "1px solid rgba(255,255,255,0.06)", position: "relative", zIndex: 10 }}>
         <div
-          className="container mx-auto px-8"
+          className="container mx-auto px-5 sm:px-8"
           style={{ padding: "20px 32px", display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between", gap: 12 }}
         >
           <p style={{ color: "rgba(255,255,255,0.22)", fontSize: 12 }}>

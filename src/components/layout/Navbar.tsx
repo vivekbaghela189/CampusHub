@@ -166,7 +166,7 @@ export default function Navbar() {
       `}</style>
 
       <header className="campus-navbar sticky top-0 z-50">
-        <div className="container mx-auto flex h-16 items-center justify-between gap-4 px-5 md:px-8">
+        <div className="container mx-auto flex h-16 items-center justify-between gap-3 px-4 sm:px-5 md:px-8">
           <Link href={homeHref} className="flex items-center gap-2.5 transition-opacity hover:opacity-90">
             <div
               className="flex h-[30px] w-[30px] shrink-0 items-center justify-center rounded-[10px] text-[20px] font-bold"
@@ -177,17 +177,17 @@ export default function Navbar() {
             >
               🎓
             </div>
-            <span className="text-[20px] font-semibold tracking-tight text-white">CampusHub</span>
+            <span className="text-[18px] font-semibold tracking-tight text-white sm:text-[20px]">CampusHub</span>
           </Link>
 
           <div className="hidden md:block" />
 
-          <nav className="flex items-center gap-2">
+          <nav className="flex items-center gap-1.5 sm:gap-2">
             {status === "authenticated" ? (
               <>
                 <Link
                   href="/highlights"
-                  className="nav-link inline-flex h-9 items-center rounded-lg px-3 py-1.5 text-sm font-medium text-white/60 transition-colors duration-150 hover:bg-white/[0.06] hover:text-white"
+                  className="nav-link hidden h-9 items-center rounded-lg px-3 py-1.5 text-sm font-medium text-white/60 transition-colors duration-150 hover:bg-white/[0.06] hover:text-white sm:inline-flex"
                 >
                   Highlights
                 </Link>
@@ -549,19 +549,19 @@ export default function Navbar() {
               <>
                 <Link
                   href="/highlights"
-                  className="nav-link inline-flex h-9 items-center rounded-lg px-3 py-1.5 text-sm font-medium text-white/60 transition-colors duration-150 hover:bg-white/[0.06] hover:text-white"
+                  className="nav-link hidden h-9 items-center rounded-lg px-3 py-1.5 text-sm font-medium text-white/60 transition-colors duration-150 hover:bg-white/[0.06] hover:text-white sm:inline-flex"
                 >
                   Highlights
                 </Link>
 
                 <Link
                   href="/login"
-                  className="nav-link inline-flex h-9 items-center rounded-lg px-3 py-1.5 text-sm font-medium text-white/45 transition-colors duration-150 hover:bg-white/[0.06] hover:text-white"
+                  className="nav-link inline-flex h-9 items-center rounded-lg px-2.5 py-1.5 text-xs font-medium text-white/45 transition-colors duration-150 hover:bg-white/[0.06] hover:text-white sm:px-3 sm:text-sm"
                 >
                   Login
                 </Link>
 
-                <Button asChild className="btn-indigo-nav ml-2 cursor-pointer rounded-[10px] px-5 text-sm font-medium text-white">
+                <Button asChild className="btn-indigo-nav ml-1 cursor-pointer rounded-[10px] px-3.5 text-xs font-medium text-white sm:ml-2 sm:px-5 sm:text-sm">
                   <Link href="/register">Register</Link>
                 </Button>
               </>
