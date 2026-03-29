@@ -282,8 +282,8 @@ function HeroCanvas() {
 
 function EventPill({ label, color }: { label: string; color: string }) {
   return (
-    <div className="inline-flex cursor-default select-none items-center gap-2 rounded-full border border-white/[0.09] bg-white/5 px-3.5 py-1.5 text-[13px] text-white/50 transition-all duration-200 hover:border-white/20 hover:bg-white/[0.08] hover:text-white/80">
-      <span className="h-1.5 w-1.5 flex-shrink-0 rounded-full" style={{ background: color }} />
+    <div className="inline-flex cursor-default select-none items-center gap-2 rounded-full border border-white/9 bg-white/5 px-3.5 py-1.5 text-[13px] text-white/50 transition-all duration-200 hover:border-white/20 hover:bg-white/8 hover:text-white/80">
+      <span className="h-1.5 w-1.5 shrink-0 rounded-full" style={{ background: color }} />
       {label}
     </div>
   )
@@ -400,7 +400,7 @@ function TestimonialCard({
       <motion.div
         animate={{ scaleX: isHovered ? 1 : 0 }}
         transition={{ duration: 0.25 }}
-        className="absolute bottom-0 left-0 right-0 h-[2px] origin-left"
+        className="absolute bottom-0 left-0 right-0 h-0.5 origin-left"
         style={{
           background: `linear-gradient(90deg, ${t.accent}, transparent)`,
         }}
@@ -550,14 +550,14 @@ function HeroSection() {
             <h1 className="mx-auto mb-5 max-w-3xl text-[clamp(34px,10vw,76px)] font-extrabold leading-[1.05] tracking-[-0.04em] text-white sm:mb-6">
               Your campus,
               <br />
-              <span className="bg-gradient-to-r from-indigo-400 via-violet-400 to-purple-400 bg-clip-text text-transparent">
+              <span className="bg-linear-to-r from-indigo-400 via-violet-400 to-purple-400 bg-clip-text text-transparent">
                 fully alive.
               </span>
             </h1>
           </FadeIn>
 
           <FadeIn delay={0.24}>
-            <p className="mx-auto mb-8 max-w-[500px] px-1 text-[15px] font-light leading-relaxed text-white/45 sm:mb-10 sm:text-[17px]">
+            <p className="mx-auto mb-8 max-w-125 px-1 text-[15px] font-light leading-relaxed text-white/45 sm:mb-10 sm:text-[17px]">
               Discover hackathons, cultural fests, sports tournaments and workshops,
               all in one place. Register in seconds, never miss a moment.
             </p>
@@ -595,7 +595,7 @@ function HeroSection() {
           </FadeIn>
 
           <FadeIn delay={0.6}>
-            <div className="mx-auto grid w-full max-w-[600px] grid-cols-2 gap-3 border-y border-white/[0.07] py-6 sm:flex sm:items-stretch sm:gap-0">
+            <div className="mx-auto grid w-full max-w-150 grid-cols-2 gap-3 border-y border-white/[0.07] py-6 sm:flex sm:items-stretch sm:gap-0">
               <StatItem value="4,200" suffix="+" label="Students" />
               <StatItem value="18" label="Colleges" />
               <StatItem value="200" suffix="+" label="Events/year" />
@@ -735,7 +735,7 @@ function FeaturesSection() {
                 <motion.div
                   animate={{ scaleX: isHovered ? 1 : 0 }}
                   transition={{ duration: 0.25 }}
-                  className="absolute bottom-0 left-0 right-0 h-[2px] origin-left"
+                  className="absolute bottom-0 left-0 right-0 h-0.5 origin-left"
                   style={{
                     background: `linear-gradient(90deg, ${step.accent}, transparent)`,
                   }}
@@ -873,7 +873,7 @@ function CategoriesSection() {
                 <motion.div
                   animate={{ scaleX: isHovered ? 1 : 0 }}
                   transition={{ duration: 0.25 }}
-                  className="absolute bottom-0 left-0 right-0 h-[2px] origin-left"
+                  className="absolute bottom-0 left-0 right-0 h-0.5 origin-left"
                   style={{
                     background: `linear-gradient(90deg, ${cat.accent}, transparent)`,
                   }}
