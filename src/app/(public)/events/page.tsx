@@ -6,6 +6,7 @@ import FadeIn from "@/components/animations/FadeIn"
 import { Badge } from "@/components/ui/badge"
 import AmbientBackdrop from "@/components/layout/AmbientBackdrop"
 import EventDetailsModal from "@/components/events/EventDetailsModal"
+import PriceSupportButton from "@/components/events/PriceSupportButton"
 import { unstable_noStore as noStore } from "next/cache"
 import { redirect } from "next/navigation"
 import { authOptions } from "@/lib/auth"
@@ -523,21 +524,11 @@ export default async function EventsPage({
                       </div>
  
                       {/* Price badge — right, 50% width, equal to button */}
-                      <div style={{
-                        flex:1, height:"38px", borderRadius:"10px",
-                        display:"flex", alignItems:"center", justifyContent:"center", gap:"5px",
-                        background: isFree ? "rgba(200,245,66,0.07)" : "rgba(99,102,241,0.08)",
-                        border: `1px solid ${isFree ? "rgba(200,245,66,0.25)" : "rgba(99,102,241,0.28)"}`,
-                      }}>
-                        <span style={{
-                          fontSize:"16px", fontWeight:700,
-                          fontFamily:"'Syne',sans-serif",
-                          color: isFree ? "#c8f542" : "#9b7ff0",
-                          letterSpacing:"0.2px",
-                        }}>
-                          {priceDisplay}
-                        </span>
-                      </div>
+                      <PriceSupportButton
+                        eventId={event.id}
+                        priceDisplay={priceDisplay}
+                        isFree={isFree}
+                      />
  
                     </div>
                   </div>

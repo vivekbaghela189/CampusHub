@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react"
 import { createPortal } from "react-dom"
 import { Badge } from "@/components/ui/badge"
-import ApplyButton from "@/components/events/ApplyButton"
+import { Button } from "@/components/ui/button"
 
 type EventDetailsModalProps = {
   event: {
@@ -121,7 +121,22 @@ function parseRules(rules: string | null | undefined, fallbackRules: string[]) {
 export default function EventDetailsModal({ event }: EventDetailsModalProps) {
   const [open, setOpen] = useState(false)
   const [accepted, setAccepted] = useState(false)
+  const [submitted, setSubmitted] = useState(false)
   const mounted = typeof window !== "undefined"
+
+  const handleClose = () => {
+    setOpen(false)
+    setAccepted(false)
+    setSubmitted(false)
+  }
+
+  const handleSubmit = () => {
+    if (!accepted) {
+      return
+    }
+
+    setSubmitted(true)
+  }
 
   useEffect(() => {
     if (!open) {
@@ -180,7 +195,11 @@ export default function EventDetailsModal({ event }: EventDetailsModalProps) {
       <button
         type="button"
         className="view-btn"
-        onClick={() => setOpen(true)}
+        onClick={() => {
+          setSubmitted(false)
+          setAccepted(false)
+          setOpen(true)
+        }}
         style={{
           width: "100%",
           height: "38px",
@@ -220,7 +239,7 @@ export default function EventDetailsModal({ event }: EventDetailsModalProps) {
 
       {mounted && open && createPortal(
         <div
-          onClick={() => setOpen(false)}
+          onClick={handleClose}
           style={{
             position: "fixed",
             inset: 0,
@@ -260,7 +279,7 @@ export default function EventDetailsModal({ event }: EventDetailsModalProps) {
 
                 <button
                   type="button"
-                  onClick={() => setOpen(false)}
+                  onClick={handleClose}
                   style={{
                     width: "38px",
                     height: "38px",
@@ -368,7 +387,12 @@ export default function EventDetailsModal({ event }: EventDetailsModalProps) {
                 <input
                   type="checkbox"
                   checked={accepted}
-                  onChange={(evt) => setAccepted(evt.target.checked)}
+                  onChange={(evt) => {
+                    setAccepted(evt.target.checked)
+                    if (submitted) {
+                      setSubmitted(false)
+                    }
+                  }}
                   style={{ marginTop: "3px" }}
                 />
                 <span style={{ color: "#d8d6e2", fontSize: "14px", lineHeight: 1.6 }}>
@@ -376,11 +400,22 @@ export default function EventDetailsModal({ event }: EventDetailsModalProps) {
                 </span>
               </label>
 
-              <ApplyButton
-                eventId={event.id}
-                disabled={!accepted}
-                disabledMessage="Please accept the rules and privacy terms before applying."
-              />
+              <div style={{ display: "grid", gap: "12px" }}>
+                <Button
+                  type="button"
+                  onClick={handleSubmit}
+                  disabled={!accepted}
+                  className="w-full"
+                >
+                  Submit
+                </Button>
+
+                <p className="text-sm text-center text-muted-foreground">
+                  {submitted
+                    ? "Rules and privacy terms accepted."
+                    : "Please accept the rules and privacy terms before submitting."}
+                </p>
+              </div>
             </div>
           </div>
         </div>,
