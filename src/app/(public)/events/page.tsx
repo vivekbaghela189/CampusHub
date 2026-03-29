@@ -60,7 +60,9 @@ export default async function EventsPage({
   let databaseError = false
  
   try {
-    const whereClauses: Prisma.Sql[] = []
+    const whereClauses: Prisma.Sql[] = [
+      Prisma.sql`e.deadline >= NOW()`
+    ]
 
     if (search) {
       whereClauses.push(Prisma.sql`title ILIKE ${`%${search}%`}`)
