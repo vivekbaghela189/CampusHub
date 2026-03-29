@@ -74,7 +74,7 @@ export default async function EventsPage({
 
     const whereSql =
       whereClauses.length > 0
-        ? Prisma.sql`WHERE ${Prisma.join(whereClauses, Prisma.sql` AND `)}`
+        ? Prisma.sql`WHERE ${Prisma.join(whereClauses, " AND ")}`
         : Prisma.empty
 
     events = await prisma.$queryRaw<Array<{

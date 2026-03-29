@@ -330,7 +330,6 @@ export default function Navbar() {
                           <button
                             type="button"
                             style={{
-                              border: "none",
                               borderRadius: 999,
                               background: "linear-gradient(135deg, rgba(99,102,241,0.18), rgba(124,58,237,0.24))",
                               color: "#ddd6fe",

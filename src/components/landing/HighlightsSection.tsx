@@ -3,11 +3,13 @@ import { prisma } from "@/lib/prisma"
 import FadeIn from "@/components/animations/FadeIn"
 import AmbientBackdrop from "@/components/layout/AmbientBackdrop"
 
-const highlightGallery: Array<{
+type GalleryItem = {
   name: string
   image: string
   tone?: string
-}> = [
+}
+
+const highlightGallery: GalleryItem[] = [
   {
     name: "Armaan Malik",
     tone: "from-orange-400/30 via-pink-500/18 to-transparent",
@@ -44,7 +46,7 @@ export default async function HighlightsSection() {
     ORDER BY "createdAt" DESC
   `)
 
-  const galleryItems =
+  const galleryItems: GalleryItem[] =
     storedItems.length > 0
       ? storedItems.map((item) => ({
           name: item.name,

@@ -4,7 +4,7 @@ import AmbientBackdrop from "@/components/layout/AmbientBackdrop"
 
 type LegalSection = {
   title: string
-  points: string[]
+  points: readonly string[]
 }
 
 type LegalPageProps = {
@@ -12,7 +12,7 @@ type LegalPageProps = {
   title: string
   intro: string
   effectiveDate: string
-  sections: LegalSection[]
+  sections: readonly LegalSection[]
 }
 
 export default function LegalPage({
